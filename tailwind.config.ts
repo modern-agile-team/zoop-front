@@ -1,4 +1,4 @@
-import { type Config } from 'tailwindcss';
+import { type Config } from 'tailwindcss'
 
 const config: Config = {
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
@@ -17,15 +17,15 @@ const config: Config = {
           900: '#0C4A6E',
         },
         secondary: {
-          100: '#F3E8FF',
-          200: '#E9D5FF',
-          300: '#D8B4FE',
-          400: '#C084FC',
-          500: '#A855F7',
-          600: '#9333EA',
-          700: '#7E22CE',
-          800: '#6B21A8',
-          900: '#581C87',
+          100: '#FFF7ED',
+          200: '#FFEDD5',
+          300: '#FED7AA',
+          400: '#FDBA74',
+          500: '#FB923C',
+          600: '#F97316',
+          700: '#EA580C',
+          800: '#C2410C',
+          900: '#9A3412',
         },
         contents: {
           100: '#F3F4F6',
@@ -53,6 +53,6 @@ const config: Config = {
     },
   },
   plugins: [],
-};
+}
 
-export default config;
+export default config
