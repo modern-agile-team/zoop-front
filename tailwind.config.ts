@@ -50,6 +50,31 @@ const config: Config = {
           900: '#44423E',
         },
       },
+      fontSize: {
+        'title-1': ['2rem', { lineHeight: '2.5rem', fontWeight: '700' }],
+        'title-2': ['1.75rem', { lineHeight: '2.25rem', fontWeight: '700' }],
+        'title-3': ['1.5rem', { lineHeight: '2rem', fontWeight: '700' }],
+        'title-4': ['1.25rem', { lineHeight: '1.75rem', fontWeight: '600' }],
+        'title-5': ['1.125rem', { lineHeight: '1.5rem', fontWeight: '600' }],
+
+        'body-1': ['1.125rem', { lineHeight: '1.75rem', fontWeight: '400' }],
+        'body-2': ['1rem', { lineHeight: '1.5rem', fontWeight: '400' }],
+        'body-3': ['0.9375rem', { lineHeight: '1.375rem', fontWeight: '400' }],
+        'body-4': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }],
+        'body-5': ['0.8125rem', { lineHeight: '1.125rem', fontWeight: '400' }],
+
+        'caption-1': ['0.875rem', { lineHeight: '1.25rem', fontWeight: '400' }],
+        'caption-2': [
+          '0.8125rem',
+          { lineHeight: '1.125rem', fontWeight: '400' },
+        ],
+        'caption-3': ['0.75rem', { lineHeight: '1rem', fontWeight: '400' }],
+        'caption-4': [
+          '0.6875rem',
+          { lineHeight: '0.875rem', fontWeight: '400' },
+        ],
+        'caption-5': ['0.625rem', { lineHeight: '0.75rem', fontWeight: '400' }],
+      },
     },
   },
   plugins: [],
