@@ -3,9 +3,14 @@
     "**/routeTree.gen.ts": true
   },
   "search.exclude": {
-    "**/routeTree.gen.ts": true
+    "**/routeTree.gen.ts": true,
+    "**/.yarn": true,
+    "**/.pnp.*": true
   },
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
-  }
+  },
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
+  "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
