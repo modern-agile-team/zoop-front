@@ -4,8 +4,6 @@ export const Route = createFileRoute('/')({
   component: App,
 });
 
-const buttonStyle = 'w-[50%] max-w-[350px] uppercase font-semibold';
-
 function App() {
   return (
     <div className="text-center">
