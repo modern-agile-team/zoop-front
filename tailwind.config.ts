@@ -58,7 +58,7 @@ const config: Config = {
           800: '#1F2937',
           900: '#111827',
         },
-        background: {
+        bg: {
           100: '#FFFDF9',
           200: '#FDF9F3',
           300: '#F8F6F2',
