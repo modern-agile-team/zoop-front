@@ -12,5 +12,10 @@
   },
   "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
   "typescript.tsdk": ".yarn/sdks/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "tailwindCSS.experimental.classRegex": [
+    ["Styles \\=([^;]*);", "'([^']*)'"],
+    ["Styles \\=([^;]*);", "\"([^\"]*)\""],
+    ["Styles \\=([^;]*);", "\\`([^\\`]*)\\`"]
+  ]
 }
