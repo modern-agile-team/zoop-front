@@ -42,6 +42,7 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/eslint-plugin", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:8.34.0"],\
           ["@typescript-eslint/parser", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:8.34.0"],\
           ["@vitejs/plugin-react", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:4.5.1"],\
+          ["clsx", "npm:2.1.1"],\
           ["eslint", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:9.28.0"],\
           ["eslint-import-resolver-typescript", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:4.4.3"],\
           ["eslint-plugin-import", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:2.31.0"],\
@@ -54,6 +55,7 @@ const RAW_RUNTIME_STATE =
           ["quiz-game-io-front", "workspace:."],\
           ["react", "npm:19.1.0"],\
           ["react-dom", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:19.1.0"],\
+          ["tailwind-merge", "npm:3.3.1"],\
           ["tailwindcss", "npm:4.1.8"],\
           ["tiny-invariant", "npm:1.3.3"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
@@ -6617,6 +6619,7 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/eslint-plugin", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:8.34.0"],\
           ["@typescript-eslint/parser", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:8.34.0"],\
           ["@vitejs/plugin-react", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:4.5.1"],\
+          ["clsx", "npm:2.1.1"],\
           ["eslint", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:9.28.0"],\
           ["eslint-import-resolver-typescript", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:4.4.3"],\
           ["eslint-plugin-import", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:2.31.0"],\
@@ -6629,6 +6632,7 @@ const RAW_RUNTIME_STATE =
           ["quiz-game-io-front", "workspace:."],\
           ["react", "npm:19.1.0"],\
           ["react-dom", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:19.1.0"],\
+          ["tailwind-merge", "npm:3.3.1"],\
           ["tailwindcss", "npm:4.1.8"],\
           ["tiny-invariant", "npm:1.3.3"],\
           ["typescript", "patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"],\
@@ -7354,6 +7358,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../.yarn/berry/cache/symbol-tree-npm-3.2.4-fe70cdb75b-10c0.zip/node_modules/symbol-tree/",\
         "packageDependencies": [\
           ["symbol-tree", "npm:3.2.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["tailwind-merge", [\
+      ["npm:3.3.1", {\
+        "packageLocation": "../../../../.yarn/berry/cache/tailwind-merge-npm-3.3.1-f9ae71f62f-10c0.zip/node_modules/tailwind-merge/",\
+        "packageDependencies": [\
+          ["tailwind-merge", "npm:3.3.1"]\
         ],\
         "linkType": "HARD"\
       }]\
