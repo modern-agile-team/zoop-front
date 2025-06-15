@@ -12,12 +12,40 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as SignupIndexImport } from './routes/signup/index'
+import { Route as LoginIndexImport } from './routes/login/index'
+import { Route as LobbyIndexImport } from './routes/lobby/index'
+import { Route as RoomRoomIdImport } from './routes/room/$roomId'
 
 // Create/Update Routes
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignupIndexRoute = SignupIndexImport.update({
+  id: '/signup/',
+  path: '/signup/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginIndexRoute = LoginIndexImport.update({
+  id: '/login/',
+  path: '/login/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LobbyIndexRoute = LobbyIndexImport.update({
+  id: '/lobby/',
+  path: '/lobby/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RoomRoomIdRoute = RoomRoomIdImport.update({
+  id: '/room/$roomId',
+  path: '/room/$roomId',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -32,6 +60,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/room/$roomId': {
+      id: '/room/$roomId'
+      path: '/room/$roomId'
+      fullPath: '/room/$roomId'
+      preLoaderRoute: typeof RoomRoomIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/lobby/': {
+      id: '/lobby/'
+      path: '/lobby'
+      fullPath: '/lobby'
+      preLoaderRoute: typeof LobbyIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/login/': {
+      id: '/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/signup/': {
+      id: '/signup/'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +95,52 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/room/$roomId': typeof RoomRoomIdRoute
+  '/lobby': typeof LobbyIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/signup': typeof SignupIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/room/$roomId': typeof RoomRoomIdRoute
+  '/lobby': typeof LobbyIndexRoute
+  '/login': typeof LoginIndexRoute
+  '/signup': typeof SignupIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/room/$roomId': typeof RoomRoomIdRoute
+  '/lobby/': typeof LobbyIndexRoute
+  '/login/': typeof LoginIndexRoute
+  '/signup/': typeof SignupIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/room/$roomId' | '/lobby' | '/login' | '/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/room/$roomId' | '/lobby' | '/login' | '/signup'
+  id: '__root__' | '/' | '/room/$roomId' | '/lobby/' | '/login/' | '/signup/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  RoomRoomIdRoute: typeof RoomRoomIdRoute
+  LobbyIndexRoute: typeof LobbyIndexRoute
+  LoginIndexRoute: typeof LoginIndexRoute
+  SignupIndexRoute: typeof SignupIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  RoomRoomIdRoute: RoomRoomIdRoute,
+  LobbyIndexRoute: LobbyIndexRoute,
+  LoginIndexRoute: LoginIndexRoute,
+  SignupIndexRoute: SignupIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +153,27 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/room/$roomId",
+        "/lobby/",
+        "/login/",
+        "/signup/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/room/$roomId": {
+      "filePath": "room/$roomId.tsx"
+    },
+    "/lobby/": {
+      "filePath": "lobby/index.tsx"
+    },
+    "/login/": {
+      "filePath": "login/index.tsx"
+    },
+    "/signup/": {
+      "filePath": "signup/index.tsx"
     }
   }
 }
