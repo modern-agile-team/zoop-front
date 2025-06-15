@@ -61,6 +61,7 @@ export default tseslint.config(
       },
     },
     rules: {
+      'react-compiler/react-compiler': 'error',
       ...reactHooks.configs.recommended.rules,
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
