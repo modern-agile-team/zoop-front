@@ -1,7 +1,10 @@
 import useAuth from '@/shared/hooks/useAuth';
+import { useNavigate } from '@tanstack/react-router';
 
 export default function HomePage() {
   const { isLoggedIn, login, logout } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col h-screen bg-primary-900">
       <div className="w-full">
@@ -14,7 +17,9 @@ export default function HomePage() {
       </div>
       {isLoggedIn && (
         <div>
-          <button>로비로 이동</button>
+          <button onClick={() => navigate({ to: '/lobby' })}>
+            로비로 이동
+          </button>
           <button onClick={logout}>로그아웃</button>
         </div>
       )}
