@@ -1,3 +1,7 @@
+import Room from './components/room';
+
+const MOCK_ROOMS = Array.from({ length: 30 }, (_, i) => i + 1);
+
 export default function LobbyPage() {
   return (
     <div className="flex flex-col h-screen bg-primary-900">
@@ -9,9 +13,11 @@ export default function LobbyPage() {
           로비
         </h1>
       </div>
-      <div className="flex-1 flex items-center justify-center">
-        <p className="text-white">로비에 오신 것을 환영합니다!</p>
-      </div>
+      <ul className="flex flex-col gap-4 p-4 overflow-y-auto">
+        {MOCK_ROOMS.map((room) => (
+          <Room key={room} />
+        ))}
+      </ul>
     </div>
   );
 }
