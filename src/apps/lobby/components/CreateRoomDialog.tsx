@@ -8,6 +8,7 @@ import {
 } from '@/shared/components/ui/dialog';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
+import { GAME_SETTINGS } from '../constants';
 
 interface CreateRoomDialogProps {
   open: boolean;
@@ -48,9 +49,9 @@ export default function CreateRoomDialog({
               게임 설정
             </h4>
             <ul className="text-xs text-blue-700 space-y-1">
-              <li>• 최대 인원: 8명</li>
-              <li>• 문제 수: 10문제</li>
-              <li>• 제한 시간: 문제당 30초</li>
+              <li>• 최대 인원: {GAME_SETTINGS.MAX_PLAYERS}명</li>
+              <li>• 문제 수: {GAME_SETTINGS.TOTAL_QUESTIONS}문제</li>
+              <li>• 제한 시간: 문제당 {GAME_SETTINGS.TIME_PER_QUESTION}초</li>
             </ul>
           </div>
         </div>
