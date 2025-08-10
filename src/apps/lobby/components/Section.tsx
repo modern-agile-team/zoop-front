@@ -12,8 +12,7 @@ export function LobbyScrollSection({
 
   const getByDisplayName = (name: string) =>
     childrenArray.find(
-      (child) =>
-        (child.type as { displayName?: string }).displayName === name
+      (child) => (child.type as { displayName?: string }).displayName === name
     );
 
   const header = getByDisplayName('LobbyScrollSection.Header');
