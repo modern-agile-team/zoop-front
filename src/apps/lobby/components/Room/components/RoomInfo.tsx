@@ -10,7 +10,10 @@ interface RoomInfoProps {
   isPrivate: boolean;
 }
 
-export default function RoomInfo({ participantInfo, isPrivate }: RoomInfoProps) {
+export default function RoomInfo({
+  participantInfo,
+  isPrivate,
+}: RoomInfoProps) {
   return (
     <section className="flex items-center justify-between mb-4">
       <div
