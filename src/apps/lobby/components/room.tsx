@@ -5,7 +5,6 @@ import type { RoomInfo, RoomStatus } from '../types';
 
 interface Props extends RoomInfo {}
 
-// 상태별 설정을 중앙화하여 관리
 const getStatusConfig = (status: RoomStatus) => {
   const configs = {
     waiting: {
@@ -30,7 +29,6 @@ const getStatusConfig = (status: RoomStatus) => {
   return configs[status];
 };
 
-// 카드 스타일을 결정하는 함수
 const getCardStyles = (status: RoomStatus, isJoinable: boolean) => {
   if (isJoinable) {
     return 'border-green-200 bg-white hover:border-green-300 hover:shadow-lg hover:-translate-y-1';
@@ -43,7 +41,6 @@ const getCardStyles = (status: RoomStatus, isJoinable: boolean) => {
   return 'border-gray-200 bg-gray-50';
 };
 
-// 버튼 스타일을 결정하는 함수
 const getButtonStyles = (status: RoomStatus, isJoinable: boolean) => {
   if (isJoinable) {
     return 'bg-blue-600 hover:bg-blue-700 text-white';
@@ -56,30 +53,6 @@ const getButtonStyles = (status: RoomStatus, isJoinable: boolean) => {
   return 'bg-gray-300 text-gray-500 cursor-not-allowed';
 };
 
-// 버튼의 접근성과 상태를 결정하는 함수
-const getButtonProps = (status: RoomStatus) => {
-  const isDisabled = status === 'full';
-  const ariaLabel = getButtonAriaLabel(status);
-
-  return {
-    disabled: isDisabled,
-    'aria-label': ariaLabel,
-  };
-};
-
-// 버튼의 접근성 라벨을 결정하는 함수
-const getButtonAriaLabel = (status: RoomStatus) => {
-  switch (status) {
-    case 'playing':
-      return '게임 관전하기';
-    case 'full':
-      return '방이 가득 참 - 참여 불가';
-    default:
-      return '방에 참여하기';
-  }
-};
-
-// 버튼 텍스트를 결정하는 함수
 const getButtonText = (status: RoomStatus) => {
   switch (status) {
     case 'playing':
@@ -104,19 +77,25 @@ export default function Room({
   const StatusIcon = statusConfig.icon;
 
   return (
-    <div
+    <article
       className={cn(
         'group relative overflow-hidden rounded-lg border transition-all duration-300 transform',
         getCardStyles(status, isJoinable)
       )}
+      role="button"
+      tabIndex={0}
+      aria-label={`방 ${roomId}: ${title} - ${statusConfig.text}`}
     >
       <div className="flex flex-col gap-8 p-4">
         {/* 상단: 방 번호와 상태 */}
-        <div className="flex items-center justify-between">
+        <header className="flex items-center justify-between">
           <div className="flex gap-8 items-center">
-            <div className="flex items-center justify-center w-10 h-10 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold">
+            <span 
+              className="flex items-center justify-center w-10 h-10 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold"
+              aria-label={`방 번호 ${roomId}`}
+            >
               {roomId}
-            </div>
+            </span>
 
             <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
               {title}
@@ -129,16 +108,22 @@ export default function Room({
               statusConfig.color,
               statusConfig.bgColor
             )}
+            role="status"
+            aria-label={`방 상태: ${statusConfig.text}`}
           >
             <StatusIcon className="w-3 h-3" />
             {statusConfig.text}
           </div>
-        </div>
+        </header>
 
         {/* 하단: 참여 정보와 공개/비공개 */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2 px-2 py-1 bg-gray-50 rounded-md">
-            <Users className="size-12 text-gray-500" />
+        <section className="flex items-center justify-between mb-4">
+          <div 
+            className="flex items-center gap-2 px-2 py-1 bg-gray-50 rounded-md"
+            role="group"
+            aria-label={`참가자 수: 현재 ${participantInfo.current}명, 최대 ${participantInfo.max}명`}
+          >
+            <Users className="w-4 h-4 text-gray-500" aria-hidden="true" />
             <span className="text-sm text-gray-600">
               <span className="font-semibold text-gray-900">
                 {participantInfo.current}
@@ -149,24 +134,31 @@ export default function Room({
           </div>
 
           {isPrivate && (
-            <div className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-600 rounded-md text-xs font-medium">
-              <Lock className="w-3 h-3" />
+            <div 
+              className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-600 rounded-md text-xs font-medium"
+              role="note"
+              aria-label="비공개 방"
+            >
+              <Lock className="w-3 h-3" aria-hidden="true" />
               비공개
             </div>
           )}
-        </div>
+        </section>
 
         {/* 참여 버튼 */}
-        <Button
-          {...getButtonProps(status)}
-          className={cn(
-            'w-full h-10 transition-all duration-300 font-medium',
-            getButtonStyles(status, isJoinable)
-          )}
-        >
-          {getButtonText(status)}
-        </Button>
+        <footer>
+          <Button
+            disabled={status === 'full'}
+            className={cn(
+              'w-full h-10 transition-all duration-300 font-medium',
+              getButtonStyles(status, isJoinable)
+            )}
+            aria-describedby={`room-${roomId}-status`}
+          >
+            {getButtonText(status)}
+          </Button>
+        </footer>
       </div>
-    </div>
+    </article>
   );
 }

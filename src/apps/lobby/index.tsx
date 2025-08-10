@@ -33,88 +33,93 @@ export default function LobbyPage() {
           onCreateRoom={openCreateRoomDialog}
         />
 
-        <div className="max-w-7xl mx-auto p-6 h-[calc(100vh-120px)]">
+        <main className="max-w-7xl mx-auto p-6 h-[calc(100vh-120px)]" role="main">
           <div className="grid grid-cols-12 gap-6 h-full">
             {/* 참여자 리스트 */}
-            <div className="col-span-2 h-full">
+            <aside className="col-span-2 h-full" aria-label="온라인 사용자 목록">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
-                    <Users className="w-5 h-5" />
+                    <Users className="w-5 h-5" aria-hidden="true" />
                     온라인 유저 ({PARTICIPANTS.length})
                   </div>
                 </LobbyScrollSection.Header>
                 <LobbyScrollSection.Content>
-                  <div className="space-y-2 p-4">
+                  <ul className="space-y-2 p-4" role="list">
                     {PARTICIPANTS.map((participant) => (
-                      <ParticipantCard
-                        key={participant.id}
-                        participant={participant}
-                      />
+                      <li key={participant.id}>
+                        <ParticipantCard participant={participant} />
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </LobbyScrollSection.Content>
               </LobbyScrollSection>
-            </div>
+            </aside>
 
             {/* 대기방 목록 */}
-            <div className="col-span-4 h-full">
+            <section className="col-span-4 h-full" aria-label="대기 중인 게임방 목록">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
-                    <Users className="w-5 h-5" />
+                    <Users className="w-5 h-5" aria-hidden="true" />
                     대기방 목록 ({WAITING_ROOMS.length})
                   </div>
                 </LobbyScrollSection.Header>
                 <LobbyScrollSection.Content>
-                  <div className="space-y-3 p-4">
+                  <ul className="space-y-3 p-4" role="list">
                     {WAITING_ROOMS.map((room) => (
-                      <Room key={room.roomId} {...room} />
+                      <li key={room.roomId}>
+                        <Room {...room} />
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </LobbyScrollSection.Content>
               </LobbyScrollSection>
-            </div>
+            </section>
 
             {/* 진행중인 방 목록 */}
-            <div className="col-span-4 h-full">
+            <section className="col-span-4 h-full" aria-label="진행 중인 게임방 목록">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
-                    <Play className="w-5 h-5" />
+                    <Play className="w-5 h-5" aria-hidden="true" />
                     진행중인 게임 ({PLAYING_ROOMS.length})
                   </div>
                 </LobbyScrollSection.Header>
                 <LobbyScrollSection.Content>
-                  <div className="space-y-3 p-4">
+                  <ul className="space-y-3 p-4" role="list">
                     {PLAYING_ROOMS.map((room) => (
-                      <Room key={room.roomId} {...room} />
+                      <li key={room.roomId}>
+                        <Room {...room} />
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </LobbyScrollSection.Content>
               </LobbyScrollSection>
-            </div>
+            </section>
 
             {/* 공지사항 */}
-            <div className="col-span-2 h-full">
+            <aside className="col-span-2 h-full" aria-label="공지사항">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
-                  <div className="flex items-center gap-2">📢 공지사항</div>
+                  <div className="flex items-center gap-2">
+                    <span role="img" aria-label="공지">📢</span> 
+                    공지사항
+                  </div>
                 </LobbyScrollSection.Header>
                 <LobbyScrollSection.Content>
-                  <div className="space-y-3 p-3">
+                  <ul className="space-y-3 p-3" role="list">
                     {ANNOUNCEMENTS.map((announcement) => (
-                      <AnnouncementCard
-                        key={announcement.id}
-                        announcement={announcement}
-                      />
+                      <li key={announcement.id}>
+                        <AnnouncementCard announcement={announcement} />
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </LobbyScrollSection.Content>
               </LobbyScrollSection>
-            </div>
+            </aside>
           </div>
-        </div>
+        </main>
       </div>
 
       <CreateRoomDialog
