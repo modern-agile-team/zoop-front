@@ -90,7 +90,7 @@ export default function Room({
         {/* 상단: 방 번호와 상태 */}
         <header className="flex items-center justify-between">
           <div className="flex gap-8 items-center">
-            <span 
+            <span
               className="flex items-center justify-center w-10 h-10 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold"
               aria-label={`방 번호 ${roomId}`}
             >
@@ -118,7 +118,7 @@ export default function Room({
 
         {/* 하단: 참여 정보와 공개/비공개 */}
         <section className="flex items-center justify-between mb-4">
-          <div 
+          <div
             className="flex items-center gap-2 px-2 py-1 bg-gray-50 rounded-md"
             role="group"
             aria-label={`참가자 수: 현재 ${participantInfo.current}명, 최대 ${participantInfo.max}명`}
@@ -134,7 +134,7 @@ export default function Room({
           </div>
 
           {isPrivate && (
-            <div 
+            <div
               className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-600 rounded-md text-xs font-medium"
               role="note"
               aria-label="비공개 방"
