@@ -111,7 +111,7 @@ export default function LobbyPage() {
         <div className="max-w-7xl mx-auto p-6 h-[calc(100vh-120px)]">
           <div className="grid grid-cols-12 gap-6 h-full">
             {/* 참여자 리스트 */}
-            <div className="col-span-3">
+            <div className="col-span-2 h-full">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
@@ -147,7 +147,7 @@ export default function LobbyPage() {
             </div>
 
             {/* 대기방 목록 */}
-            <div className="col-span-4">
+            <div className="col-span-4 h-full">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export default function LobbyPage() {
             </div>
 
             {/* 진행중인 방 목록 */}
-            <div className="col-span-4">
+            <div className="col-span-4 h-full">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
@@ -185,21 +185,21 @@ export default function LobbyPage() {
             </div>
 
             {/* 공지사항 */}
-            <div className="col-span-1">
+            <div className="col-span-2 h-full">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
-                    📢 공지
+                    📢 공지사항
                   </div>
                 </LobbyScrollSection.Header>
                 <LobbyScrollSection.Content>
-                  <div className="space-y-3 p-2">
+                  <div className="space-y-3 p-3">
                     {ANNOUNCEMENTS.map((announcement) => (
-                      <div key={announcement.id} className="p-2 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 transition-all duration-200 cursor-pointer border border-blue-100 hover:border-blue-200">
-                        <h4 className="text-xs font-semibold text-gray-900 mb-1 line-clamp-2">
+                      <div key={announcement.id} className="p-3 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 transition-all duration-200 cursor-pointer border border-blue-100 hover:border-blue-200">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2">
                           {announcement.title}
                         </h4>
-                        <p className="text-xs text-gray-600 mb-1 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-gray-600 mb-2 line-clamp-3 leading-relaxed">
                           {announcement.content}
                         </p>
                         <span className="text-xs text-blue-600 font-medium">{announcement.date}</span>
