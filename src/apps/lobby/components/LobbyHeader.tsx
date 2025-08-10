@@ -20,7 +20,7 @@ export default function LobbyHeader({
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full">
-              <Users className="w-4 h-4 text-green-600" />
+              <Users className="size-20 text-green-600" />
               <span className="text-sm text-gray-600">온라인</span>
               <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
                 {onlineCount}

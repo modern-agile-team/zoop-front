@@ -35,11 +35,11 @@ const getCardStyles = (status: RoomStatus, isJoinable: boolean) => {
   if (isJoinable) {
     return 'border-green-200 bg-white hover:border-green-300 hover:shadow-lg hover:-translate-y-1';
   }
-  
+
   if (status === 'playing') {
     return 'border-yellow-200 bg-white hover:border-yellow-300 hover:shadow-md hover:-translate-y-0.5';
   }
-  
+
   return 'border-gray-200 bg-gray-50';
 };
 
@@ -48,12 +48,35 @@ const getButtonStyles = (status: RoomStatus, isJoinable: boolean) => {
   if (isJoinable) {
     return 'bg-blue-600 hover:bg-blue-700 text-white';
   }
-  
+
   if (status === 'playing') {
     return 'bg-yellow-500 hover:bg-yellow-600 text-white';
   }
-  
+
   return 'bg-gray-300 text-gray-500 cursor-not-allowed';
+};
+
+// 버튼의 접근성과 상태를 결정하는 함수
+const getButtonProps = (status: RoomStatus) => {
+  const isDisabled = status === 'full';
+  const ariaLabel = getButtonAriaLabel(status);
+
+  return {
+    disabled: isDisabled,
+    'aria-label': ariaLabel,
+  };
+};
+
+// 버튼의 접근성 라벨을 결정하는 함수
+const getButtonAriaLabel = (status: RoomStatus) => {
+  switch (status) {
+    case 'playing':
+      return '게임 관전하기';
+    case 'full':
+      return '방이 가득 참 - 참여 불가';
+    default:
+      return '방에 참여하기';
+  }
 };
 
 // 버튼 텍스트를 결정하는 함수
@@ -75,7 +98,8 @@ export default function Room({
   status = 'waiting',
   isPrivate = false,
 }: Props) {
-  const isJoinable = status === 'waiting' && participantInfo.current < participantInfo.max;
+  const isJoinable =
+    status === 'waiting' && participantInfo.current < participantInfo.max;
   const statusConfig = getStatusConfig(status);
   const StatusIcon = statusConfig.icon;
 
@@ -113,11 +137,15 @@ export default function Room({
 
         {/* 하단: 참여 정보와 공개/비공개 */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-1 text-sm text-gray-600">
-            <Users className="size-20" />
-            <span className="font-medium">{participantInfo.current}</span>
-            <span>/</span>
-            <span>{participantInfo.max}</span>
+          <div className="flex items-center gap-2 px-2 py-1 bg-gray-50 rounded-md">
+            <Users className="size-12 text-gray-500" />
+            <span className="text-sm text-gray-600">
+              <span className="font-semibold text-gray-900">
+                {participantInfo.current}
+              </span>
+              <span className="text-gray-400 mx-1">/</span>
+              <span className="text-gray-600">{participantInfo.max}</span>
+            </span>
           </div>
 
           {isPrivate && (
@@ -130,11 +158,11 @@ export default function Room({
 
         {/* 참여 버튼 */}
         <Button
+          {...getButtonProps(status)}
           className={cn(
             'w-full h-10 transition-all duration-300 font-medium',
             getButtonStyles(status, isJoinable)
           )}
-          disabled={status === 'full'}
         >
           {getButtonText(status)}
         </Button>
