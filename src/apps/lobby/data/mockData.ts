@@ -1,4 +1,4 @@
-import { RoomInfo, Participant, Announcement } from '../types';
+import type { RoomInfo, Participant, Announcement } from '../types';
 import {
   generateRoomTitle,
   getRandomInt,

@@ -1,4 +1,4 @@
-import { Announcement } from '../types';
+import type { Announcement } from '../types';
 
 interface AnnouncementCardProps {
   announcement: Announcement;

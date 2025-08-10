@@ -1,7 +1,7 @@
 import { Button } from '@/shared/components/ui/button';
 import { Users, Play, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { RoomInfo } from '../types';
+import type { RoomInfo } from '../types';
 
 interface Props extends RoomInfo {}
 
