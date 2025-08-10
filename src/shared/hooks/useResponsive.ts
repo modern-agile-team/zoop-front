@@ -1,4 +1,3 @@
-import { debounce } from 'es-toolkit';
 import { useState, useEffect, useMemo } from 'react';
 
 export type BreakpointKey = 'mobile' | 'tablet' | 'desktop';
@@ -25,52 +24,37 @@ export function useResponsive() {
     return getDeviceType(window.innerWidth);
   });
 
-  const [windowSize, setWindowSize] = useState(() => ({
-    width: typeof window !== 'undefined' ? window.innerWidth : 1024,
-    height: typeof window !== 'undefined' ? window.innerHeight : 768,
-  }));
-
-  // 디바운스된 resize 핸들러를 메모이제이션
-  const debouncedHandleResize = useMemo(
-    () =>
-      debounce(() => {
-        const newWidth = window.innerWidth;
-        const newHeight = window.innerHeight;
-        const newDeviceType = getDeviceType(newWidth);
-
-        // 디바이스 타입이 변경된 경우에만 업데이트
-        setDeviceType((prevDeviceType) => {
-          if (prevDeviceType !== newDeviceType) {
-            return newDeviceType;
-          }
-          return prevDeviceType;
-        });
-
-        // 윈도우 사이즈는 항상 업데이트 (하지만 디바운스됨)
-        setWindowSize({ width: newWidth, height: newHeight });
-      }, 150),
-    []
-  );
-
   useEffect(() => {
-    window.addEventListener('resize', debouncedHandleResize);
-    return () => {
-      window.removeEventListener('resize', debouncedHandleResize);
+    const handleResize = () => {
+      const newWidth = window.innerWidth;
+      const newDeviceType = getDeviceType(newWidth);
+
+      // 디바이스 타입이 변경된 경우에만 업데이트
+      setDeviceType((prevDeviceType) => {
+        if (prevDeviceType !== newDeviceType) {
+          return newDeviceType;
+        }
+        return prevDeviceType;
+      });
     };
-  }, [debouncedHandleResize]);
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   // 반환 객체를 메모이제이션하여 불필요한 리렌더링 방지
   return useMemo(
     () => ({
       deviceType,
-      windowSize,
       isMobile: deviceType === 'mobile',
       isTablet: deviceType === 'tablet',
       isDesktop: deviceType === 'desktop',
       isMobileOrTablet: deviceType === 'mobile' || deviceType === 'tablet',
       breakpoints: BREAKPOINTS,
     }),
-    [deviceType, windowSize]
+    [deviceType]
   );
 }
 
