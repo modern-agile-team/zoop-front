@@ -11,9 +11,9 @@ export { default as Footer } from './components/Footer';
 export { FEATURES, STATS } from './data/mockData';
 
 // Types
-export type { 
-  FeatureItem, 
-  StatItem, 
-  HomeHeaderProps, 
-  HeroSectionProps 
+export type {
+  FeatureItem,
+  StatItem,
+  HomeHeaderProps,
+  HeroSectionProps,
 } from './types';

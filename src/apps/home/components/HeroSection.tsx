@@ -4,17 +4,17 @@ import Stats from './Stats';
 import { FEATURES, STATS } from '../data/mockData';
 import type { HeroSectionProps } from '../types';
 
-export default function HeroSection({ 
-  isLoggedIn, 
-  onLogin, 
-  onNavigateToLobby 
+export default function HeroSection({
+  isLoggedIn,
+  onLogin,
+  onNavigateToLobby,
 }: HeroSectionProps) {
   return (
     <main className="flex-1 flex items-center justify-center px-6" role="main">
       <div className="max-w-4xl mx-auto text-center">
         {/* 타이틀 섹션 */}
         <section className="mb-12" aria-labelledby="main-title">
-          <h1 
+          <h1
             id="main-title"
             className="text-6xl md:text-7xl font-extrabold text-white mb-6"
           >

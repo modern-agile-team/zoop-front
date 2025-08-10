@@ -7,10 +7,10 @@ interface ActionButtonsProps {
   onNavigateToLobby: () => void;
 }
 
-export default function ActionButtons({ 
-  isLoggedIn, 
-  onLogin, 
-  onNavigateToLobby 
+export default function ActionButtons({
+  isLoggedIn,
+  onLogin,
+  onNavigateToLobby,
 }: ActionButtonsProps) {
   return (
     <div className="space-y-6">
