@@ -1,20 +1,9 @@
 import { type Config } from 'tailwindcss';
 
-const spacingValues = [
-  0, 2, 4, 8, 12, 16, 20, 24, 32, 40, 44, 48, 52, 56, 64, 72, 80,
-];
-
 const config: Config = {
   content: ['./src/**/*'],
   theme: {
     extend: {
-      spacing: () => {
-        const spacing: Record<number, string> = {};
-        spacingValues.forEach((value) => {
-          spacing[value] = `${value}px`;
-        });
-        return spacing;
-      },
       colors: {
         myOwnColor: 'black',
         green: {
@@ -97,13 +86,6 @@ const config: Config = {
           { lineHeight: '0.875rem', fontWeight: '400' },
         ],
         'caption-5': ['0.625rem', { lineHeight: '0.75rem', fontWeight: '400' }],
-      },
-      borderRadius: () => {
-        const borderRadius: Record<number, string> = {};
-        spacingValues.forEach((value) => {
-          borderRadius[value] = `${value}px`;
-        });
-        return borderRadius;
       },
     },
   },

@@ -28,7 +28,7 @@ export default function Room({
       tabIndex={0}
       aria-label={`방 ${roomId}: ${title} - ${statusConfig.text}`}
     >
-      <div className="flex flex-col gap-8 p-4">
+      <div className="flex flex-col gap-2 p-4">
         <RoomHeader roomId={roomId} title={title} statusConfig={statusConfig} />
 
         <RoomInfoSection

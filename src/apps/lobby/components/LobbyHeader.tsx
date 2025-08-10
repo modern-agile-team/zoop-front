@@ -15,7 +15,7 @@ export default function LobbyHeader({
       <div className="max-w-7xl mx-auto px-6 py-4">
         <nav className="flex items-center justify-between" role="banner">
           <div className="flex items-center gap-3">
-            <Gamepad2 className="size-32 text-blue-600" aria-hidden="true" />
+            <Gamepad2 className="size-8 text-blue-600" aria-hidden="true" />
             <h1 className="text-2xl font-bold text-gray-900">Quiz Battle</h1>
           </div>
           <div className="flex items-center gap-4" role="complementary">
@@ -24,7 +24,7 @@ export default function LobbyHeader({
               role="status"
               aria-label={`현재 온라인 사용자: ${onlineCount}명`}
             >
-              <Users className="size-16 text-green-600" aria-hidden="true" />
+              <Users className="size-4 text-green-600" aria-hidden="true" />
               <span className="text-sm text-gray-600">온라인</span>
               <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
                 {onlineCount}
