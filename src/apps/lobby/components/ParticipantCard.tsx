@@ -1,6 +1,6 @@
 import { Crown } from 'lucide-react';
-import { Participant } from '../types';
 import { getTierIcon } from '../utils/helpers';
+import type { Participant } from '../types';
 
 interface ParticipantCardProps {
   participant: Participant;

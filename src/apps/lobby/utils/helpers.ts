@@ -1,4 +1,4 @@
-import { UserTier } from '../types';
+import type { UserTier } from '../types';
 
 /**
  * 유저의 티어에 따른 아이콘을 반환합니다.
