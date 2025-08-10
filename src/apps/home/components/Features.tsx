@@ -9,9 +9,9 @@ function FeatureItemComponent({ feature }: FeatureItemProps) {
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+      <div className="size-32 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
         <IconComponent
-          className={`w-8 h-8 ${feature.color}`}
+          className={`size-20 ${feature.color}`}
           aria-hidden="true"
         />
       </div>

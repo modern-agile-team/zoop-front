@@ -13,13 +13,7 @@ export default function HomeHeader({ isLoggedIn, onLogout }: HomeHeaderProps) {
       {isLoggedIn && (
         <div className="flex items-center gap-3">
           <span className="text-white/80 text-sm">환영합니다!</span>
-          <Button
-            onClick={onLogout}
-            variant="outline"
-            size="sm"
-            className="text-white border-white/30 hover:bg-white/10"
-            aria-label="로그아웃"
-          >
+          <Button onClick={onLogout} variant="ghost" aria-label="로그아웃">
             로그아웃
           </Button>
         </div>
