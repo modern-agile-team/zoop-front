@@ -1,35 +1,39 @@
 import useAuth from '@/shared/hooks/useAuth';
 import { useNavigate } from '@tanstack/react-router';
+import {
+  BackgroundDecorations,
+  HomeHeader,
+  HeroSection,
+  Footer,
+} from './home';
 
 export default function HomePage() {
-  const { isLoggedIn, login, logout } = useAuth();
+  const { isLoggedIn = false, login, logout } = useAuth();
   const navigate = useNavigate();
 
-  return (
-    <div className="flex flex-col h-screen bg-primary-900">
-      <div className="w-full">
-        <h1
-          style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.6)' }}
-          className="text-title-1 text-white"
-        >
-          실시간 퀴즈 맞추기 게임
-        </h1>
-      </div>
-      {isLoggedIn && (
-        <div>
-          <button onClick={() => navigate({ to: '/lobby' })}>
-            로비로 이동
-          </button>
-          <button onClick={logout}>로그아웃</button>
-        </div>
-      )}
+  const handleNavigateToLobby = () => {
+    navigate({ to: '/lobby' });
+  };
 
-      {!isLoggedIn && (
-        <div>
-          <button onClick={() => login('test')}>로그인</button>
-          <button>회원가입</button>
-        </div>
-      )}
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+      {/* 배경 장식 요소들 */}
+      <BackgroundDecorations />
+
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* 헤더 */}
+        <HomeHeader isLoggedIn={isLoggedIn} onLogout={logout} />
+
+        {/* 메인 콘텐츠 */}
+        <HeroSection
+          isLoggedIn={isLoggedIn}
+          onLogin={login}
+          onNavigateToLobby={handleNavigateToLobby}
+        />
+
+        {/* 푸터 */}
+        <Footer />
+      </div>
     </div>
   );
 }
