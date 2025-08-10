@@ -77,7 +77,7 @@ export default function Room({
         {/* 하단: 참여 정보와 공개/비공개 */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1 text-sm text-gray-600">
-            <Users className="w-4 h-4" />
+            <Users className="size-20" />
             <span className="font-medium">{participantInfo.current}</span>
             <span>/</span>
             <span>{participantInfo.max}</span>
