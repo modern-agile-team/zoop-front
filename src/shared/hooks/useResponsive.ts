@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 
+import { getResponsiveClasses } from '../utils/responsive';
+
 export type BreakpointKey = 'mobile' | 'tablet' | 'desktop';
 export type DeviceType = 'mobile' | 'tablet' | 'desktop';
 
@@ -55,6 +57,19 @@ export function useResponsive() {
       breakpoints: BREAKPOINTS,
     }),
     [deviceType]
+  );
+}
+
+export function useResponsiveClasses<T extends string>(classes: {
+  mobile?: T;
+  tablet?: T;
+  desktop: T;
+}): T {
+  const { deviceType } = useResponsive();
+
+  return useMemo(
+    () => getResponsiveClasses(deviceType, classes),
+    [deviceType, classes]
   );
 }
 

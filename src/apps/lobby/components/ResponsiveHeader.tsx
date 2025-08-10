@@ -1,11 +1,11 @@
 import { Plus, Gamepad2, Users } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
-import { useResponsive } from '@/shared/hooks/useResponsive';
 import {
-  getResponsiveClasses,
-  RESPONSIVE_TEXT_SIZE,
-} from '@/shared/utils/responsive';
+  useResponsive,
+  useResponsiveClasses,
+} from '@/shared/hooks/useResponsive';
+import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 
 interface ResponsiveHeaderProps {
   onlineCount: number;
@@ -18,13 +18,13 @@ export default function ResponsiveHeader({
 }: ResponsiveHeaderProps) {
   const { deviceType } = useResponsive();
 
-  const headerPaddingStyles = getResponsiveClasses(deviceType, {
+  const headerPaddingStyles = useResponsiveClasses({
     mobile: 'px-3 sm:px-4 py-3',
     tablet: 'px-4 sm:px-6 py-3 sm:py-4',
     desktop: 'px-6 py-4',
   });
 
-  const logoSizeStyles = getResponsiveClasses(deviceType, {
+  const logoSizeStyles = useResponsiveClasses({
     mobile: 'size-6',
     tablet: 'size-6 sm:size-8',
     desktop: 'size-8',
@@ -32,13 +32,13 @@ export default function ResponsiveHeader({
 
   const titleSize = RESPONSIVE_TEXT_SIZE.xlarge[deviceType];
 
-  const gapSizeStyles = getResponsiveClasses(deviceType, {
+  const gapSizeStyles = useResponsiveClasses({
     mobile: 'gap-2',
     tablet: 'gap-2 sm:gap-3',
     desktop: 'gap-3',
   });
 
-  const buttonGapStyles = getResponsiveClasses(deviceType, {
+  const buttonGapStyles = useResponsiveClasses({
     mobile: 'gap-2',
     tablet: 'gap-2 sm:gap-4',
     desktop: 'gap-4',
@@ -77,31 +77,31 @@ interface OnlineCounterProps {
 }
 
 function OnlineCounter({ count, deviceType }: OnlineCounterProps) {
-  const containerPaddingStyles = getResponsiveClasses(deviceType, {
+  const containerPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
     tablet: 'px-2 sm:px-3 py-1 sm:py-1.5',
     desktop: 'px-3 py-1.5',
   });
 
-  const iconSizeStyles = getResponsiveClasses(deviceType, {
+  const iconSizeStyles = useResponsiveClasses({
     mobile: 'size-3',
     tablet: 'size-3 sm:size-4',
     desktop: 'size-4',
   });
 
-  const textSizeStyles = getResponsiveClasses(deviceType, {
+  const textSizeStyles = useResponsiveClasses({
     mobile: 'text-xs',
     tablet: 'text-xs sm:text-sm',
     desktop: 'text-sm',
   });
 
-  const badgeSizeStyles = getResponsiveClasses(deviceType, {
+  const badgeSizeStyles = useResponsiveClasses({
     mobile: 'min-w-[18px] h-4 px-1.5',
     tablet: 'min-w-[20px] sm:min-w-[24px] h-5 sm:h-6 px-1.5 sm:px-2',
     desktop: 'min-w-[24px] h-6 px-2',
   });
 
-  const gapSizeStyles = getResponsiveClasses(deviceType, {
+  const gapSizeStyles = useResponsiveClasses({
     mobile: 'gap-1.5',
     tablet: 'gap-1.5 sm:gap-2',
     desktop: 'gap-2',
@@ -137,25 +137,25 @@ interface CreateRoomButtonProps {
 function CreateRoomButton({ onClick, deviceType }: CreateRoomButtonProps) {
   const buttonSize = deviceType === 'mobile' ? 'sm' : 'default';
 
-  const iconSizeStyles = getResponsiveClasses(deviceType, {
+  const iconSizeStyles = useResponsiveClasses({
     mobile: 'w-3 h-3',
     tablet: 'w-3 h-3 sm:w-4 sm:h-4',
     desktop: 'w-4 h-4',
   });
 
-  const buttonPaddingStyles = getResponsiveClasses(deviceType, {
+  const buttonPaddingStyles = useResponsiveClasses({
     mobile: 'px-3 py-1.5',
     tablet: 'px-3 sm:px-4 py-1.5 sm:py-2',
     desktop: 'px-4 py-2',
   });
 
-  const textSizeStyles = getResponsiveClasses(deviceType, {
+  const textSizeStyles = useResponsiveClasses({
     mobile: 'text-sm',
     tablet: 'text-sm sm:text-base',
     desktop: 'text-base',
   });
 
-  const gapSizeStyles = getResponsiveClasses(deviceType, {
+  const gapSizeStyles = useResponsiveClasses({
     mobile: 'gap-1.5',
     tablet: 'gap-1.5 sm:gap-2',
     desktop: 'gap-2',
