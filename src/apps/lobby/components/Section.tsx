@@ -37,13 +37,17 @@ Header.displayName = 'LobbyScrollSection.Header';
 LobbyScrollSection.Header = Header;
 
 const Content = ({ children }: PropsWithChildren) => (
-  <div className="overflow-y-auto flex-1 min-h-0 max-h-full w-full">{children}</div>
+  <div className="overflow-y-auto flex-1 min-h-0 max-h-full w-full">
+    {children}
+  </div>
 );
 Content.displayName = 'LobbyScrollSection.Content';
 LobbyScrollSection.Content = Content;
 
 const Footer = ({ children }: PropsWithChildren) => (
-  <footer className="flex w-full p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">{children}</footer>
+  <footer className="flex w-full p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+    {children}
+  </footer>
 );
 Footer.displayName = 'LobbyScrollSection.Footer';
 LobbyScrollSection.Footer = Footer;
