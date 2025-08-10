@@ -20,7 +20,7 @@ export default function RoomHeader({
 
   return (
     <header className="flex items-center justify-between">
-      <div className="flex gap-8 items-center">
+      <div className="flex gap-2 items-center">
         <span
           className="flex items-center justify-center w-10 h-10 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold"
           aria-label={`방 번호 ${roomId}`}
@@ -42,7 +42,7 @@ export default function RoomHeader({
         role="status"
         aria-label={`방 상태: ${statusConfig.text}`}
       >
-        <StatusIcon className="w-3 h-3" />
+        <StatusIcon className="w-4 h-4" />
         {statusConfig.text}
       </div>
     </header>
