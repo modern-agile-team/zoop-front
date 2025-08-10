@@ -108,10 +108,10 @@ export default function LobbyPage() {
           </div>
         </header>
 
-        <div className="max-w-7xl mx-auto p-4 md:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 h-[calc(100vh-120px)] md:h-[calc(100vh-140px)]">
+        <div className="max-w-7xl mx-auto p-6 h-[calc(100vh-120px)]">
+          <div className="grid grid-cols-12 gap-6 h-full">
             {/* 참여자 리스트 */}
-            <div className="lg:col-span-3 order-4 lg:order-1">
+            <div className="col-span-3">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
@@ -147,7 +147,7 @@ export default function LobbyPage() {
             </div>
 
             {/* 대기방 목록 */}
-            <div className="lg:col-span-4 order-1 lg:order-2">
+            <div className="col-span-4">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
@@ -156,7 +156,7 @@ export default function LobbyPage() {
                   </div>
                 </LobbyScrollSection.Header>
                 <LobbyScrollSection.Content>
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 p-4">
+                  <div className="space-y-3 p-4">
                     {WAITING_ROOMS.map((room) => (
                       <Room key={room.roomId} {...room} />
                     ))}
@@ -166,7 +166,7 @@ export default function LobbyPage() {
             </div>
 
             {/* 진행중인 방 목록 */}
-            <div className="lg:col-span-3 order-2 lg:order-3">
+            <div className="col-span-4">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
@@ -185,21 +185,21 @@ export default function LobbyPage() {
             </div>
 
             {/* 공지사항 */}
-            <div className="lg:col-span-2 order-3 lg:order-4">
+            <div className="col-span-1">
               <LobbyScrollSection>
                 <LobbyScrollSection.Header>
                   <div className="flex items-center gap-2">
-                    📢 공지사항
+                    📢 공지
                   </div>
                 </LobbyScrollSection.Header>
                 <LobbyScrollSection.Content>
-                  <div className="space-y-3 p-4">
+                  <div className="space-y-3 p-2">
                     {ANNOUNCEMENTS.map((announcement) => (
-                      <div key={announcement.id} className="p-3 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 transition-all duration-200 cursor-pointer border border-blue-100 hover:border-blue-200">
-                        <h4 className="text-sm font-semibold text-gray-900 mb-2 line-clamp-2">
+                      <div key={announcement.id} className="p-2 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 transition-all duration-200 cursor-pointer border border-blue-100 hover:border-blue-200">
+                        <h4 className="text-xs font-semibold text-gray-900 mb-1 line-clamp-2">
                           {announcement.title}
                         </h4>
-                        <p className="text-xs text-gray-600 mb-2 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-gray-600 mb-1 line-clamp-2 leading-relaxed">
                           {announcement.content}
                         </p>
                         <span className="text-xs text-blue-600 font-medium">{announcement.date}</span>
