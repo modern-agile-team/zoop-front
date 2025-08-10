@@ -49,11 +49,17 @@ export default function Room({
             : 'border-gray-200 bg-gray-50'
       )}
     >
-      <div className="p-4">
+      <div className="flex flex-col gap-8 p-4">
         {/* 상단: 방 번호와 상태 */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center justify-center w-10 h-10 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold">
-            {roomId}
+        <div className="flex items-center justify-between">
+          <div className="flex gap-8 items-center">
+            <div className="flex items-center justify-center w-10 h-10 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold">
+              {roomId}
+            </div>
+
+            <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
+              {title}
+            </h3>
           </div>
 
           <div
@@ -67,11 +73,6 @@ export default function Room({
             {currentStatus.text}
           </div>
         </div>
-
-        {/* 중간: 방 제목 */}
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
-          {title}
-        </h3>
 
         {/* 하단: 참여 정보와 공개/비공개 */}
         <div className="flex items-center justify-between mb-4">
