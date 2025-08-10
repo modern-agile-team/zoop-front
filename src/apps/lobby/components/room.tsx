@@ -123,7 +123,7 @@ export default function Room({
             role="group"
             aria-label={`참가자 수: 현재 ${participantInfo.current}명, 최대 ${participantInfo.max}명`}
           >
-            <Users className="w-4 h-4 text-gray-500" aria-hidden="true" />
+            <Users className="size-12 text-gray-500" aria-hidden="true" />
             <span className="text-sm text-gray-600">
               <span className="font-semibold text-gray-900">
                 {participantInfo.current}
