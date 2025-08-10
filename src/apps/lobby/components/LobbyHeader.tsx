@@ -19,7 +19,7 @@ export default function LobbyHeader({
             <h1 className="text-2xl font-bold text-gray-900">Quiz Battle</h1>
           </div>
           <div className="flex items-center gap-4" role="complementary">
-            <div 
+            <div
               className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full"
               role="status"
               aria-label={`현재 온라인 사용자: ${onlineCount}명`}
@@ -35,8 +35,7 @@ export default function LobbyHeader({
               className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
               aria-label="새 방 만들기"
             >
-              <Plus className="w-4 h-4" aria-hidden="true" />
-              방 만들기
+              <Plus className="w-4 h-4" aria-hidden="true" />방 만들기
             </Button>
           </div>
         </nav>
