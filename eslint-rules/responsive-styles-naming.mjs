@@ -28,7 +28,10 @@ export default {
           const callExpression = node.init;
 
           // getResponsiveClasses 함수 호출인지 확인
-          if (isGetResponsiveClassesCall(callExpression)) {
+          if (
+            isGetResponsiveClassesCall(callExpression) ||
+            isUseResponsiveClasses(callExpression)
+          ) {
             const variableName = getVariableName(node.id);
 
             if (variableName && !variableName.endsWith('Styles')) {
@@ -52,7 +55,10 @@ export default {
         if (node.right && node.right.type === 'CallExpression') {
           const callExpression = node.right;
 
-          if (isGetResponsiveClassesCall(callExpression)) {
+          if (
+            isGetResponsiveClassesCall(callExpression) ||
+            isUseResponsiveClasses(callExpression)
+          ) {
             const variableName = getVariableName(node.left);
 
             if (variableName && !variableName.endsWith('Styles')) {
@@ -71,6 +77,35 @@ export default {
         }
       },
     };
+
+    function isUseResponsiveClasses(node) {
+      try {
+        // 함수 호출이 useGetResponsiveClasses인지 확인
+        if (
+          node.type === 'CallExpression' &&
+          node.callee.type === 'Identifier' &&
+          node.callee.name === 'useResponsiveClasses'
+        ) {
+          return true;
+        }
+
+        // 멤버 접근을 통한 호출: utils.useResponsiveClasses(...)
+        if (
+          node.type === 'CallExpression' &&
+          node.callee.type === 'MemberExpression'
+        ) {
+          const { object, property } = node.callee;
+          if (property && property.name === 'useResponsiveClasses') {
+            return true;
+          }
+        }
+
+        return false;
+      } catch (error) {
+        // 에러가 발생하면 안전하게 false 반환
+        return false;
+      }
+    }
 
     function isGetResponsiveClassesCall(callExpression) {
       try {

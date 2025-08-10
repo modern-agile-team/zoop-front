@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
-import { useResponsive } from '@/shared/hooks/useResponsive';
 import {
-  getResponsiveClasses,
-  RESPONSIVE_TEXT_SIZE,
-} from '@/shared/utils/responsive';
+  useResponsive,
+  useResponsiveClasses,
+} from '@/shared/hooks/useResponsive';
+import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 
 interface RoomHeaderProps {
   roomId: string;
@@ -24,7 +24,7 @@ export default function RoomHeader({
   const { deviceType } = useResponsive();
   const StatusIcon = statusConfig.icon;
 
-  const roomIdSizeStyles = getResponsiveClasses(deviceType, {
+  const roomIdSizeStyles = useResponsiveClasses({
     mobile: 'size-6 text-xs',
     tablet: 'size-6 sm:size-8 text-xs sm:text-sm',
     desktop: 'size-8 text-sm',
@@ -32,19 +32,19 @@ export default function RoomHeader({
 
   const titleSize = RESPONSIVE_TEXT_SIZE.small[deviceType];
 
-  const statusIconSizeStyles = getResponsiveClasses(deviceType, {
+  const statusIconSizeStyles = useResponsiveClasses({
     mobile: 'w-3 h-3',
     tablet: 'w-3 h-3 sm:w-4 sm:h-4',
     desktop: 'w-4 h-4',
   });
 
-  const statusPaddingStyles = getResponsiveClasses(deviceType, {
+  const statusPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
     tablet: 'px-2 sm:px-3 py-1 sm:py-1.5',
     desktop: 'px-3 py-1.5',
   });
 
-  const statusGapStyles = getResponsiveClasses(deviceType, {
+  const statusGapStyles = useResponsiveClasses({
     mobile: 'gap-1',
     tablet: 'gap-1 sm:gap-1.5',
     desktop: 'gap-1.5',
