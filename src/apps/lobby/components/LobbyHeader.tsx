@@ -1,5 +1,5 @@
 import { Button } from '@/shared/components/ui/button';
-import { Plus, Gamepad2 } from 'lucide-react';
+import { Plus, Gamepad2, Users } from 'lucide-react';
 
 interface LobbyHeaderProps {
   onlineCount: number;
@@ -19,9 +19,10 @@ export default function LobbyHeader({
             <h1 className="text-2xl font-bold text-gray-900">Quiz Battle</h1>
           </div>
           <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-600">
-              온라인:{' '}
-              <span className="font-semibold text-green-600">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full">
+              <Users className="w-4 h-4 text-green-600" />
+              <span className="text-sm text-gray-600">온라인</span>
+              <span className="inline-flex items-center justify-center min-w-[24px] h-6 px-2 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
                 {onlineCount}
               </span>
             </div>
