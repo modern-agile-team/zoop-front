@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { debounce } from 'es-toolkit';
+import { useState, useEffect, useMemo } from 'react';
 
 export type BreakpointKey = 'mobile' | 'tablet' | 'desktop';
 export type DeviceType = 'mobile' | 'tablet' | 'desktop';
@@ -29,33 +30,48 @@ export function useResponsive() {
     height: typeof window !== 'undefined' ? window.innerHeight : 768,
   }));
 
+  // 디바운스된 resize 핸들러를 메모이제이션
+  const debouncedHandleResize = useMemo(
+    () =>
+      debounce(() => {
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+        const newDeviceType = getDeviceType(newWidth);
+
+        // 디바이스 타입이 변경된 경우에만 업데이트
+        setDeviceType((prevDeviceType) => {
+          if (prevDeviceType !== newDeviceType) {
+            return newDeviceType;
+          }
+          return prevDeviceType;
+        });
+
+        // 윈도우 사이즈는 항상 업데이트 (하지만 디바운스됨)
+        setWindowSize({ width: newWidth, height: newHeight });
+      }, 150),
+    []
+  );
+
   useEffect(() => {
-    const handleResize = () => {
-      const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
-
-      setWindowSize({ width: newWidth, height: newHeight });
-      setDeviceType(getDeviceType(newWidth));
+    window.addEventListener('resize', debouncedHandleResize);
+    return () => {
+      window.removeEventListener('resize', debouncedHandleResize);
     };
+  }, [debouncedHandleResize]);
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const isMobile = deviceType === 'mobile';
-  const isTablet = deviceType === 'tablet';
-  const isDesktop = deviceType === 'desktop';
-  const isMobileOrTablet = isMobile || isTablet;
-
-  return {
-    deviceType,
-    windowSize,
-    isMobile,
-    isTablet,
-    isDesktop,
-    isMobileOrTablet,
-    breakpoints: BREAKPOINTS,
-  };
+  // 반환 객체를 메모이제이션하여 불필요한 리렌더링 방지
+  return useMemo(
+    () => ({
+      deviceType,
+      windowSize,
+      isMobile: deviceType === 'mobile',
+      isTablet: deviceType === 'tablet',
+      isDesktop: deviceType === 'desktop',
+      isMobileOrTablet: deviceType === 'mobile' || deviceType === 'tablet',
+      breakpoints: BREAKPOINTS,
+    }),
+    [deviceType, windowSize]
+  );
 }
 
 /**
@@ -64,11 +80,12 @@ export function useResponsive() {
 export function useBreakpoint(breakpoint: BreakpointKey | BreakpointKey[]) {
   const { deviceType } = useResponsive();
 
-  if (Array.isArray(breakpoint)) {
-    return breakpoint.includes(deviceType as BreakpointKey);
-  }
-
-  return deviceType === breakpoint;
+  return useMemo(() => {
+    if (Array.isArray(breakpoint)) {
+      return breakpoint.includes(deviceType as BreakpointKey);
+    }
+    return deviceType === breakpoint;
+  }, [deviceType, breakpoint]);
 }
 
 /**
@@ -81,15 +98,17 @@ export function useResponsiveValue<T>(values: {
 }): T {
   const { deviceType } = useResponsive();
 
-  switch (deviceType) {
-    case 'mobile':
-      return values.mobile ?? values.desktop;
-    case 'tablet':
-      return values.tablet ?? values.desktop;
-    case 'desktop':
-    default:
-      return values.desktop;
-  }
+  return useMemo(() => {
+    switch (deviceType) {
+      case 'mobile':
+        return values.mobile ?? values.desktop;
+      case 'tablet':
+        return values.tablet ?? values.desktop;
+      case 'desktop':
+      default:
+        return values.desktop;
+    }
+  }, [deviceType, values]);
 }
 
 function getDeviceType(width: number): DeviceType {

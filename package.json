@@ -23,6 +23,7 @@
     "@tanstack/router-plugin": "^1.114.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "es-toolkit": "^1.39.8",
     "lucide-react": "^0.539.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
