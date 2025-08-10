@@ -20,8 +20,9 @@ export default function RoomAction({
     <footer>
       <Button
         disabled={status === 'full'}
+        size="sm"
         className={cn(
-          'w-full h-10 transition-all duration-300 font-medium',
+          'w-full h-8 sm:h-10 transition-all duration-300 font-medium text-xs sm:text-sm',
           getButtonStyles(status, isJoinable)
         )}
         aria-describedby={`room-${roomId}-status`}
