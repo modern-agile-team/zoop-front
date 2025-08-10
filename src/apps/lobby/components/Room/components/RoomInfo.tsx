@@ -21,7 +21,10 @@ export default function RoomInfo({
         role="group"
         aria-label={`참가자 수: 현재 ${participantInfo.current}명, 최대 ${participantInfo.max}명`}
       >
-        <Users className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500" aria-hidden="true" />
+        <Users
+          className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500"
+          aria-hidden="true"
+        />
         <span className="text-xs sm:text-sm text-gray-600">
           <span className="font-semibold text-gray-900">
             {participantInfo.current}

@@ -2,7 +2,10 @@ import { Plus, Gamepad2, Users } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
 import { useResponsive } from '@/shared/hooks/useResponsive';
-import { getResponsiveClasses, RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
+import {
+  getResponsiveClasses,
+  RESPONSIVE_TEXT_SIZE,
+} from '@/shared/utils/responsive';
 
 interface ResponsiveHeaderProps {
   onlineCount: number;
@@ -46,11 +49,19 @@ export default function ResponsiveHeader({
       <div className={`max-w-7xl mx-auto ${headerPadding}`}>
         <nav className="flex items-center justify-between" role="banner">
           <div className={`flex items-center ${gapSize}`}>
-            <Gamepad2 className={`${logoSize} text-blue-600`} aria-hidden="true" />
-            <h1 className={`${titleSize} font-bold text-gray-900`}>Quiz Battle</h1>
+            <Gamepad2
+              className={`${logoSize} text-blue-600`}
+              aria-hidden="true"
+            />
+            <h1 className={`${titleSize} font-bold text-gray-900`}>
+              Quiz Battle
+            </h1>
           </div>
-          
-          <div className={`flex items-center ${buttonGap}`} role="complementary">
+
+          <div
+            className={`flex items-center ${buttonGap}`}
+            role="complementary"
+          >
             <OnlineCounter count={onlineCount} deviceType={deviceType} />
             <CreateRoomButton onClick={onCreateRoom} deviceType={deviceType} />
           </div>
@@ -122,7 +133,7 @@ interface CreateRoomButtonProps {
 
 function CreateRoomButton({ onClick, deviceType }: CreateRoomButtonProps) {
   const buttonSize = deviceType === 'mobile' ? 'sm' : 'default';
-  
+
   const iconSize = getResponsiveClasses(deviceType, {
     mobile: 'w-3 h-3',
     tablet: 'w-3 h-3 sm:w-4 sm:h-4',

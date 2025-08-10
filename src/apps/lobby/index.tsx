@@ -14,7 +14,7 @@ import { useCreateRoomDialog } from './hooks/useCreateRoomDialog';
 
 export default function LobbyPage() {
   const { isDesktop } = useResponsive();
-  
+
   const {
     isOpen: isCreateRoomOpen,
     roomTitle,
