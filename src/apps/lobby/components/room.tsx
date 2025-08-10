@@ -1,17 +1,9 @@
 import { Button } from '@/shared/components/ui/button';
 import { Users, Play, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { RoomInfo } from '../types';
 
-interface Props {
-  roomId: string;
-  title: string;
-  participantInfo: {
-    current: number;
-    max: number;
-  };
-  status: 'waiting' | 'playing' | 'full';
-  isPrivate?: boolean;
-}
+interface Props extends RoomInfo {}
 
 export default function Room({
   title,
