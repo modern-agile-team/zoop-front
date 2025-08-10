@@ -1,5 +1,9 @@
 import { RoomInfo, Participant, Announcement } from '../types';
-import { generateRoomTitle, getRandomInt, getRandomBoolean } from '../utils/helpers';
+import {
+  generateRoomTitle,
+  getRandomInt,
+  getRandomBoolean,
+} from '../utils/helpers';
 
 /**
  * 게임 중인 방들 모의 데이터

@@ -6,7 +6,10 @@ interface LobbyHeaderProps {
   onCreateRoom: () => void;
 }
 
-export default function LobbyHeader({ onlineCount, onCreateRoom }: LobbyHeaderProps) {
+export default function LobbyHeader({
+  onlineCount,
+  onCreateRoom,
+}: LobbyHeaderProps) {
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-6 py-4">
@@ -26,8 +29,7 @@ export default function LobbyHeader({ onlineCount, onCreateRoom }: LobbyHeaderPr
               onClick={onCreateRoom}
               className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
             >
-              <Plus className="w-4 h-4" />
-              방 만들기
+              <Plus className="w-4 h-4" />방 만들기
             </Button>
           </div>
         </div>

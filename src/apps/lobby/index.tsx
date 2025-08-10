@@ -5,7 +5,12 @@ import LobbyHeader from './components/LobbyHeader';
 import CreateRoomDialog from './components/CreateRoomDialog';
 import ParticipantCard from './components/ParticipantCard';
 import AnnouncementCard from './components/AnnouncementCard';
-import { PLAYING_ROOMS, WAITING_ROOMS, PARTICIPANTS, ANNOUNCEMENTS } from './data/mockData';
+import {
+  PLAYING_ROOMS,
+  WAITING_ROOMS,
+  PARTICIPANTS,
+  ANNOUNCEMENTS,
+} from './data/mockData';
 import { useCreateRoomDialog } from './hooks/useCreateRoomDialog';
 
 export default function LobbyPage() {
