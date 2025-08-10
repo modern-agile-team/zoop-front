@@ -1,5 +1,5 @@
 import { Users, Play } from 'lucide-react';
-import Room from './components/room';
+import Room from './components/Room';
 import { LobbyScrollSection } from './components/Section';
 import LobbyHeader from './components/LobbyHeader';
 import CreateRoomDialog from './components/CreateRoomDialog';
