@@ -1,20 +1,13 @@
 import { Button } from '@/shared/components/ui/button';
 import { Users, Play, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { RoomInfo } from '../types';
+import type { RoomInfo, RoomStatus } from '../types';
 
 interface Props extends RoomInfo {}
 
-export default function Room({
-  title,
-  roomId,
-  participantInfo,
-  status = 'waiting',
-  isPrivate = false,
-}: Props) {
-  const isJoinable =
-    status === 'waiting' && participantInfo.current < participantInfo.max;
-  const statusConfig = {
+// 상태별 설정을 중앙화하여 관리
+const getStatusConfig = (status: RoomStatus) => {
+  const configs = {
     waiting: {
       color: 'text-green-500',
       bgColor: 'bg-green-500/10',
@@ -34,19 +27,63 @@ export default function Room({
       text: '인원 가득',
     },
   };
+  return configs[status];
+};
 
-  const currentStatus = statusConfig[status];
-  const StatusIcon = currentStatus.icon;
+// 카드 스타일을 결정하는 함수
+const getCardStyles = (status: RoomStatus, isJoinable: boolean) => {
+  if (isJoinable) {
+    return 'border-green-200 bg-white hover:border-green-300 hover:shadow-lg hover:-translate-y-1';
+  }
+  
+  if (status === 'playing') {
+    return 'border-yellow-200 bg-white hover:border-yellow-300 hover:shadow-md hover:-translate-y-0.5';
+  }
+  
+  return 'border-gray-200 bg-gray-50';
+};
+
+// 버튼 스타일을 결정하는 함수
+const getButtonStyles = (status: RoomStatus, isJoinable: boolean) => {
+  if (isJoinable) {
+    return 'bg-blue-600 hover:bg-blue-700 text-white';
+  }
+  
+  if (status === 'playing') {
+    return 'bg-yellow-500 hover:bg-yellow-600 text-white';
+  }
+  
+  return 'bg-gray-300 text-gray-500 cursor-not-allowed';
+};
+
+// 버튼 텍스트를 결정하는 함수
+const getButtonText = (status: RoomStatus) => {
+  switch (status) {
+    case 'playing':
+      return '관전하기';
+    case 'full':
+      return '인원 가득';
+    default:
+      return '참여하기';
+  }
+};
+
+export default function Room({
+  title,
+  roomId,
+  participantInfo,
+  status = 'waiting',
+  isPrivate = false,
+}: Props) {
+  const isJoinable = status === 'waiting' && participantInfo.current < participantInfo.max;
+  const statusConfig = getStatusConfig(status);
+  const StatusIcon = statusConfig.icon;
 
   return (
     <div
       className={cn(
         'group relative overflow-hidden rounded-lg border transition-all duration-300 transform',
-        isJoinable
-          ? 'border-green-200 bg-white hover:border-green-300 hover:shadow-lg hover:-translate-y-1'
-          : status === 'playing'
-            ? 'border-yellow-200 bg-white hover:border-yellow-300 hover:shadow-md hover:-translate-y-0.5'
-            : 'border-gray-200 bg-gray-50'
+        getCardStyles(status, isJoinable)
       )}
     >
       <div className="flex flex-col gap-8 p-4">
@@ -65,12 +102,12 @@ export default function Room({
           <div
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium',
-              currentStatus.color,
-              currentStatus.bgColor
+              statusConfig.color,
+              statusConfig.bgColor
             )}
           >
             <StatusIcon className="w-3 h-3" />
-            {currentStatus.text}
+            {statusConfig.text}
           </div>
         </div>
 
@@ -95,19 +132,11 @@ export default function Room({
         <Button
           className={cn(
             'w-full h-10 transition-all duration-300 font-medium',
-            isJoinable
-              ? 'bg-blue-600 hover:bg-blue-700 text-white'
-              : status === 'playing'
-                ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            getButtonStyles(status, isJoinable)
           )}
           disabled={status === 'full'}
         >
-          {status === 'playing'
-            ? '관전하기'
-            : status === 'full'
-              ? '인원 가득'
-              : '참여하기'}
+          {getButtonText(status)}
         </Button>
       </div>
     </div>
