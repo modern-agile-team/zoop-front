@@ -1,4 +1,6 @@
 import { cn } from '@/lib/utils';
+import { useResponsive } from '@/shared/hooks/useResponsive';
+import { getResponsiveClasses } from '@/shared/utils/responsive';
 
 import RoomAction from './components/RoomAction';
 import RoomHeader from './components/RoomHeader';
@@ -14,9 +16,16 @@ export default function Room({
   status = 'waiting',
   isPrivate = false,
 }: RoomInfo) {
+  const { deviceType } = useResponsive();
   const isJoinable =
     status === 'waiting' && participantInfo.current < participantInfo.max;
   const statusConfig = getStatusConfig(status);
+
+  const cardPadding = getResponsiveClasses(deviceType, {
+    mobile: 'p-3',
+    tablet: 'p-3 sm:p-4',
+    desktop: 'p-4',
+  });
 
   return (
     <article
@@ -28,7 +37,7 @@ export default function Room({
       tabIndex={0}
       aria-label={`방 ${roomId}: ${title} - ${statusConfig.text}`}
     >
-      <div className="flex flex-col gap-2 p-3 sm:p-4">
+      <div className={`flex flex-col gap-2 ${cardPadding}`}>
         <RoomHeader roomId={roomId} title={title} statusConfig={statusConfig} />
 
         <RoomInfoSection
