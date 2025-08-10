@@ -47,22 +47,22 @@ export default function Room({
 
   return (
     <div className={cn(
-      "group relative overflow-hidden rounded-lg border transition-all duration-200",
+      "group relative overflow-hidden rounded-lg border transition-all duration-300 transform",
       isJoinable 
-        ? "border-green-200 bg-white hover:border-green-300 hover:shadow-lg" 
+        ? "border-green-200 bg-white hover:border-green-300 hover:shadow-lg hover:-translate-y-1" 
         : status === 'playing'
-        ? "border-yellow-200 bg-white hover:border-yellow-300 hover:shadow-md"
+        ? "border-yellow-200 bg-white hover:border-yellow-300 hover:shadow-md hover:-translate-y-0.5"
         : "border-gray-200 bg-gray-50"
     )}>
       <div className="p-4">
         {/* 상단: 방 번호와 상태 */}
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold">
+          <div className="flex items-center justify-center w-10 h-10 bg-blue-100 text-blue-600 rounded-lg text-sm font-semibold">
             {roomId}
           </div>
           
           <div className={cn(
-            "flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium",
+            "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium",
             currentStatus.color,
             currentStatus.bgColor
           )}>
@@ -77,7 +77,7 @@ export default function Room({
         </h3>
 
         {/* 하단: 참여 정보와 공개/비공개 */}
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-1 text-sm text-gray-600">
             <Users className="w-4 h-4" />
             <span className="font-medium">{participantInfo.current}</span>
@@ -95,9 +95,8 @@ export default function Room({
 
         {/* 참여 버튼 */}
         <Button 
-          size="sm"
           className={cn(
-            "w-full transition-all duration-200",
+            "w-full h-10 transition-all duration-300 font-medium",
             isJoinable 
               ? "bg-blue-600 hover:bg-blue-700 text-white" 
               : status === 'playing'
