@@ -7,6 +7,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactCompiler from 'eslint-plugin-react-compiler';
 import importPlugin from 'eslint-plugin-import';
 import unusedImports from 'eslint-plugin-unused-imports';
+import responsiveStylesNaming from './eslint-rules/responsive-styles-naming.mjs';
 
 // Import order configuration
 const importOrder = ({ ruleSeverities = 'error' } = {}) => [
@@ -247,6 +248,11 @@ export default tseslint.config(
       import: importPlugin,
       'react-compiler': reactCompiler,
       'unused-imports': unusedImports,
+      custom: {
+        rules: {
+          'responsive-styles-naming': responsiveStylesNaming,
+        },
+      },
     },
     settings: {
       react: {
@@ -271,6 +277,9 @@ export default tseslint.config(
       '@typescript-eslint/no-use-before-define': 'off',
       '@typescript-eslint/no-unused-vars': 'off', // unused-imports가 대신 처리
       '@typescript-eslint/naming-convention': ['error', ...commonBaseRules],
+
+      // 커스텀 룰: getResponsiveClasses 결과 변수는 Styles로 끝나야 함
+      'custom/responsive-styles-naming': 'error',
 
       // Import 관련 규칙들
       /**
