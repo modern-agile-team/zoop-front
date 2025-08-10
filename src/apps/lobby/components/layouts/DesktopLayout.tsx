@@ -21,12 +21,12 @@ export default function DesktopLayout({
   announcements,
 }: DesktopLayoutProps) {
   return (
-    <div className="grid grid-cols-12 gap-6 h-full">
+    <div className="grid grid-cols-20 gap-6 h-full">
       {/* 참여자 리스트 */}
-      <aside className="col-span-2 h-full" aria-label="온라인 사용자 목록">
+      <aside className="col-span-4 h-full" aria-label="온라인 사용자 목록">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 text-nowrap">
               <Users className="w-5 h-5" aria-hidden="true" />
               온라인 유저 ({participants.length})
             </div>
@@ -44,7 +44,7 @@ export default function DesktopLayout({
       </aside>
 
       {/* 대기방 목록 */}
-      <section className="col-span-4 h-full" aria-label="대기 중인 게임방 목록">
+      <section className="col-span-6 h-full" aria-label="대기 중인 게임방 목록">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
             <div className="flex items-center gap-2">
@@ -65,7 +65,7 @@ export default function DesktopLayout({
       </section>
 
       {/* 진행중인 방 목록 */}
-      <section className="col-span-4 h-full" aria-label="진행 중인 게임방 목록">
+      <section className="col-span-6 h-full" aria-label="진행 중인 게임방 목록">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
             <div className="flex items-center gap-2">
@@ -86,7 +86,7 @@ export default function DesktopLayout({
       </section>
 
       {/* 공지사항 */}
-      <aside className="col-span-2 h-full" aria-label="공지사항">
+      <aside className="col-span-4 h-full" aria-label="공지사항">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
             <div className="flex items-center gap-2">

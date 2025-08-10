@@ -25,9 +25,9 @@ export default function RoomHeader({
   const StatusIcon = statusConfig.icon;
 
   const roomIdSize = getResponsiveClasses(deviceType, {
-    mobile: 'w-8 h-8 text-xs',
-    tablet: 'w-8 h-8 sm:w-10 sm:h-10 text-xs sm:text-sm',
-    desktop: 'w-10 h-10 text-sm',
+    mobile: 'size-6 text-xs',
+    tablet: 'size-6 sm:size-8 text-xs sm:text-sm',
+    desktop: 'size-8 text-sm',
   });
 
   const titleSize = RESPONSIVE_TEXT_SIZE.small[deviceType];
