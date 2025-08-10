@@ -22,7 +22,13 @@ export const getTierIcon = (tier: UserTier): string => {
  * 방 제목을 생성하는 헬퍼 함수
  */
 export const generateRoomTitle = (index: number): string => {
-  const titles = ['재밌는 퀴즈', '도전! 상식왕', '브레인 배틀', '지식 경연', '퀴즈 마스터'];
+  const titles = [
+    '재밌는 퀴즈',
+    '도전! 상식왕',
+    '브레인 배틀',
+    '지식 경연',
+    '퀴즈 마스터',
+  ];
   return `${titles[index % titles.length]} ${index + 1}`;
 };
 
