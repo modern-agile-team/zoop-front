@@ -9,7 +9,11 @@ interface RoomActionProps {
   roomId: string;
 }
 
-export default function RoomAction({ status, isJoinable, roomId }: RoomActionProps) {
+export default function RoomAction({
+  status,
+  isJoinable,
+  roomId,
+}: RoomActionProps) {
   return (
     <footer>
       <Button

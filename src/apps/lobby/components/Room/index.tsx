@@ -14,7 +14,8 @@ export default function Room({
   status = 'waiting',
   isPrivate = false,
 }: Props) {
-  const isJoinable = status === 'waiting' && participantInfo.current < participantInfo.max;
+  const isJoinable =
+    status === 'waiting' && participantInfo.current < participantInfo.max;
   const statusConfig = getStatusConfig(status);
 
   return (
@@ -28,22 +29,14 @@ export default function Room({
       aria-label={`방 ${roomId}: ${title} - ${statusConfig.text}`}
     >
       <div className="flex flex-col gap-8 p-4">
-        <RoomHeader 
-          roomId={roomId} 
-          title={title} 
-          statusConfig={statusConfig} 
+        <RoomHeader roomId={roomId} title={title} statusConfig={statusConfig} />
+
+        <RoomInfoSection
+          participantInfo={participantInfo}
+          isPrivate={isPrivate}
         />
-        
-        <RoomInfoSection 
-          participantInfo={participantInfo} 
-          isPrivate={isPrivate} 
-        />
-        
-        <RoomAction 
-          status={status} 
-          isJoinable={isJoinable} 
-          roomId={roomId} 
-        />
+
+        <RoomAction status={status} isJoinable={isJoinable} roomId={roomId} />
       </div>
     </article>
   );

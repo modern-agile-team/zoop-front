@@ -11,7 +11,11 @@ interface RoomHeaderProps {
   };
 }
 
-export default function RoomHeader({ roomId, title, statusConfig }: RoomHeaderProps) {
+export default function RoomHeader({
+  roomId,
+  title,
+  statusConfig,
+}: RoomHeaderProps) {
   const StatusIcon = statusConfig.icon;
 
   return (
