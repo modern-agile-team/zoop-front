@@ -1,7 +1,9 @@
-import { Button } from '@/shared/components/ui/button';
 import { cn } from '@/lib/utils';
-import type { RoomStatus } from '../../../types';
+import { Button } from '@/shared/components/ui/button';
+
 import { getButtonStyles, getButtonText } from '../utils/roomHelpers';
+
+import type { RoomStatus } from '../../../types';
 
 interface RoomActionProps {
   status: RoomStatus;

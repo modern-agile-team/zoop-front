@@ -3800,7 +3800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^16.2.0":
+"globals@npm:^16.2.0, globals@npm:^16.3.0":
   version: 16.3.0
   resolution: "globals@npm:16.3.0"
   checksum: 10c0/c62dc20357d1c0bf2be4545d6c4141265d1a229bf1c3294955efb5b5ef611145391895e3f2729f8603809e81b30b516c33e6c2597573844449978606aad6eb38
@@ -5270,6 +5270,7 @@ __metadata:
     eslint-plugin-react-compiler: "npm:^19.1.0-rc.2"
     eslint-plugin-react-hooks: "npm:^6.0.0-rc.1"
     eslint-plugin-react-refresh: "npm:^0.4.20"
+    globals: "npm:^16.3.0"
     jsdom: "npm:^26.0.0"
     lucide-react: "npm:^0.539.0"
     prettier: "npm:^3.5.3"

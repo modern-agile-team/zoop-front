@@ -1,5 +1,7 @@
-import { Button } from '@/shared/components/ui/button';
 import { Gamepad2 } from 'lucide-react';
+
+import { Button } from '@/shared/components/ui/button';
+
 import type { HomeHeaderProps } from '../types';
 
 export default function HomeHeader({ isLoggedIn, onLogout }: HomeHeaderProps) {

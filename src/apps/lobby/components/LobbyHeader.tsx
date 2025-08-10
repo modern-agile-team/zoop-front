@@ -1,5 +1,6 @@
-import { Button } from '@/shared/components/ui/button';
 import { Plus, Gamepad2, Users } from 'lucide-react';
+
+import { Button } from '@/shared/components/ui/button';
 
 interface LobbyHeaderProps {
   onlineCount: number;
