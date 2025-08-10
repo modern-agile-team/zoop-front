@@ -1,6 +1,9 @@
 import { cn } from '@/lib/utils';
 import { useResponsive } from '@/shared/hooks/useResponsive';
-import { getResponsiveClasses, RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
+import {
+  getResponsiveClasses,
+  RESPONSIVE_TEXT_SIZE,
+} from '@/shared/utils/responsive';
 
 interface RoomHeaderProps {
   roomId: string;
@@ -57,7 +60,9 @@ export default function RoomHeader({
           {roomId}
         </span>
 
-        <h3 className={`${titleSize} font-semibold text-gray-900 line-clamp-2 leading-tight min-w-0`}>
+        <h3
+          className={`${titleSize} font-semibold text-gray-900 line-clamp-2 leading-tight min-w-0`}
+        >
           {title}
         </h3>
       </div>
@@ -77,7 +82,9 @@ export default function RoomHeader({
         ) : (
           <>
             <span className="hidden sm:inline">{statusConfig.text}</span>
-            <span className="sm:hidden text-xs">{statusConfig.text.slice(0, 2)}</span>
+            <span className="sm:hidden text-xs">
+              {statusConfig.text.slice(0, 2)}
+            </span>
           </>
         )}
       </div>

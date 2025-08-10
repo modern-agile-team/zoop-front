@@ -33,7 +33,7 @@ export function useResponsive() {
     const handleResize = () => {
       const newWidth = window.innerWidth;
       const newHeight = window.innerHeight;
-      
+
       setWindowSize({ width: newWidth, height: newHeight });
       setDeviceType(getDeviceType(newWidth));
     };
@@ -63,11 +63,11 @@ export function useResponsive() {
  */
 export function useBreakpoint(breakpoint: BreakpointKey | BreakpointKey[]) {
   const { deviceType } = useResponsive();
-  
+
   if (Array.isArray(breakpoint)) {
     return breakpoint.includes(deviceType as BreakpointKey);
   }
-  
+
   return deviceType === breakpoint;
 }
 
@@ -80,7 +80,7 @@ export function useResponsiveValue<T>(values: {
   desktop: T;
 }): T {
   const { deviceType } = useResponsive();
-  
+
   switch (deviceType) {
     case 'mobile':
       return values.mobile ?? values.desktop;

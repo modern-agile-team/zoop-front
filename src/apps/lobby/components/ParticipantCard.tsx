@@ -21,7 +21,9 @@ export default function ParticipantCard({ participant }: ParticipantCardProps) {
       />
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-1">
-          {participant.isHost && <Crown className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 flex-shrink-0" />}
+          {participant.isHost && (
+            <Crown className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 flex-shrink-0" />
+          )}
           <span className="text-xs sm:text-sm font-medium text-gray-900 truncate">
             {participant.name}
           </span>

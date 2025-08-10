@@ -44,10 +44,7 @@ export default function DesktopLayout({
       </aside>
 
       {/* 대기방 목록 */}
-      <section
-        className="col-span-4 h-full"
-        aria-label="대기 중인 게임방 목록"
-      >
+      <section className="col-span-4 h-full" aria-label="대기 중인 게임방 목록">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
             <div className="flex items-center gap-2">
@@ -68,10 +65,7 @@ export default function DesktopLayout({
       </section>
 
       {/* 진행중인 방 목록 */}
-      <section
-        className="col-span-4 h-full"
-        aria-label="진행 중인 게임방 목록"
-      >
+      <section className="col-span-4 h-full" aria-label="진행 중인 게임방 목록">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
             <div className="flex items-center gap-2">
