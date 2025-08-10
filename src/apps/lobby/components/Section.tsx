@@ -30,8 +30,8 @@ export function LobbyScrollSection({
 
 const Header = ({ children }: PropsWithChildren) => {
   return (
-    <header className="flex items-center justify-center px-6 py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-      <h2 className="text-lg font-semibold text-gray-800">{children}</h2>
+    <header className="flex items-center justify-center px-3 sm:px-4 lg:px-6 py-3 sm:py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+      <h2 className="text-base sm:text-lg font-semibold text-gray-800">{children}</h2>
     </header>
   );
 };
@@ -47,7 +47,7 @@ Content.displayName = 'LobbyScrollSection.Content';
 LobbyScrollSection.Content = Content;
 
 const Footer = ({ children }: PropsWithChildren) => (
-  <footer className="flex w-full p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+  <footer className="flex w-full p-3 sm:p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
     {children}
   </footer>
 );
