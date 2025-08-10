@@ -15,7 +15,7 @@ export default function LobbyHeader({
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Gamepad2 className="w-8 h-8 text-blue-600" />
+            <Gamepad2 className="size-32 text-blue-600" />
             <h1 className="text-2xl font-bold text-gray-900">Quiz Battle</h1>
           </div>
           <div className="flex items-center gap-4">
