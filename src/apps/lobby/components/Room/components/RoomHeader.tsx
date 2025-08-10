@@ -24,7 +24,7 @@ export default function RoomHeader({
   const { deviceType } = useResponsive();
   const StatusIcon = statusConfig.icon;
 
-  const roomIdSize = getResponsiveClasses(deviceType, {
+  const roomIdSizeStyles = getResponsiveClasses(deviceType, {
     mobile: 'size-6 text-xs',
     tablet: 'size-6 sm:size-8 text-xs sm:text-sm',
     desktop: 'size-8 text-sm',
@@ -32,19 +32,19 @@ export default function RoomHeader({
 
   const titleSize = RESPONSIVE_TEXT_SIZE.small[deviceType];
 
-  const statusIconSize = getResponsiveClasses(deviceType, {
+  const statusIconSizeStyles = getResponsiveClasses(deviceType, {
     mobile: 'w-3 h-3',
     tablet: 'w-3 h-3 sm:w-4 sm:h-4',
     desktop: 'w-4 h-4',
   });
 
-  const statusPadding = getResponsiveClasses(deviceType, {
+  const statusPaddingStyles = getResponsiveClasses(deviceType, {
     mobile: 'px-2 py-1',
     tablet: 'px-2 sm:px-3 py-1 sm:py-1.5',
     desktop: 'px-3 py-1.5',
   });
 
-  const statusGap = getResponsiveClasses(deviceType, {
+  const statusGapStyles = getResponsiveClasses(deviceType, {
     mobile: 'gap-1',
     tablet: 'gap-1 sm:gap-1.5',
     desktop: 'gap-1.5',
@@ -54,7 +54,7 @@ export default function RoomHeader({
     <header className="flex items-center justify-between gap-2">
       <div className="flex gap-2 items-center min-w-0 flex-1">
         <span
-          className={`flex items-center justify-center ${roomIdSize} bg-blue-100 text-blue-600 rounded-lg font-semibold flex-shrink-0`}
+          className={`flex items-center justify-center ${roomIdSizeStyles} bg-blue-100 text-blue-600 rounded-lg font-semibold flex-shrink-0`}
           aria-label={`방 번호 ${roomId}`}
         >
           {roomId}
@@ -69,14 +69,14 @@ export default function RoomHeader({
 
       <div
         className={cn(
-          `flex items-center ${statusGap} ${statusPadding} rounded-full text-xs font-medium flex-shrink-0`,
+          `flex items-center ${statusGapStyles} ${statusPaddingStyles} rounded-full text-xs font-medium flex-shrink-0`,
           statusConfig.color,
           statusConfig.bgColor
         )}
         role="status"
         aria-label={`방 상태: ${statusConfig.text}`}
       >
-        <StatusIcon className={statusIconSize} />
+        <StatusIcon className={statusIconSizeStyles} />
         {deviceType === 'desktop' ? (
           <span>{statusConfig.text}</span>
         ) : (

@@ -21,7 +21,7 @@ export default function Room({
     status === 'waiting' && participantInfo.current < participantInfo.max;
   const statusConfig = getStatusConfig(status);
 
-  const cardPadding = getResponsiveClasses(deviceType, {
+  const cardPaddingStyles = getResponsiveClasses(deviceType, {
     mobile: 'p-3',
     tablet: 'p-3 sm:p-4',
     desktop: 'p-4',
@@ -37,7 +37,7 @@ export default function Room({
       tabIndex={0}
       aria-label={`방 ${roomId}: ${title} - ${statusConfig.text}`}
     >
-      <div className={`flex flex-col gap-2 ${cardPadding}`}>
+      <div className={`flex flex-col gap-2 ${cardPaddingStyles}`}>
         <RoomHeader roomId={roomId} title={title} statusConfig={statusConfig} />
 
         <RoomInfoSection

@@ -2,6 +2,11 @@ import type { DeviceType } from '@/shared/hooks/useResponsive';
 
 /**
  * 디바이스 타입에 따른 스타일 클래스를 반환하는 유틸리티
+ * ⚠️ 이 함수의 결과를 받는 변수는 반드시 "Styles"로 끝나야 합니다 (ESLint 룰로 강제됨)
+ *
+ * @example
+ * const paddingStyles = getResponsiveClasses(deviceType, { desktop: 'p-4' }); // ✅
+ * const padding = getResponsiveClasses(deviceType, { desktop: 'p-4' }); // ❌ ESLint 에러
  */
 export function getResponsiveClasses<T extends string>(
   deviceType: DeviceType,
