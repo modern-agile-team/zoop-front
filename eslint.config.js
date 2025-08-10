@@ -34,7 +34,7 @@ export default tseslint.config(
         ecmaFeatures: {
           jsx: true,
         },
-        project: ['tsconfig.app.json', 'tsconfig.node.json'],
+        project: ['tsconfig.json'],
       },
       globals: {
         ...globals.browser,

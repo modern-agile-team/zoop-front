@@ -1,5 +1,7 @@
-import useAuth from '@/shared/hooks/useAuth';
 import { useNavigate } from '@tanstack/react-router';
+
+import useAuth from '@/shared/hooks/useAuth';
+
 import { BackgroundDecorations, HomeHeader, HeroSection, Footer } from './home';
 
 export default function HomePage() {

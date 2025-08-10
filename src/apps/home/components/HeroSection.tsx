@@ -1,5 +1,5 @@
-import Features from './Features';
 import ActionButtons from './ActionButtons';
+import Features from './Features';
 import Stats from './Stats';
 import { FEATURES, STATS } from '../data/mockData';
 import type { HeroSectionProps } from '../types';

@@ -1,11 +1,11 @@
 import { cn } from '@/lib/utils';
-import type { RoomInfo } from '../../types';
+
+import RoomAction from './components/RoomAction';
 import RoomHeader from './components/RoomHeader';
 import RoomInfoSection from './components/RoomInfo';
-import RoomAction from './components/RoomAction';
 import { getStatusConfig, getCardStyles } from './utils/roomHelpers';
 
-interface Props extends RoomInfo {}
+import type { RoomInfo } from '../../types';
 
 export default function Room({
   title,
@@ -13,7 +13,7 @@ export default function Room({
   participantInfo,
   status = 'waiting',
   isPrivate = false,
-}: Props) {
+}: RoomInfo) {
   const isJoinable =
     status === 'waiting' && participantInfo.current < participantInfo.max;
   const statusConfig = getStatusConfig(status);

@@ -1,4 +1,5 @@
 import { Users, Play } from 'lucide-react';
+
 import type { RoomStatus } from '../../../types';
 
 export const getStatusConfig = (status: RoomStatus) => {

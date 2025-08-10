@@ -19,7 +19,7 @@ export const useCreateRoomDialog = () => {
   const handleCreateRoom = useCallback(() => {
     if (roomTitle.trim()) {
       // TODO: 실제 방 생성 로직
-      console.log('방 생성:', roomTitle);
+      console.warn('방 생성:', roomTitle);
       closeDialog();
       return true; // 성공
     }

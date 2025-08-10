@@ -1,10 +1,11 @@
 import { Users, Play } from 'lucide-react';
+
+import AnnouncementCard from './components/AnnouncementCard';
+import CreateRoomDialog from './components/CreateRoomDialog';
+import LobbyHeader from './components/LobbyHeader';
+import ParticipantCard from './components/ParticipantCard';
 import Room from './components/Room';
 import { LobbyScrollSection } from './components/Section';
-import LobbyHeader from './components/LobbyHeader';
-import CreateRoomDialog from './components/CreateRoomDialog';
-import ParticipantCard from './components/ParticipantCard';
-import AnnouncementCard from './components/AnnouncementCard';
 import {
   PLAYING_ROOMS,
   WAITING_ROOMS,

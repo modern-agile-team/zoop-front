@@ -11,7 +11,10 @@ export function LobbyScrollSection({
   ) as React.ReactElement[];
 
   const getByDisplayName = (name: string) =>
-    childrenArray.find((child) => (child.type as any).displayName === name);
+    childrenArray.find(
+      (child) =>
+        (child.type as { displayName?: string }).displayName === name
+    );
 
   const header = getByDisplayName('LobbyScrollSection.Header');
   const content = getByDisplayName('LobbyScrollSection.Content');
