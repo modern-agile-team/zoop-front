@@ -1,4 +1,4 @@
-name: Setup Repository Labels
+name: 저장소 라벨 설정
 
 on:
   workflow_dispatch: # 수동 실행 가능
@@ -13,7 +13,7 @@ jobs:
   setup-labels:
     runs-on: ubuntu-latest
     steps:
-      - name: Create or Update Labels
+      - name: 라벨 생성 또는 업데이트
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
