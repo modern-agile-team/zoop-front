@@ -8,80 +8,80 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as LobbyIndexRouteImport } from './routes/lobby/index'
-import { Route as RoomRoomIdRouteImport } from './routes/room/$roomId'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as IndexRouteImport } from './routes/index';
+import { Route as LobbyIndexRouteImport } from './routes/lobby/index';
+import { Route as RoomRoomIdRouteImport } from './routes/room/$roomId';
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LobbyIndexRoute = LobbyIndexRouteImport.update({
   id: '/lobby/',
   path: '/lobby/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const RoomRoomIdRoute = RoomRoomIdRouteImport.update({
   id: '/room/$roomId',
   path: '/room/$roomId',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/room/$roomId': typeof RoomRoomIdRoute
-  '/lobby': typeof LobbyIndexRoute
+  '/': typeof IndexRoute;
+  '/room/$roomId': typeof RoomRoomIdRoute;
+  '/lobby': typeof LobbyIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/room/$roomId': typeof RoomRoomIdRoute
-  '/lobby': typeof LobbyIndexRoute
+  '/': typeof IndexRoute;
+  '/room/$roomId': typeof RoomRoomIdRoute;
+  '/lobby': typeof LobbyIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/room/$roomId': typeof RoomRoomIdRoute
-  '/lobby/': typeof LobbyIndexRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/room/$roomId': typeof RoomRoomIdRoute;
+  '/lobby/': typeof LobbyIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/room/$roomId' | '/lobby'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/room/$roomId' | '/lobby'
-  id: '__root__' | '/' | '/room/$roomId' | '/lobby/'
-  fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: '/' | '/room/$roomId' | '/lobby';
+  fileRoutesByTo: FileRoutesByTo;
+  to: '/' | '/room/$roomId' | '/lobby';
+  id: '__root__' | '/' | '/room/$roomId' | '/lobby/';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  RoomRoomIdRoute: typeof RoomRoomIdRoute
-  LobbyIndexRoute: typeof LobbyIndexRoute
+  IndexRoute: typeof IndexRoute;
+  RoomRoomIdRoute: typeof RoomRoomIdRoute;
+  LobbyIndexRoute: typeof LobbyIndexRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/lobby/': {
-      id: '/lobby/'
-      path: '/lobby'
-      fullPath: '/lobby'
-      preLoaderRoute: typeof LobbyIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/lobby/';
+      path: '/lobby';
+      fullPath: '/lobby';
+      preLoaderRoute: typeof LobbyIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/room/$roomId': {
-      id: '/room/$roomId'
-      path: '/room/$roomId'
-      fullPath: '/room/$roomId'
-      preLoaderRoute: typeof RoomRoomIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/room/$roomId';
+      path: '/room/$roomId';
+      fullPath: '/room/$roomId';
+      preLoaderRoute: typeof RoomRoomIdRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
@@ -89,7 +89,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   RoomRoomIdRoute: RoomRoomIdRoute,
   LobbyIndexRoute: LobbyIndexRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
