@@ -36,11 +36,8 @@ jobs:
       - name: Install deps
         run: yarn install --frozen-lockfile
 
-      - name: Type check
-        run: npx tsc --noEmit
-
       - name: Lint check
-        run: yarn lint
+        run: yarn check
 
       - name: Build
         run: yarn build
