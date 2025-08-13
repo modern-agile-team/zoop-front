@@ -16,6 +16,7 @@ jobs:
       upload-artifacts: false
       run-lint: true
       fail-fast: false # PR에서는 모든 Node 버전 테스트
+    secrets: inherit
 
   build-status:
     name: 빌드 상태 확인
