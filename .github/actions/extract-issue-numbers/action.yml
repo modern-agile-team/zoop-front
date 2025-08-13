@@ -1,4 +1,4 @@
-name: 'Extract Issue Numbers'
+name: '이슈 번호 추출'
 description: 'PR 본문이나 브랜치명에서 이슈 번호를 추출하는 공통 액션'
 
 inputs:
@@ -38,20 +38,20 @@ runs:
         TEXT="${{ inputs.text }}"
         SOURCE_TYPE="${{ inputs.source-type }}"
         PR_NUMBER="${{ inputs.pr-number }}"
-        
+
         if [ "$SOURCE_TYPE" = "commit-messages" ] && [ -n "$PR_NUMBER" ]; then
           # 커밋 메시지는 GitHub API로 가져오기
           COMMITS_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER/commits" --jq '.[].commit.message')
           TEXT="$COMMITS_JSON"
         fi
-        
+
         # JavaScript 스크립트로 이슈 번호 추출
         cat > extract_issues.js << 'EOF'
         const text = process.argv[2];
         const sourceType = process.argv[3];
-        
+
         let patterns = [];
-        
+
         if (sourceType === 'branch-name') {
           patterns = [
             /feature-(\d+)/gi,
@@ -71,9 +71,9 @@ runs:
             /issue\s*#?(\d+)/gi
           ];
         }
-        
+
         let allIssueNumbers = new Set();
-        
+
         for (const pattern of patterns) {
           const matches = [...text.matchAll(pattern)];
           matches.forEach(match => {
@@ -83,18 +83,18 @@ runs:
             }
           });
         }
-        
+
         const numbers = Array.from(allIssueNumbers);
         console.log('NUMBERS=' + numbers.join(','));
         console.log('COUNT=' + numbers.length);
         EOF
-        
+
         OUTPUT=$(node extract_issues.js "$TEXT" "$SOURCE_TYPE")
         eval $OUTPUT
-        
+
         echo "numbers=$NUMBERS" >> $GITHUB_OUTPUT
         echo "count=$COUNT" >> $GITHUB_OUTPUT
-        
+
         rm extract_issues.js
 
     - name: Validate issue numbers
@@ -106,7 +106,7 @@ runs:
           const numbers = '${{ steps.extract.outputs.numbers }}'.split(',').filter(n => n);
           const { owner, repo } = context.repo;
           const validIssues = [];
-          
+
           for (const issueNumber of numbers) {
             try {
               await github.rest.issues.get({
@@ -124,7 +124,7 @@ runs:
               }
             }
           }
-          
+
           return validIssues.join(',');
 
     - name: Set validation output

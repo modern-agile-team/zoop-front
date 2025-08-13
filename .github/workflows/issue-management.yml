@@ -1,4 +1,4 @@
-name: Issue Management
+name: 이슈 관리 자동화
 
 on:
   pull_request:
@@ -21,14 +21,14 @@ permissions:
   contents: read
 
 jobs:
-  # PR이 생성되거나 브랜치가 생성될 때 in-progress 라벨 추가 및 담당자 지정
+  # PR 생성 시 연결된 이슈에 진행중 라벨 추가 및 담당자 지정
   handle-pr-opened:
     if: github.event_name == 'pull_request' && github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Extract issue numbers from PR body
         id: extract
         uses: ./.github/actions/extract-issue-numbers
@@ -36,7 +36,7 @@ jobs:
           text: ${{ github.event.pull_request.body }}
           source-type: 'pr-body'
           validate-issues: true
-          
+
       - name: Add in-progress label to linked issues
         if: steps.extract.outputs.issue-count > 0
         uses: actions/github-script@v7
@@ -70,19 +70,19 @@ jobs:
                 console.log(`Failed to update issue #${issueNumber}: ${error.message}`);
               }
             }
-            
+
             if (validIssues.length === 0) {
               console.log('No valid linked issues found in PR body');
             }
 
-  # 브랜치 생성 시 관련 이슈에 라벨 추가
+  # 브랜치 생성 시 관련 이슈에 진행중 라벨 추가
   handle-branch-created:
     if: github.event_name == 'create' && github.event.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Extract issue numbers from branch name
         id: extract
         uses: ./.github/actions/extract-issue-numbers
@@ -90,7 +90,7 @@ jobs:
           text: ${{ github.event.ref }}
           source-type: 'branch-name'
           validate-issues: true
-          
+
       - name: Add in-progress label to related issues
         if: steps.extract.outputs.issue-count > 0
         uses: actions/github-script@v7
@@ -125,19 +125,19 @@ jobs:
                 console.log(`Failed to update issue #${issueNumber}: ${error.message}`);
               }
             }
-            
+
             if (validIssues.length === 0) {
               console.log(`No valid issue numbers found in branch name: ${branchName}`);
             }
 
-  # PR이 머지될 때 연결된 이슈 자동 닫기
+  # PR 병합 시 연결된 이슈 자동 닫기
   close-linked-issues:
     if: github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Extract issue numbers from PR
         id: extract-pr
         uses: ./.github/actions/extract-issue-numbers
@@ -145,7 +145,7 @@ jobs:
           text: "${{ github.event.pull_request.body || '' }}"
           source-type: 'pr-body'
           validate-issues: true
-          
+
       - name: Extract issue numbers from branch name
         id: extract-branch
         uses: ./.github/actions/extract-issue-numbers
@@ -153,7 +153,7 @@ jobs:
           text: ${{ github.event.pull_request.head.ref }}
           source-type: 'branch-name'
           validate-issues: true
-          
+
       - name: Close related issues
         uses: actions/github-script@v7
         with:
@@ -162,10 +162,10 @@ jobs:
             const { owner, repo } = context.repo;
             const prNumber = context.payload.pull_request.number;
             const prTitle = context.payload.pull_request.title;
-            
+
             const prIssues = '${{ steps.extract-pr.outputs.valid-issues }}'.split(',').filter(n => n);
             const branchIssues = '${{ steps.extract-branch.outputs.valid-issues }}'.split(',').filter(n => n);
-            
+
             // 중복 제거하여 모든 이슈 번호 합치기
             const allIssues = [...new Set([...prIssues, ...branchIssues])];
 
@@ -195,14 +195,14 @@ jobs:
               console.log(`No valid issue numbers found in PR #${prNumber}`);
             }
 
-  # PR이 다시 열릴 때 이슈도 다시 열기
+  # PR 재오픈 시 연결된 이슈도 다시 열기
   reopen-linked-issues:
     if: github.event_name == 'pull_request' && github.event.action == 'reopened'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Extract issue numbers from PR
         id: extract-pr
         uses: ./.github/actions/extract-issue-numbers
@@ -210,7 +210,7 @@ jobs:
           text: "${{ github.event.pull_request.body || '' }}"
           source-type: 'pr-body'
           validate-issues: true
-          
+
       - name: Reopen linked issues
         if: steps.extract-pr.outputs.issue-count > 0
         uses: actions/github-script@v7
@@ -261,7 +261,7 @@ jobs:
                 console.log(`Failed to reopen issue #${issueNumber}: ${error.message}`);
               }
             }
-            
+
             if (validIssues.length === 0) {
               console.log(`No valid issue numbers found in PR #${prNumber}`);
             }

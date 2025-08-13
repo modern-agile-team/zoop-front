@@ -1,4 +1,4 @@
-name: PR Build Check
+name: PR 빌드 검증
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build and Lint Check
+    name: 빌드 및 린트 검사
     uses: ./.github/workflows/shared/build.yml
     with:
       node-version: '18.x,20.x' # 매트릭스 빌드용
@@ -18,7 +18,7 @@ jobs:
       fail-fast: false # PR에서는 모든 Node 버전 테스트
 
   build-status:
-    name: Build Status Check
+    name: 빌드 상태 확인
     runs-on: ubuntu-latest
     needs: build
     if: always()
