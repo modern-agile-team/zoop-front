@@ -35,9 +35,13 @@ jobs:
           cache: yarn
       - name: Install deps
         run: yarn install --frozen-lockfile
-      # 필요하면 Lint/Test 추가
-      # - run: yarn lint
-      # - run: yarn test --if-present --ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint check
+        run: yarn lint
+
       - name: Build
         run: yarn build
       - name: Upload artifact (${{ env.BUILD_DIR }})
