@@ -10,40 +10,12 @@ on:
 jobs:
   build:
     name: Build and Lint Check
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Run linting
-        run: yarn lint
-
-      - name: Build project
-        run: yarn build
-
-      - name: Check build artifacts
-        run: |
-          if [ ! -d "build" ]; then
-            echo "Build directory not found!"
-            exit 1
-          fi
-          echo "Build completed successfully!"
+    uses: ./.github/workflows/shared/build.yml
+    with:
+      node-version: '18.x,20.x' # 매트릭스 빌드용
+      upload-artifacts: false
+      run-lint: true
+      fail-fast: false # PR에서는 모든 Node 버전 테스트
 
   build-status:
     name: Build Status Check
@@ -54,9 +26,11 @@ jobs:
     steps:
       - name: Check build result
         run: |
-          if [ "${{ needs.build.result }}" = "success" ]; then
+          if [ "${{ needs.build.outputs.build-status }}" = "success" ]; then
             echo "✅ All builds passed!"
+            echo "🎉 PR is ready for review"
           else
             echo "❌ Build failed!"
+            echo "🔧 Please fix the build issues before merging"
             exit 1
           fi
