@@ -25,7 +25,7 @@ jobs:
         github.event.workflow_run.head_branch == 'main')) ||
       (github.event_name == 'workflow_dispatch')
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     env:
       # 환경 결정: 수동 입력이 있으면 우선, 아니면 head_branch로 자동
