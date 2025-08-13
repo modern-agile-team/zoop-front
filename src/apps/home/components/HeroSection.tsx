@@ -1,7 +1,6 @@
 import ActionButtons from './ActionButtons';
 import Features from './Features';
-import Stats from './Stats';
-import { FEATURES, STATS } from '../data/mockData';
+import { FEATURES } from '../data/mockData';
 import type { HeroSectionProps } from '../types';
 
 export default function HeroSection({
@@ -38,8 +37,8 @@ export default function HeroSection({
           onNavigateToLobby={onNavigateToLobby}
         />
 
-        {/* 통계 또는 추가 정보 */}
-        <Stats stats={STATS} />
+        {/* TODO: 통계 또는 추가 정보 */}
+        {/* <Stats stats={STATS} /> */}
       </div>
     </main>
   );
