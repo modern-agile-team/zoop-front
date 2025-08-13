@@ -11,6 +11,10 @@ on:
         description: 'develop or prod'
         required: true
         default: 'develop'
+        type: choice
+        options:
+          - develop
+          - main
 
 jobs:
   deploy:
