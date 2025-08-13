@@ -1,0 +1,76 @@
+name: Deploy CD
+
+on:
+  workflow_run:
+    workflows: ['Integrate CI']
+    types: [completed]
+  # 수동 실행(필요 시)
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'develop or prod'
+        required: true
+        default: 'develop'
+
+jobs:
+  deploy:
+    if: >
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       (github.event.workflow_run.head_branch == 'develop' ||
+        github.event.workflow_run.head_branch == 'main')) ||
+      (github.event_name == 'workflow_dispatch')
+
+    runs-on: ubuntu-latest
+
+    env:
+      # 환경 결정: 수동 입력이 있으면 우선, 아니면 head_branch로 자동
+      ENVIRONMENT: ${{ inputs.env != '' && inputs.env || (github.event.workflow_run.head_branch == 'develop' && 'develop' || 'prod') }}
+
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      # 환경별 시크릿 로드 (GitHub Environments에 보관 추천)
+      - name: Pick environment vars
+        id: pick
+        run: |
+          echo "HOST=${{ secrets[format('{0}_TARGET_HOST', env.ENVIRONMENT)] }}" >> $GITHUB_OUTPUT
+          echo "USER=${{ secrets[format('{0}_TARGET_USER', env.ENVIRONMENT)] }}" >> $GITHUB_OUTPUT
+          echo "PATH_BASE=${{ secrets[format('{0}_TARGET_PATH', env.ENVIRONMENT)] }}" >> $GITHUB_OUTPUT
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets[format('{0}_SSH_PRIVATE_KEY', env.ENVIRONMENT)] }}
+
+      - name: Prepare dirs on remote
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ steps.pick.outputs.USER }}@${{ steps.pick.outputs.HOST }} "mkdir -p ${{ steps.pick.outputs.PATH_BASE }}/releases ${{ steps.pick.outputs.PATH_BASE }}/shared"
+
+      - name: Upload release (rsync)
+        run: |
+          REL="release-$(date +%Y%m%d-%H%M%S)"
+          rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" ./dist/ \
+            ${{ steps.pick.outputs.USER }}@${{ steps.pick.outputs.HOST }}:${{ steps.pick.outputs.PATH_BASE }}/releases/$REL/dist/
+          echo "REL=$REL" >> $GITHUB_ENV
+
+      - name: Activate & reload PM2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ steps.pick.outputs.USER }}@${{ steps.pick.outputs.HOST }} '
+            APP_DIR="${{ steps.pick.outputs.PATH_BASE }}"
+            REL="${{ env.REL }}"
+            ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
+
+            # PM2로 정적 서빙 (3000 포트, 외부 바인딩)
+            if pm2 describe my-vite-app > /develop/null; then
+              pm2 reload my-vite-app
+            else
+              yarn global add serve pm2 >/develop/null 2>&1 || true
+              cd "$APP_DIR/current/dist" && pm2 start "serve -s . -l tcp://0.0.0.0:3000" --name my-vite-app
+            fi
+            pm2 save
+          '
