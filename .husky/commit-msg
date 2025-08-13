@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "📝 커밋 메시지 포맷 검증 중..."
+
+# commitlint로 커밋 메시지 검증
+yarn commitlint --edit $1
+
+if [ $? -ne 0 ]; then
+  echo "❌ 커밋 메시지 포맷이 올바르지 않습니다!"
+  echo ""
+  echo "📋 올바른 커밋 메시지 포맷:"
+  echo "  <타입>: <설명> #<이슈번호>"
+  echo ""
+  echo "🎯 사용 가능한 타입:"
+  echo "  feat: 새로운 기능 추가"
+  echo "  fix: 버그 수정"
+  echo "  docs: 문서 변경"
+  echo "  style: 코드 포맷팅"
+  echo "  refactor: 코드 리팩토링"
+  echo "  test: 테스트 코드"
+  echo "  chore: 기타 변경사항"
+  echo ""
+  echo "💡 예시:"
+  echo "  feat: 사용자 로그인 기능 추가 #123"
+  echo "  fix: 헤더 컴포넌트 버그 수정 #456"
+  echo "  docs: README 업데이트 #789"
+  echo ""
+  echo "⚠️  이슈 번호 (#숫자)가 반드시 포함되어야 합니다!"
+  exit 1
+fi
+
+echo "✅ 커밋 메시지 검증 완료!"

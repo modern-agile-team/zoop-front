@@ -1,8 +1,11 @@
 blank_issues_enabled: false
 contact_links:
   - name: 📚 문서
-    url: https://github.com/modern-agile-team/quiz-game-io-front/docs
+    url: https://github.com/modern-agile-team/quiz-game-io-front/tree/main/docs
     about: 프로젝트 문서를 확인하세요
-  - name: 💬 질문
+  - name: 💬 질문 및 토론
     url: https://github.com/modern-agile-team/quiz-game-io-front/discussions
-    about: 질문은 Discussion을 이용해주세요
+    about: 질문이나 토론은 Discussion을 이용해주세요
+  - name: 📖 README
+    url: https://github.com/modern-agile-team/quiz-game-io-front#readme
+    about: 프로젝트 개요와 설치 방법을 확인하세요
