@@ -15,7 +15,7 @@ on:
         options: [dev, prod]
 
 env:
-  BUILD_DIR: build
+  BUILD_DIR: build # ← 프로젝트 빌드 산출물 폴더
   APP_NAME: quiz-game-io-front
   PORT: '3000'
 
@@ -28,25 +28,18 @@ jobs:
       group: ci-${{ github.ref }}
       cancel-in-progress: true
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Use Node LTS
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           cache: yarn
-
       - name: Install deps
         run: yarn install --frozen-lockfile
-
-      # 필요 시 Lint/Test 추가
+      # 필요하면 Lint/Test 추가
       # - run: yarn lint
       # - run: yarn test --if-present --ci
-
       - name: Build
         run: yarn build
-
       - name: Upload artifact (${{ env.BUILD_DIR }})
         uses: actions/upload-artifact@v4
         with:
@@ -55,7 +48,6 @@ jobs:
           if-no-files-found: error
           retention-days: 3
 
-  # 🔹 배포 대상 환경(dev/prod) 계산 전용 잡
   determine-env:
     name: Determine target environment
     needs: [integrate]
@@ -63,8 +55,7 @@ jobs:
     outputs:
       target_env: ${{ steps.set.outputs.target_env }}
     steps:
-      - name: Set target_env output
-        id: set
+      - id: set
         shell: bash
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
@@ -83,7 +74,7 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: self-hosted
 
-    # 🔒 Environments(dev/prod)에서 Required reviewers 설정 시 여기서 승인 대기 → 승인 후 진행
+    # 🔒 Environments(dev/prod)에서 Required reviewers 설정 시 여기서 승인 대기
     environment:
       name: ${{ needs.determine-env.outputs.target_env }}
 
@@ -101,43 +92,38 @@ jobs:
       - name: Setup SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
-          # Environments(dev/prod)에 동일 키 이름(SSH_PRIVATE_KEY)로 저장해 두세요
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Prepare dirs on remote
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} \
-            "mkdir -p '${{ secrets.TARGET_PATH }}/releases' '${{ secrets.TARGET_PATH }}/shared'"
-
-      - name: Upload release (rsync)
-        id: upload
+      - name: Ensure deploy dir exists
         shell: bash
         run: |
-          REL="release-$(date +%Y%m%d-%H%M%S)"
-          rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" "./${{ env.BUILD_DIR }}/" \
-            "${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }}:${{ secrets.TARGET_PATH }}/releases/${REL}/${{ env.BUILD_DIR }}/"
-          echo "REL=$REL" >> "$GITHUB_OUTPUT"
+          ssh -o StrictHostKeyChecking=no \
+            ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} \
+            "mkdir -p '${{ secrets.TARGET_PATH }}/releases/${{ env.BUILD_DIR }}'"
 
-      - name: Activate & reload PM2
+      - name: Upload (rsync overwrite)
+        shell: bash
+        run: |
+          rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" \
+            "./${{ env.BUILD_DIR }}/" \
+            "${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }}:${{ secrets.TARGET_PATH }}/releases/${{ env.BUILD_DIR }}/"
+
+      - name: Start/Reload PM2
         shell: bash
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} '
             set -e
             APP_DIR="${{ secrets.TARGET_PATH }}"
-            REL="${{ steps.upload.outputs.REL }}"
             BUILD_DIR="${{ env.BUILD_DIR }}"
             APP_NAME="${{ env.APP_NAME }}"
             PORT="${{ env.PORT }}"
 
-            # 심볼릭 링크 전환
-            ln -sfn "$APP_DIR/releases/$REL" "$APP_DIR/current"
-
-            # PM2로 정적 서빙
+            # PM2로 정적 서빙 (항상 고정 경로: releases/${BUILD_DIR})
             if pm2 describe "$APP_NAME" > /dev/null; then
               pm2 reload "$APP_NAME"
             else
               yarn global add serve pm2 >/dev/null 2>&1 || true
-              cd "$APP_DIR/current/$BUILD_DIR" \
+              cd "$APP_DIR/releases/$BUILD_DIR" \
                 && pm2 start "serve -s . -l tcp://0.0.0.0:${PORT}" --name "$APP_NAME"
             fi
             pm2 save
