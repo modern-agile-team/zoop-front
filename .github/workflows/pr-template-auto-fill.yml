@@ -117,15 +117,15 @@ jobs:
                   
                   // PR 본문에서 연관된 이슈 섹션 찾아서 교체 (여러 패턴 지원)
                   const patterns = [
-                    /(### 연관된 이슈\s*\n\n)<!-- 이슈 번호를 입력해주세요\. 예: Closes #123, Fixes #456, Resolves #789 -->(?:\s*\n<!-- 커밋 메시지나 브랜치명에 이슈 번호가 있다면 자동으로 채워집니다 -->)?/,
-                    /(## 🔗 연관된 이슈\s*\n\n)<!-- 이슈 번호를 입력해주세요\. 예: Closes #123, Fixes #456, Resolves #789 -->(?:\s*\n<!-- 커밋 메시지나 브랜치명에 이슈 번호가 있다면 자동으로 채워집니다 -->)?/
+                    /(### 연관된 이슈\s*\n+)<!-- 이슈 번호를 입력해주세요[\.\s]*예: Closes #123, Fixes #456, Resolves #789 -->[\s\S]*?(?=\n##|\n###|$)/,
+                    /(## 🔗 연관된 이슈\s*\n+)<!-- 이슈 번호를 입력해주세요[\.\s]*예: Closes #123, Fixes #456, Resolves #789 -->[\s\S]*?(?=\n##|\n###|$)/
                   ];
                   
                   let updatedBody = prBody;
                   let wasUpdated = false;
                   
                   for (const pattern of patterns) {
-                    const newBody = updatedBody.replace(pattern, `$1${issueLinks}`);
+                    const newBody = updatedBody.replace(pattern, `$1${issueLinks}\n`);
                     if (newBody !== updatedBody) {
                       updatedBody = newBody;
                       wasUpdated = true;
