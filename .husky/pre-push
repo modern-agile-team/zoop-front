@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 타입 체크 및 린트 검사 중..."
+
+# 타입 체크
+echo "📝 TypeScript 타입 체크..."
+yarn type-check
+if [ $? -ne 0 ]; then
+  echo "❌ 타입 체크 실패! 타입 오류를 수정해주세요."
+  exit 1
+fi
+
+# 린트 체크
+echo "🧹 ESLint 검사..."
+yarn lint
+if [ $? -ne 0 ]; then
+  echo "❌ 린트 검사 실패! 린트 오류를 수정해주세요."
+  exit 1
+fi
+
+echo "✅ 타입 체크 및 린트 검사 완료!"

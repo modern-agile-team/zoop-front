@@ -14,7 +14,15 @@
   - **PR 병합 시**: 연결된 이슈 자동 닫기 및 `completed` 라벨 추가
   - **PR 재개 시**: 연결된 이슈 재개 및 상태 복원
 
-### 🏷️ Setup Labels (`setup-labels.yml`)
+### 🪝 Git Hooks (Husky) (`husky`)
+
+- **트리거**: Git 이벤트 발생 시 (로컬)
+- **목적**: 로컬에서 코드 품질 보장 및 커밋 메시지 검증
+- **실행 내용**:
+  - **Pre-push**: 타입 체크 및 린트 검사
+  - **Commit-msg**: 커밋 메시지 포맷 검증 (Conventional Commits)
+
+자세한 사용법은 [Husky Guide](./husky-guide.md)를 참조하세요.
 
 - **트리거**: 수동 실행 또는 워크플로우 파일 변경 시
 - **목적**: 프로젝트에 필요한 라벨 자동 생성/업데이트
