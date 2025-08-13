@@ -17,6 +17,23 @@ To build this application for production:
 npm run build
 ```
 
+## 🔄 Automated Issue Management
+
+This project includes automated GitHub Actions workflows for issue and PR management:
+
+- **Auto Issue Linking**: Issues are automatically linked when you create branches or PRs
+- **Auto Labeling**: Issues get `in-progress` labels when work starts, `completed` when PRs are merged
+- **Auto Assignment**: Issue assignees are automatically set to the branch/PR author
+- **Auto Closing**: Issues are automatically closed when linked PRs are merged
+
+### Quick Guide:
+
+1. **Create a branch**: `git checkout -b feature/123-new-feature`
+2. **Create PR**: Use provided templates and link issues with `Closes #123`
+3. **Merge PR**: Issues automatically close and get marked as completed
+
+For detailed setup and usage, see [GitHub Actions Guide](./docs/github-actions.md).
+
 ## Testing
 
 This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:

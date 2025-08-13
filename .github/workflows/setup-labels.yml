@@ -1,0 +1,86 @@
+name: Setup Repository Labels
+
+on:
+  workflow_dispatch: # 수동 실행 가능
+  push:
+    paths:
+      - '.github/workflows/setup-labels.yml'
+
+permissions:
+  issues: write
+
+jobs:
+  setup-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create or Update Labels
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+
+            const labels = [
+              {
+                name: 'in-progress',
+                color: 'FBCA04',
+                description: '현재 작업 중인 이슈'
+              },
+              {
+                name: 'completed',
+                color: '0E8A16',
+                description: '완료된 이슈'
+              },
+              {
+                name: 'bug',
+                color: 'D73A49',
+                description: '버그 관련 이슈'
+              },
+              {
+                name: 'feature',
+                color: '0052CC',
+                description: '새로운 기능 관련 이슈'
+              },
+              {
+                name: 'enhancement',
+                color: '5319E7',
+                description: '기능 개선 관련 이슈'
+              }
+            ];
+
+            for (const label of labels) {
+              try {
+                // 라벨이 이미 존재하는지 확인
+                const existingLabel = await github.rest.issues.getLabel({
+                  owner,
+                  repo,
+                  name: label.name
+                });
+                
+                // 라벨이 존재하면 업데이트
+                await github.rest.issues.updateLabel({
+                  owner,
+                  repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description
+                });
+                
+                console.log(`Updated label: ${label.name}`);
+              } catch (error) {
+                if (error.status === 404) {
+                  // 라벨이 존재하지 않으면 생성
+                  await github.rest.issues.createLabel({
+                    owner,
+                    repo,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description
+                  });
+                  
+                  console.log(`Created label: ${label.name}`);
+                } else {
+                  console.log(`Error handling label ${label.name}: ${error.message}`);
+                }
+              }
+            }
