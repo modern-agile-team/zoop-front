@@ -20,32 +20,20 @@ env:
 jobs:
   integrate:
     name: Integrate (Build & Upload Artifact)
-    runs-on: self-hosted
-    timeout-minutes: 20
+    uses: ./.github/workflows/shared/build.yml
     concurrency:
       group: ci-${{ github.ref }}
       cancel-in-progress: true
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: yarn
-      - name: Install deps
-        run: yarn install --frozen-lockfile
-
-      - name: Lint check
-        run: yarn check
-
-      - name: Build
-        run: yarn build
-      - name: Upload artifact (${{ env.BUILD_DIR }})
-        uses: actions/upload-artifact@v4
-        with:
-          name: site-build
-          path: ${{ env.BUILD_DIR }}
-          if-no-files-found: error
-          retention-days: 3
+    with:
+      node-version: 'lts/*'
+      upload-artifacts: true
+      artifact-name: 'site-build'
+      artifact-retention-days: 3
+      run-lint: true
+      runner-type: 'self-hosted'
+      install-command: 'frozen-lockfile'
+      lint-command: 'check'
+      timeout-minutes: 20
 
   determine-env:
     name: Determine target environment

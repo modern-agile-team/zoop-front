@@ -33,6 +33,26 @@ on:
         required: false
         default: true
         type: boolean
+      runner-type:
+        description: 'Runner type (ubuntu-latest or self-hosted)'
+        required: false
+        default: 'ubuntu-latest'
+        type: string
+      install-command:
+        description: 'Install command to use (immutable or frozen-lockfile)'
+        required: false
+        default: 'immutable'
+        type: string
+      lint-command:
+        description: 'Lint command to use (lint or check)'
+        required: false
+        default: 'lint'
+        type: string
+      timeout-minutes:
+        description: 'Timeout in minutes for the build job'
+        required: false
+        default: 30
+        type: number
     outputs:
       build-status:
         description: 'Build status (success/failure)'
@@ -59,16 +79,17 @@ jobs:
 
   build:
     name: Build and Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner-type }}
     needs: prepare-matrix
+    timeout-minutes: ${{ inputs.timeout-minutes }}
     outputs:
       build-status: ${{ steps.build-result.outputs.status }}
       artifact-name: ${{ steps.artifact-info.outputs.name }}
-
+    
     strategy:
       fail-fast: ${{ inputs.fail-fast }}
       matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -83,11 +104,11 @@ jobs:
         run: corepack enable
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: yarn install --${{ inputs.install-command }}
 
       - name: Run linting
         if: inputs.run-lint
-        run: yarn lint
+        run: yarn ${{ inputs.lint-command }}
 
       - name: Type check
         run: yarn type-check
