@@ -1,6 +1,5 @@
 import { Users, Play } from 'lucide-react';
 
-import AnnouncementCard from '../AnnouncementCard';
 import ParticipantCard from '../ParticipantCard';
 import Room from '../Room';
 import { LobbyScrollSection } from '../Section';
@@ -42,9 +41,31 @@ export default function DesktopLayout({
           </LobbyScrollSection.Content>
         </LobbyScrollSection>
       </aside>
+      {/* 공지사항 */}
+      {/* <aside className="col-span-4 h-full" aria-label="공지사항">
+        <LobbyScrollSection>
+          <LobbyScrollSection.Header>
+            <div className="flex items-center gap-2">
+              <span role="img" aria-label="공지">
+                📢
+              </span>
+              공지사항
+            </div>
+          </LobbyScrollSection.Header>
+          <LobbyScrollSection.Content>
+            <ul className="space-y-3 p-3" role="list">
+              {announcements.map((announcement) => (
+                <li key={announcement.id}>
+                  <AnnouncementCard announcement={announcement} />
+                </li>
+              ))}
+            </ul>
+          </LobbyScrollSection.Content>
+        </LobbyScrollSection>
+      </aside> */}
 
       {/* 대기방 목록 */}
-      <section className="col-span-6 h-full" aria-label="대기 중인 게임방 목록">
+      <section className="col-span-8 h-full" aria-label="대기 중인 게임방 목록">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
             <div className="flex items-center gap-2">
@@ -65,7 +86,7 @@ export default function DesktopLayout({
       </section>
 
       {/* 진행중인 방 목록 */}
-      <section className="col-span-6 h-full" aria-label="진행 중인 게임방 목록">
+      <section className="col-span-8 h-full" aria-label="진행 중인 게임방 목록">
         <LobbyScrollSection>
           <LobbyScrollSection.Header>
             <div className="flex items-center gap-2">
@@ -84,29 +105,6 @@ export default function DesktopLayout({
           </LobbyScrollSection.Content>
         </LobbyScrollSection>
       </section>
-
-      {/* 공지사항 */}
-      <aside className="col-span-4 h-full" aria-label="공지사항">
-        <LobbyScrollSection>
-          <LobbyScrollSection.Header>
-            <div className="flex items-center gap-2">
-              <span role="img" aria-label="공지">
-                📢
-              </span>
-              공지사항
-            </div>
-          </LobbyScrollSection.Header>
-          <LobbyScrollSection.Content>
-            <ul className="space-y-3 p-3" role="list">
-              {announcements.map((announcement) => (
-                <li key={announcement.id}>
-                  <AnnouncementCard announcement={announcement} />
-                </li>
-              ))}
-            </ul>
-          </LobbyScrollSection.Content>
-        </LobbyScrollSection>
-      </aside>
     </div>
   );
 }
