@@ -2,7 +2,7 @@ name: CI & CD (Integrate → Approve → Deploy)
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   workflow_dispatch:
     inputs:
       env:
