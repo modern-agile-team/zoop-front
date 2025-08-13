@@ -39,13 +39,13 @@ jobs:
             try {
               // 브랜치 이름에서 이슈 번호 추출 (다양한 패턴 지원)
               const branchIssuePatterns = [
-                /feature-(\d+)/i,           // feature-18/pr_issue_link
-                /feature\/(\d+)/i,          // feature/18-description
-                /bugfix-(\d+)/i,            // bugfix-123/fix-error
-                /bugfix\/(\d+)/i,           // bugfix/123-fix-error
-                /hotfix-(\d+)/i,            // hotfix-456/urgent-fix
-                /hotfix\/(\d+)/i,           // hotfix/456-urgent-fix
-                /(\d+)/g                    // 모든 숫자 패턴
+                /feature-(\d+)/gi,           // feature-18/pr_issue_link
+                /feature\/(\d+)/gi,          // feature/18-description
+                /bugfix-(\d+)/gi,            // bugfix-123/fix-error
+                /bugfix\/(\d+)/gi,           // bugfix/123-fix-error
+                /hotfix-(\d+)/gi,            // hotfix-456/urgent-fix
+                /hotfix\/(\d+)/gi,           // hotfix/456-urgent-fix
+                /(\d+)/g                     // 모든 숫자 패턴
               ];
               
               let branchIssueNumbers = new Set();
