@@ -1,4 +1,4 @@
-name: Shared Build Workflow
+name: 공유 빌드 워크플로우
 
 on:
   workflow_call:
@@ -85,11 +85,11 @@ jobs:
     outputs:
       build-status: ${{ steps.build-result.outputs.status }}
       artifact-name: ${{ steps.artifact-info.outputs.name }}
-    
+
     strategy:
       fail-fast: ${{ inputs.fail-fast }}
       matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
