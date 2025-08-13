@@ -1,0 +1,172 @@
+name: PR Template Auto Fill
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  auto-fill-pr-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Auto-fill PR template with commit issues
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.payload.pull_request.number;
+            const prBody = context.payload.pull_request.body || '';
+            const baseBranch = context.payload.pull_request.base.ref;
+            const headBranch = context.payload.pull_request.head.ref;
+
+            // 이미 이슈 번호가 채워져 있는지 확인 (여러 패턴 지원)
+            const hasIssueAlready = /(?:### 연관된 이슈|## 🔗 연관된 이슈)\s*\n\n(?!<!--)/.test(prBody);
+
+            if (hasIssueAlready) {
+              console.log('PR template already has issue numbers filled');
+              return;
+            }
+
+            try {
+              // 브랜치 이름에서 이슈 번호 추출 (다양한 패턴 지원)
+              const branchIssuePatterns = [
+                /feature-(\d+)/gi,           // feature-18/pr_issue_link
+                /feature\/(\d+)/gi,          // feature/18-description
+                /bugfix-(\d+)/gi,            // bugfix-123/fix-error
+                /bugfix\/(\d+)/gi,           // bugfix/123-fix-error
+                /hotfix-(\d+)/gi,            // hotfix-456/urgent-fix
+                /hotfix\/(\d+)/gi,           // hotfix/456-urgent-fix
+                /(\d+)/g                     // 모든 숫자 패턴
+              ];
+              
+              let branchIssueNumbers = new Set();
+              branchIssuePatterns.forEach(pattern => {
+                const matches = [...headBranch.matchAll(pattern)];
+                matches.forEach(match => {
+                  if (match[1] && !isNaN(match[1])) {
+                    branchIssueNumbers.add(match[1]);
+                  }
+                });
+              });
+              
+              // 커밋 메시지에서 이슈 번호 추출
+              const { data: commits } = await github.rest.pulls.listCommits({
+                owner,
+                repo,
+                pull_number: prNumber
+              });
+
+              let allIssueNumbers = new Set();
+              
+              // 브랜치 이름에서 이슈 번호 추가
+              branchIssueNumbers.forEach(num => allIssueNumbers.add(num));
+
+              // 커밋 메시지에서 이슈 번호 추출
+              commits.forEach(commit => {
+                const message = commit.commit.message;
+                const issuePatterns = [
+                  /#(\d+)/g,
+                  /이슈\s*#?(\d+)/gi,
+                  /issue\s*#?(\d+)/gi,
+                  /(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#(\d+)/gi
+                ];
+
+                issuePatterns.forEach(pattern => {
+                  const matches = [...message.matchAll(pattern)];
+                  matches.forEach(match => {
+                    const issueNumber = match[match.length - 1];
+                    if (issueNumber && !isNaN(issueNumber)) {
+                      allIssueNumbers.add(issueNumber);
+                    }
+                  });
+                });
+              });
+
+              if (allIssueNumbers.size > 0) {
+                const issueList = Array.from(allIssueNumbers);
+                
+                // 실제 존재하는 이슈인지 확인
+                const validIssues = [];
+                for (const issueNumber of issueList) {
+                  try {
+                    await github.rest.issues.get({
+                      owner,
+                      repo,
+                      issue_number: issueNumber
+                    });
+                    validIssues.push(issueNumber);
+                  } catch (error) {
+                    if (error.status === 404) {
+                      console.log(`Issue #${issueNumber} not found, skipping`);
+                    }
+                  }
+                }
+
+                if (validIssues.length > 0) {
+                  // 이슈 번호들을 Closes 형태로 포맷팅
+                  const issueLinks = validIssues.map(num => `Closes #${num}`).join(', ');
+                  
+                  // PR 본문에서 연관된 이슈 섹션 찾아서 교체 (여러 패턴 지원)
+                  const patterns = [
+                    /(### 연관된 이슈\s*\n+)<!-- 이슈 번호를 입력해주세요[\.\s]*예: Closes #123, Fixes #456, Resolves #789 -->[\s\S]*?(?=\n##|\n###|$)/,
+                    /(## 🔗 연관된 이슈\s*\n+)<!-- 이슈 번호를 입력해주세요[\.\s]*예: Closes #123, Fixes #456, Resolves #789 -->[\s\S]*?(?=\n##|\n###|$)/
+                  ];
+                  
+                  let updatedBody = prBody;
+                  let wasUpdated = false;
+                  
+                  for (const pattern of patterns) {
+                    const newBody = updatedBody.replace(pattern, `$1${issueLinks}\n`);
+                    if (newBody !== updatedBody) {
+                      updatedBody = newBody;
+                      wasUpdated = true;
+                      break;
+                    }
+                  }
+
+                  if (wasUpdated) {
+                    await github.rest.pulls.update({
+                      owner,
+                      repo,
+                      pull_number: prNumber,
+                      body: updatedBody
+                    });
+                    
+                    console.log(`Auto-filled PR template with issues: ${issueLinks}`);
+                    console.log(`Branch: ${headBranch}, Detected issues from branch: ${Array.from(branchIssueNumbers).join(', ')}`);
+                    
+                    // PR에 코멘트 추가
+                    await github.rest.issues.createComment({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      body: `🤖 **자동 감지된 연관 이슈들이 PR 템플릿에 자동으로 추가되었습니다**\n\n` +
+                            `**감지된 이슈:** ${validIssues.map(num => `#${num}`).join(', ')}\n\n` +
+                            `**브랜치명:** \`${headBranch}\`\n\n` +
+                            `브랜치명과 커밋 메시지를 분석하여 자동으로 연결했습니다. 수정이 필요하시면 PR 설명을 직접 편집해주세요.`
+                    });
+                  } else {
+                    console.log('Failed to update PR template - pattern not found');
+                    console.log(`Branch: ${headBranch}, PR Body preview: ${prBody.substring(0, 200)}`);
+                  }
+                } else {
+                  console.log('No valid issues found');
+                  console.log(`Branch: ${headBranch}, Found numbers: ${Array.from(allIssueNumbers).join(', ')}`);
+                }
+              } else {
+                console.log('No issue numbers found in branch name or commit messages');
+                console.log(`Branch: ${headBranch}, Branch numbers: ${Array.from(branchIssueNumbers).join(', ')}`);
+              }
+              
+            } catch (error) {
+              console.error('Error auto-filling PR template:', error);
+            }
