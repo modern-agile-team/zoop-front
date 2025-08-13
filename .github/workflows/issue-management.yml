@@ -1,4 +1,4 @@
-name: Issue Management
+name: 이슈 관리 자동화
 
 on:
   pull_request:
@@ -21,78 +21,78 @@ permissions:
   contents: read
 
 jobs:
-  # PR이 생성되거나 브랜치가 생성될 때 in-progress 라벨 추가 및 담당자 지정
+  # PR 생성 시 연결된 이슈에 진행중 라벨 추가 및 담당자 지정
   handle-pr-opened:
     if: github.event_name == 'pull_request' && github.event.action == 'opened'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract issue numbers from PR body
+        id: extract
+        uses: ./.github/actions/extract-issue-numbers
+        with:
+          text: ${{ github.event.pull_request.body }}
+          source-type: 'pr-body'
+          validate-issues: true
+
       - name: Add in-progress label to linked issues
+        if: steps.extract.outputs.issue-count > 0
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const prBody = context.payload.pull_request.body || '';
             const prAuthor = context.payload.pull_request.user.login;
+            const validIssues = '${{ steps.extract.outputs.valid-issues }}'.split(',').filter(n => n);
 
-            // PR 본문에서 이슈 번호 추출 (closes #123, fixes #456, resolves #789 등)
-            // 다양한 패턴을 지원: "Closes #123", "fixes #456", "resolve #789", "#123" 등
-            const issuePatterns = [
-              /(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#(\d+)/gi,
-              /(?:^|\s)#(\d+)(?:\s|$)/g,
-              /이슈\s*#?(\d+)/gi,
-              /issue\s*#?(\d+)/gi
-            ];
-
-            let allIssueNumbers = new Set();
-
-            for (const pattern of issuePatterns) {
-              const matches = [...prBody.matchAll(pattern)];
-              matches.forEach(match => {
-                const issueNumber = match[match.length - 1]; // 마지막 캡처 그룹이 이슈 번호
-                if (issueNumber && !isNaN(issueNumber)) {
-                  allIssueNumbers.add(issueNumber);
-                }
-              });
-            }
-
-            const issueMatches = allIssueNumbers.size > 0 ? Array.from(allIssueNumbers) : null;
-
-            if (issueMatches && issueMatches.length > 0) {
-              for (const issueNumber of issueMatches) {
+            for (const issueNumber of validIssues) {
+              try {
+                // 이슈에 in-progress 라벨 추가
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  labels: ['in-progress']
+                });
                 
-                try {
-                  // 이슈에 in-progress 라벨 추가
-                  await github.rest.issues.addLabels({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    labels: ['in-progress']
-                  });
-                  
-                  // 이슈에 PR 작성자를 담당자로 지정
-                  await github.rest.issues.addAssignees({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    assignees: [prAuthor]
-                  });
-                  
-                  console.log(`Added in-progress label and assigned ${prAuthor} to issue #${issueNumber}`);
-                } catch (error) {
-                  console.log(`Failed to update issue #${issueNumber}: ${error.message}`);
-                }
+                // 이슈에 PR 작성자를 담당자로 지정
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  assignees: [prAuthor]
+                });
+                
+                console.log(`Added in-progress label and assigned ${prAuthor} to issue #${issueNumber}`);
+              } catch (error) {
+                console.log(`Failed to update issue #${issueNumber}: ${error.message}`);
               }
-            } else {
-              console.log('No linked issues found in PR body');
             }
 
-  # 브랜치 생성 시 관련 이슈에 라벨 추가
+            if (validIssues.length === 0) {
+              console.log('No valid linked issues found in PR body');
+            }
+
+  # 브랜치 생성 시 관련 이슈에 진행중 라벨 추가
   handle-branch-created:
     if: github.event_name == 'create' && github.event.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract issue numbers from branch name
+        id: extract
+        uses: ./.github/actions/extract-issue-numbers
+        with:
+          text: ${{ github.event.ref }}
+          source-type: 'branch-name'
+          validate-issues: true
+
       - name: Add in-progress label to related issues
+        if: steps.extract.outputs.issue-count > 0
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,91 +100,78 @@ jobs:
             const { owner, repo } = context.repo;
             const branchName = context.payload.ref;
             const branchAuthor = context.payload.sender.login;
+            const validIssues = '${{ steps.extract.outputs.valid-issues }}'.split(',').filter(n => n);
 
-            // 브랜치 이름에서 이슈 번호 추출 (feature/123-description, bugfix/456-fix 등)
-            const issueMatches = branchName.match(/(\d+)/g);
-
-            if (issueMatches) {
-              for (const issueNumber of issueMatches) {
-                try {
-                  // 이슈가 실제로 존재하는지 확인
-                  const issue = await github.rest.issues.get({
-                    owner,
-                    repo,
-                    issue_number: issueNumber
-                  });
-                  
-                  // 이슈에 in-progress 라벨 추가
-                  await github.rest.issues.addLabels({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    labels: ['in-progress']
-                  });
-                  
-                  // 브랜치 생성자를 담당자로 지정
-                  await github.rest.issues.addAssignees({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    assignees: [branchAuthor]
-                  });
-                  
-                  console.log(`Added in-progress label and assigned ${branchAuthor} to issue #${issueNumber} for branch ${branchName}`);
-                } catch (error) {
-                  if (error.status === 404) {
-                    console.log(`Issue #${issueNumber} not found`);
-                  } else {
-                    console.log(`Failed to update issue #${issueNumber}: ${error.message}`);
-                  }
-                }
+            for (const issueNumber of validIssues) {
+              try {
+                // 이슈에 in-progress 라벨 추가
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  labels: ['in-progress']
+                });
+                
+                // 브랜치 생성자를 담당자로 지정
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  assignees: [branchAuthor]
+                });
+                
+                console.log(`Added in-progress label and assigned ${branchAuthor} to issue #${issueNumber} for branch ${branchName}`);
+              } catch (error) {
+                console.log(`Failed to update issue #${issueNumber}: ${error.message}`);
               }
-            } else {
-              console.log(`No issue numbers found in branch name: ${branchName}`);
             }
 
-  # PR이 머지될 때 연결된 이슈 자동 닫기
+            if (validIssues.length === 0) {
+              console.log(`No valid issue numbers found in branch name: ${branchName}`);
+            }
+
+  # PR 병합 시 연결된 이슈 자동 닫기
   close-linked-issues:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Close linked issues
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract issue numbers from PR
+        id: extract-pr
+        uses: ./.github/actions/extract-issue-numbers
+        with:
+          text: "${{ github.event.pull_request.body || '' }}"
+          source-type: 'pr-body'
+          validate-issues: true
+
+      - name: Extract issue numbers from branch name
+        id: extract-branch
+        uses: ./.github/actions/extract-issue-numbers
+        with:
+          text: ${{ github.event.pull_request.head.ref }}
+          source-type: 'branch-name'
+          validate-issues: true
+
+      - name: Close related issues
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const prBody = context.payload.pull_request.body || '';
             const prNumber = context.payload.pull_request.number;
             const prTitle = context.payload.pull_request.title;
 
-            // PR 본문에서 이슈 번호 추출
-            const issuePatterns = [
-              /(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#(\d+)/gi,
-              /(?:^|\s)#(\d+)(?:\s|$)/g,
-              /이슈\s*#?(\d+)/gi,
-              /issue\s*#?(\d+)/gi
-            ];
+            const prIssues = '${{ steps.extract-pr.outputs.valid-issues }}'.split(',').filter(n => n);
+            const branchIssues = '${{ steps.extract-branch.outputs.valid-issues }}'.split(',').filter(n => n);
 
-            let allIssueNumbers = new Set();
+            // 중복 제거하여 모든 이슈 번호 합치기
+            const allIssues = [...new Set([...prIssues, ...branchIssues])];
 
-            for (const pattern of issuePatterns) {
-              const matches = [...prBody.matchAll(pattern)];
-              matches.forEach(match => {
-                const issueNumber = match[match.length - 1];
-                if (issueNumber && !isNaN(issueNumber)) {
-                  allIssueNumbers.add(issueNumber);
-                }
-              });
-            }
-
-            const issueMatches = allIssueNumbers.size > 0 ? Array.from(allIssueNumbers) : null;
-
-            if (issueMatches && issueMatches.length > 0) {
-              for (const issueNumber of issueMatches) {
-                
+            if (allIssues.length > 0) {
+              for (const issueNumber of allIssues) {
                 try {
-                  // 이슈 닫기
                   await github.rest.issues.update({
                     owner,
                     repo,
@@ -192,117 +179,89 @@ jobs:
                     state: 'closed'
                   });
                   
-                  // 이슈에 완료 코멘트 추가
                   await github.rest.issues.createComment({
                     owner,
                     repo,
                     issue_number: issueNumber,
-                    body: `✅ 이 이슈는 PR #${prNumber}이 머지되어 자동으로 닫혔습니다.\n\n**PR 제목:** ${prTitle}`
+                    body: `이 이슈는 PR #${prNumber} (${prTitle})가 병합되어 자동으로 닫혔습니다.`
                   });
                   
-                  // in-progress 라벨 제거하고 completed 라벨 추가
-                  try {
-                    await github.rest.issues.removeLabel({
-                      owner,
-                      repo,
-                      issue_number: issueNumber,
-                      name: 'in-progress'
-                    });
-                  } catch (error) {
-                    console.log(`in-progress label not found on issue #${issueNumber}`);
-                  }
-                  
-                  await github.rest.issues.addLabels({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    labels: ['completed']
-                  });
-                  
-                  console.log(`Closed issue #${issueNumber} and updated labels`);
+                  console.log(`Closed issue #${issueNumber} via PR #${prNumber}`);
                 } catch (error) {
                   console.log(`Failed to close issue #${issueNumber}: ${error.message}`);
                 }
               }
             } else {
-              console.log('No linked issues found in PR body');
+              console.log(`No valid issue numbers found in PR #${prNumber}`);
             }
 
-  # PR이 다시 열릴 때 이슈도 다시 열기
+  # PR 재오픈 시 연결된 이슈도 다시 열기
   reopen-linked-issues:
     if: github.event_name == 'pull_request' && github.event.action == 'reopened'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract issue numbers from PR
+        id: extract-pr
+        uses: ./.github/actions/extract-issue-numbers
+        with:
+          text: "${{ github.event.pull_request.body || '' }}"
+          source-type: 'pr-body'
+          validate-issues: true
+
       - name: Reopen linked issues
+        if: steps.extract-pr.outputs.issue-count > 0
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const prBody = context.payload.pull_request.body || '';
             const prNumber = context.payload.pull_request.number;
+            const validIssues = '${{ steps.extract-pr.outputs.valid-issues }}'.split(',').filter(n => n);
 
-            const issuePatterns = [
-              /(close[sd]?|fix(e[sd])?|resolve[sd]?)\s+#(\d+)/gi,
-              /(?:^|\s)#(\d+)(?:\s|$)/g,
-              /이슈\s*#?(\d+)/gi,
-              /issue\s*#?(\d+)/gi
-            ];
-
-            let allIssueNumbers = new Set();
-
-            for (const pattern of issuePatterns) {
-              const matches = [...prBody.matchAll(pattern)];
-              matches.forEach(match => {
-                const issueNumber = match[match.length - 1];
-                if (issueNumber && !isNaN(issueNumber)) {
-                  allIssueNumbers.add(issueNumber);
+            for (const issueNumber of validIssues) {
+              try {
+                await github.rest.issues.update({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  state: 'open'
+                });
+                
+                // completed 라벨 제거하고 in-progress 라벨 추가
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: issueNumber,
+                    name: 'completed'
+                  });
+                } catch (error) {
+                  console.log(`completed label not found on issue #${issueNumber}`);
                 }
-              });
+                
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  labels: ['in-progress']
+                });
+                
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: issueNumber,
+                  body: `🔄 이 이슈는 PR #${prNumber}이 다시 열려서 재개되었습니다.`
+                });
+                
+                console.log(`Reopened issue #${issueNumber}`);
+              } catch (error) {
+                console.log(`Failed to reopen issue #${issueNumber}: ${error.message}`);
+              }
             }
 
-            const issueMatches = allIssueNumbers.size > 0 ? Array.from(allIssueNumbers) : null;
-
-            if (issueMatches && issueMatches.length > 0) {
-              for (const issueNumber of issueMatches) {
-                
-                try {
-                  await github.rest.issues.update({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    state: 'open'
-                  });
-                  
-                  // completed 라벨 제거하고 in-progress 라벨 추가
-                  try {
-                    await github.rest.issues.removeLabel({
-                      owner,
-                      repo,
-                      issue_number: issueNumber,
-                      name: 'completed'
-                    });
-                  } catch (error) {
-                    console.log(`completed label not found on issue #${issueNumber}`);
-                  }
-                  
-                  await github.rest.issues.addLabels({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    labels: ['in-progress']
-                  });
-                  
-                  await github.rest.issues.createComment({
-                    owner,
-                    repo,
-                    issue_number: issueNumber,
-                    body: `🔄 이 이슈는 PR #${prNumber}이 다시 열려서 재개되었습니다.`
-                  });
-                  
-                  console.log(`Reopened issue #${issueNumber}`);
-                } catch (error) {
-                  console.log(`Failed to reopen issue #${issueNumber}: ${error.message}`);
-                }
-              }
+            if (validIssues.length === 0) {
+              console.log(`No valid issue numbers found in PR #${prNumber}`);
             }

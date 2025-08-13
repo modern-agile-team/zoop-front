@@ -1,0 +1,173 @@
+name: 공유 빌드 워크플로우
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: 'Node.js version to use (e.g., "20.x" or "18.x,20.x" for matrix)'
+        required: false
+        default: '20.x'
+        type: string
+      upload-artifacts:
+        description: 'Whether to upload build artifacts'
+        required: false
+        default: false
+        type: boolean
+      artifact-name:
+        description: 'Name for the build artifact'
+        required: false
+        default: 'build-artifact'
+        type: string
+      artifact-retention-days:
+        description: 'How long to retain the artifact (days)'
+        required: false
+        default: 7
+        type: number
+      run-lint:
+        description: 'Whether to run linting'
+        required: false
+        default: true
+        type: boolean
+      fail-fast:
+        description: 'Whether to fail fast in matrix builds'
+        required: false
+        default: true
+        type: boolean
+      runner-type:
+        description: 'Runner type (ubuntu-latest or self-hosted)'
+        required: false
+        default: 'ubuntu-latest'
+        type: string
+      install-command:
+        description: 'Install command to use (immutable or frozen-lockfile)'
+        required: false
+        default: 'immutable'
+        type: string
+      lint-command:
+        description: 'Lint command to use (lint or check)'
+        required: false
+        default: 'lint'
+        type: string
+      timeout-minutes:
+        description: 'Timeout in minutes for the build job'
+        required: false
+        default: 30
+        type: number
+    outputs:
+      build-status:
+        description: 'Build status (success/failure)'
+        value: ${{ jobs.build.outputs.build-status }}
+      artifact-name:
+        description: 'Name of the uploaded artifact'
+        value: ${{ jobs.build.outputs.artifact-name }}
+
+jobs:
+  prepare-matrix:
+    name: Prepare Build Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.result }}
+    steps:
+      - name: Create build matrix
+        id: matrix
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const nodeVersions = '${{ inputs.node-version }}';
+            const versions = nodeVersions.split(',').map(v => v.trim());
+            return { "node-version": versions };
+
+  build:
+    name: Build and Test
+    runs-on: ${{ inputs.runner-type }}
+    needs: prepare-matrix
+    timeout-minutes: ${{ inputs.timeout-minutes }}
+    outputs:
+      build-status: ${{ steps.build-result.outputs.status }}
+      artifact-name: ${{ steps.artifact-info.outputs.name }}
+
+    strategy:
+      fail-fast: ${{ inputs.fail-fast }}
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --${{ inputs.install-command }}
+
+      - name: Run linting
+        if: inputs.run-lint
+        run: yarn ${{ inputs.lint-command }}
+
+      - name: Type check
+        run: yarn type-check
+
+      - name: Build project
+        run: yarn build
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "build" ]; then
+            echo "❌ Build directory not found!"
+            exit 1
+          fi
+          echo "✅ Build completed successfully!"
+          echo "📦 Build contents:"
+          ls -la build/
+
+      - name: Set artifact info
+        id: artifact-info
+        if: inputs.upload-artifacts
+        run: |
+          ARTIFACT_NAME="${{ inputs.artifact-name }}-${{ matrix.node-version }}-${{ github.sha }}"
+          echo "name=${ARTIFACT_NAME}" >> $GITHUB_OUTPUT
+          echo "📝 Artifact name: ${ARTIFACT_NAME}"
+
+      - name: Upload build artifacts
+        if: inputs.upload-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.artifact-info.outputs.name }}
+          path: build/
+          retention-days: ${{ inputs.artifact-retention-days }}
+          if-no-files-found: error
+
+      - name: Set build result
+        id: build-result
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Build successful for Node.js ${{ matrix.node-version }}"
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "❌ Build failed for Node.js ${{ matrix.node-version }}"
+          fi
+
+      - name: Build summary
+        if: always()
+        run: |
+          echo "## 🚀 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Node Version**: ${{ matrix.node-version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- **Status**: ❌ Failed" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "- **Build Time**: $(date)" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ inputs.upload-artifacts }}" = "true" ]; then
+            echo "- **Artifacts**: 📦 Uploaded" >> $GITHUB_STEP_SUMMARY
+          fi
