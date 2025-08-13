@@ -29,7 +29,7 @@ module.exports = {
     'footer-max-line-length': [2, 'always', 100],
     // 커밋 메시지에 이슈 번호 필수
     'subject-case': [0], // 대소문자 제한 해제 (한글 지원)
-    'issue-number-required': [2, 'always']
+    'issue-number-required': [2, 'always'],
   },
   plugins: [
     {
@@ -38,16 +38,16 @@ module.exports = {
           const { header } = parsed;
           // #숫자 패턴 검색 (예: #123, #1, #999)
           const issuePattern = /#\d+/;
-          
+
           if (!issuePattern.test(header)) {
             return [
               false,
-              '커밋 메시지에 이슈 번호가 필요합니다. (예: feat: 새 기능 추가 #123)'
+              '커밋 메시지에 이슈 번호가 필요합니다. (예: feat: 새 기능 추가 #123)',
             ];
           }
           return [true];
-        }
-      }
-    }
-  ]
+        },
+      },
+    },
+  ],
 };
