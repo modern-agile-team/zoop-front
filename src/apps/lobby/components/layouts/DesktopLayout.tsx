@@ -17,7 +17,6 @@ export default function DesktopLayout({
   waitingRooms,
   playingRooms,
   participants,
-  announcements,
 }: DesktopLayoutProps) {
   return (
     <div className="grid grid-cols-20 gap-6 h-full">
