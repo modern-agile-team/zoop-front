@@ -3,8 +3,6 @@ name: CI & CD (Integrate → Approve → Deploy)
 on:
   push:
     branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
   workflow_dispatch:
     inputs:
       env:
@@ -35,9 +33,10 @@ jobs:
           cache: yarn
       - name: Install deps
         run: yarn install --frozen-lockfile
-      # 필요하면 Lint/Test 추가
-      # - run: yarn lint
-      # - run: yarn test --if-present --ci
+
+      - name: Lint check
+        run: yarn check
+
       - name: Build
         run: yarn build
       - name: Upload artifact (${{ env.BUILD_DIR }})
