@@ -108,23 +108,43 @@ jobs:
             "./${{ env.BUILD_DIR }}/" \
             "${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }}:${{ secrets.TARGET_PATH }}/releases/${{ env.BUILD_DIR }}/"
 
-      - name: Start/Reload PM2
+      - name: Start/Reload PM2 (robust)
         shell: bash
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }} '
             set -e
+
             APP_DIR="${{ secrets.TARGET_PATH }}"
             BUILD_DIR="${{ env.BUILD_DIR }}"
             APP_NAME="${{ env.APP_NAME }}"
             PORT="${{ env.PORT }}"
 
-            # PM2로 정적 서빙 (항상 고정 경로: releases/${BUILD_DIR})
-            if pm2 describe "$APP_NAME" > /dev/null; then
-              pm2 reload "$APP_NAME"
-            else
-              yarn global add serve pm2 >/dev/null 2>&1 || true
-              cd "$APP_DIR/releases/$BUILD_DIR" \
-                && pm2 start "serve -s . -l tcp://0.0.0.0:${PORT}" --name "$APP_NAME"
+            # --- PATH 보정: 비로그인 ssh에서 전역 bin 경로가 비는 문제 대응
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+            export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.npm-global/bin:$HOME/.local/bin:$PATH"
+
+            # --- PM2 / serve 미설치 시 사용자 영역에 설치 (sudo 불필요)
+            if ! command -v pm2 >/dev/null 2>&1; then
+              command -v corepack >/dev/null 2>&1 && corepack enable || true
+              # yarn 전역 설치 시도 → 실패하면 npm 사용자 prefix로 설치
+              yarn global add pm2 serve >/dev/null 2>&1 || {
+                mkdir -p "$HOME/.npm-global"
+                npm config set prefix "$HOME/.npm-global"
+                npm i -g pm2 serve >/dev/null 2>&1
+                export PATH="$HOME/.npm-global/bin:$PATH"
+              }
             fi
-            pm2 save
+
+            PM2="$(command -v pm2)"
+
+            # --- 앱 실행/재시작
+            if "$PM2" describe "$APP_NAME" >/dev/null 2>&1; then
+              "$PM2" reload "$APP_NAME"
+            else
+              cd "$APP_DIR/releases/$BUILD_DIR"
+              "$PM2" start "serve -s . -l tcp://0.0.0.0:${PORT}" --name "$APP_NAME"
+            fi
+
+            "$PM2" save
           '
