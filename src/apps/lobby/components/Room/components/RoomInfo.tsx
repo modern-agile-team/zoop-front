@@ -1,4 +1,4 @@
-import { Users, Lock } from 'lucide-react';
+import { Users } from 'lucide-react';
 
 interface ParticipantInfo {
   current: number;
@@ -10,10 +10,7 @@ interface RoomInfoProps {
   isPrivate: boolean;
 }
 
-export default function RoomInfo({
-  participantInfo,
-  isPrivate,
-}: RoomInfoProps) {
+export default function RoomInfo({ participantInfo }: RoomInfoProps) {
   return (
     <section className="flex items-center justify-between mb-3 sm:mb-4">
       <div
@@ -34,7 +31,7 @@ export default function RoomInfo({
         </span>
       </div>
 
-      {isPrivate && (
+      {/* {isPrivate && (
         <div
           className="flex items-center gap-1 px-2 py-1 bg-purple-100 text-purple-600 rounded-md text-xs font-medium"
           role="note"
@@ -44,7 +41,7 @@ export default function RoomInfo({
           <span className="hidden sm:inline">비공개</span>
           <span className="sm:hidden">🔒</span>
         </div>
-      )}
+      )} */}
     </section>
   );
 }
