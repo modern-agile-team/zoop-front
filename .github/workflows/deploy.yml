@@ -32,11 +32,11 @@ jobs:
       ENVIRONMENT: ${{ inputs.env != '' && inputs.env || (github.event.workflow_run.head_branch == 'develop' && 'develop' || 'prod') }}
 
     steps:
-      - name: Download dist artifact
+      - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: dist
-          path: dist
+          name: build
+          path: build
 
       # 환경별 시크릿 로드 (GitHub Environments에 보관 추천)
       - name: Pick environment vars
@@ -58,8 +58,8 @@ jobs:
       - name: Upload release (rsync)
         run: |
           REL="release-$(date +%Y%m%d-%H%M%S)"
-          rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" ./dist/ \
-            ${{ steps.pick.outputs.USER }}@${{ steps.pick.outputs.HOST }}:${{ steps.pick.outputs.PATH_BASE }}/releases/$REL/dist/
+          rsync -az --delete -e "ssh -o StrictHostKeyChecking=no" ./build/ \
+            ${{ steps.pick.outputs.USER }}@${{ steps.pick.outputs.HOST }}:${{ steps.pick.outputs.PATH_BASE }}/releases/$REL/build/
           echo "REL=$REL" >> $GITHUB_ENV
 
       - name: Activate & reload PM2
@@ -74,7 +74,7 @@ jobs:
               pm2 reload my-vite-app
             else
               yarn global add serve pm2 >/develop/null 2>&1 || true
-              cd "$APP_DIR/current/dist" && pm2 start "serve -s . -l tcp://0.0.0.0:3000" --name my-vite-app
+              cd "$APP_DIR/current/build" && pm2 start "serve -s . -l tcp://0.0.0.0:3000" --name my-vite-app
             fi
             pm2 save
           '
