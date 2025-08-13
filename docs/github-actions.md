@@ -4,7 +4,137 @@
 
 ## 워크플로우 목록
 
-### 1. PR Build Check (`pr-build-check.yml`)
+### 🔄 Issue Management (`issue-management.yml`)
+
+- **트리거**: PR 생성/병합/재개, 브랜치 생성 시
+- **목적**: 이슈와 PR 생명주기 자동 관리
+- **실행 내용**:
+  - **PR 생성 시**: 연결된 이슈에 `in-progress` 라벨 추가 및 PR 작성자를 담당자로 지정
+  - **브랜치 생성 시**: 브랜치명에 포함된 이슈 번호로 자동 라벨링 및 담당자 지정
+  - **PR 병합 시**: 연결된 이슈 자동 닫기 및 `completed` 라벨 추가
+  - **PR 재개 시**: 연결된 이슈 재개 및 상태 복원
+
+### 🏷️ Setup Labels (`setup-labels.yml`)
+
+- **트리거**: 수동 실행 또는 워크플로우 파일 변경 시
+- **목적**: 프로젝트에 필요한 라벨 자동 생성/업데이트
+- **생성되는 라벨**:
+  - `in-progress`: 현재 작업 중인 이슈
+  - `completed`: 완료된 이슈
+  - `bug`: 버그 관련 이슈
+  - `feature`: 새로운 기능 관련 이슈
+  - `enhancement`: 기능 개선 관련 이슈
+
+## 사용법
+
+### PR 템플릿 사용하기
+
+프로젝트에는 다음과 같은 PR 템플릿이 제공됩니다:
+
+#### 1. **기본 템플릿** (자동 선택)
+
+PR을 생성할 때 자동으로 로드되는 기본 템플릿입니다.
+
+#### 2. **상황별 템플릿** (선택 사용)
+
+URL 파라미터를 사용해서 특정 템플릿을 선택할 수 있습니다:
+
+- **버그 수정**: `?template=bug_fix.md`
+- **새로운 기능**: `?template=feature.md`
+- **리팩토링**: `?template=refactor.md`
+- **핫픽스**: `?template=hotfix.md`
+
+**사용 방법:**
+
+```
+https://github.com/modern-agile-team/quiz-game-io-front/compare/main...your-branch?template=feature.md
+```
+
+### 이슈 자동 관리 사용하기
+
+#### 1. PR에서 이슈 연결하기
+
+PR 본문에 다음과 같은 다양한 방식으로 이슈를 연결할 수 있습니다:
+
+**영어 키워드:**
+
+```
+Closes #123
+Fixes #456
+Resolves #789
+Fix #101
+Close #202
+Resolve #303
+```
+
+**간단한 참조:**
+
+```
+#123
+#456 #789
+```
+
+**한국어 키워드:**
+
+```
+이슈 #123
+이슈 456
+Issue #789
+```
+
+**혼합 사용:**
+
+```
+이 PR은 다음 이슈들을 해결합니다:
+- Closes #123 (로그인 버그)
+- 이슈 #456 (UI 개선)
+- #789
+```
+
+#### 2. 브랜치 명명 규칙
+
+브랜치 이름에 이슈 번호를 포함하면 자동으로 라벨이 추가됩니다:
+
+```bash
+# 좋은 예시
+git checkout -b feature/123-add-login-feature
+git checkout -b bugfix/456-fix-header-bug
+git checkout -b enhancement/789-improve-performance
+
+# 이슈 번호가 자동으로 인식됩니다
+```
+
+#### 3. 워크플로우 동작
+
+**브랜치 생성 시:**
+
+- 브랜치명에서 이슈 번호 추출
+- 해당 이슈에 `in-progress` 라벨 추가
+- 브랜치 생성자를 이슈 담당자로 지정
+
+**PR 생성 시:**
+
+- PR 본문에서 연결된 이슈 번호 추출
+- 해당 이슈에 `in-progress` 라벨 추가
+- PR 작성자를 이슈 담당자로 지정
+
+**PR 병합 시:**
+
+- 연결된 이슈 자동 닫기
+- `in-progress` 라벨 제거 후 `completed` 라벨 추가
+- 이슈에 완료 코멘트 자동 추가
+
+**PR 재개 시:**
+
+- 연결된 이슈 재개
+- `completed` 라벨 제거 후 `in-progress` 라벨 추가
+
+### 라벨 설정하기
+
+처음 설정 시 다음 중 하나를 실행하세요:
+
+1. **수동 실행**: GitHub Actions 탭에서 "Setup Repository Labels" 워크플로우를 수동으로 실행
+2. **자동 실행**: `setup-labels.yml` 파일을 수정하고 푸시하면 자동 실행
 
 - **트리거**: `main` 또는 `develop` 브랜치로의 PR 생성/업데이트 시
 - **목적**: PR이 병합되기 전에 빌드가 성공하는지 검증
