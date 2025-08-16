@@ -28,7 +28,6 @@ export const connectApi = ky.create({
 export const orvalInstance = async <T>({
   url,
   method,
-  params,
   headers,
   data,
 }: {
