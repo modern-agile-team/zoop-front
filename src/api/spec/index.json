@@ -1,0 +1,245 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/auth/sign-up/username": {
+      "post": {
+        "operationId": "SignUpWithUsernameController_signUpWithUsername",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpWithUsernameDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthTokenDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": [
+                        "COMMON.REQUEST_VALIDATION_ERROR"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "ACCOUNT.USERNAME_ALREADY_OCCUPIED",
+                      "enum": [
+                        "ACCOUNT.USERNAME_ALREADY_OCCUPIED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "username 기반 회원가입",
+        "tags": [
+          "auth"
+        ]
+      }
+    },
+    "/auth/sign-in/username": {
+      "post": {
+        "operationId": "SignInWithUsernameController_signInWithUsername",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInWithUsernameDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthTokenDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": [
+                        "COMMON.REQUEST_VALIDATION_ERROR"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "AUTH.SIGN_IN_INFO_NOT_MATCHED",
+                      "enum": [
+                        "AUTH.SIGN_IN_INFO_NOT_MATCHED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "username 기반 로그인",
+        "tags": [
+          "auth"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "quizzes-game-io-backend",
+    "description": "The Quizzes Game IO Backend API",
+    "version": "0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [
+    {
+      "url": "/backend"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "SignUpWithUsernameDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "AuthTokenDto": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessToken"
+        ]
+      },
+      "SignInWithUsernameDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      }
+    }
+  }
+}
