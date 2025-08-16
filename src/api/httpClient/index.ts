@@ -12,7 +12,7 @@ export const connectApi = ky.create({
     beforeRequest: [
       (request) => {
         const token = localStorage.getItem('token');
-        request.headers.set('Authorization', `Token token=${token}`);
+        request.headers.set('Authorization', `Bearer ${token}`);
       },
     ],
     afterResponse: [
