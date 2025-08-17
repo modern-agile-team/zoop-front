@@ -36,6 +36,10 @@ jobs:
 
       - name: 프로젝트 빌드
         run: yarn build
+        env:
+          VITE_API_URL: http://localhost:8080
+          VITE_SOCKET_URL: ws://localhost:8080
+          VITE_APP_ENV: development
 
       - name: 빌드 산출물 확인
         run: |
