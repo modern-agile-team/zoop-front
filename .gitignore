@@ -24,8 +24,3 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
-
-# But allow example and specific environment files
-!.env.example
-!.env.development
-!.env.production
