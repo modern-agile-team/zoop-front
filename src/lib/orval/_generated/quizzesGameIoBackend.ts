@@ -13,7 +13,7 @@ import type {
   SignUpWithUsernameDto,
 } from './quizzesGameIoBackend.schemas';
 
-import { orvalInstance } from '../../../../shared/service/api/client/index';
+import { orvalInstance } from '../../../shared/service/api/client/index';
 
 /**
  * @summary username 기반 회원가입

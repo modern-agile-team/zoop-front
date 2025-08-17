@@ -1,11 +1,11 @@
 import {
   signInWithUsernameControllerSignInWithUsername,
   signUpWithUsernameControllerSignUpWithUsername,
-} from '@/lib/orval/api/_generated/quizzesGameIoBackend';
+} from '@/lib/orval/_generated/quizzesGameIoBackend';
 import type {
   SignInWithUsernameDto,
   SignUpWithUsernameDto,
-} from '@/lib/orval/api/_generated/quizzesGameIoBackend.schemas';
+} from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
 
 export const authQueries = {
   signUp: () => ({

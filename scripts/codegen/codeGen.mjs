@@ -4,8 +4,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const GEN_PATH = {
-  API: '../../src/lib/orval/api/_generated',
-  SOCKET: '../../src/lib/orval/socket/_generated',
+  API: '../../src/lib/orval/_generated',
 };
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -13,7 +12,6 @@ console.log(import.meta.url);
 
 const BASE_PATH = {
   API: path.join(__dirname, GEN_PATH.API),
-  SOCKET: path.join(__dirname, GEN_PATH.SOCKET),
 };
 
 console.log('>>> generated 폴더를 삭제합니다.');
@@ -57,10 +55,7 @@ const refreshCodegen = async (type) => {
   });
 };
 
-const results = await Promise.allSettled([
-  refreshCodegen('API'),
-  refreshCodegen('SOCKET'),
-]);
+const results = await Promise.allSettled([refreshCodegen('API')]);
 
 results.forEach((result, index) => {
   if (result.status === 'fulfilled') {

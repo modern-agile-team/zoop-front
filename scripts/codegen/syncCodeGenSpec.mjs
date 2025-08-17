@@ -8,8 +8,8 @@ const SPEC_URL = {
 
 // 스펙을 저장할 파일 경로
 const SPEC_WRITE_PATH = {
-  API: 'src/lib/orval/api/spec.json',
-  SOCKET: 'src/lib/orval/socket/spec.json',
+  API: 'src/lib/orval/spec.json',
+  SOCKET: 'src/lib/asyncApi/spec.json',
 };
 
 console.log('API 스펙을 가져오는 중...');
