@@ -38,15 +38,9 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router',
-      'styled-components',
-      '@tanstack/react-query',
-      '@remember-web/mixin',
-      '@remember-web/primitives',
-    ],
+    include: ['react', 'react-dom', '@tanstack/react-query'],
+    exclude: [],
+    force: true,
   },
   build: {
     outDir: 'build',
