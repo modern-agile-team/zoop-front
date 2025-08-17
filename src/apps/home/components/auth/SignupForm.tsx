@@ -2,11 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
-import type { SignUpWithUsernameDto } from '@/api/_generated/quizzesGameIoBackend.schemas';
-import { authQueries } from '@/api/query/auth';
+import type { SignUpWithUsernameDto } from '@/lib/orval/api/_generated/quizzesGameIoBackend.schemas';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
+import { authQueries } from '@/shared/service/api/query';
 
 import type { AuthFormData } from './schemas';
 import { authSchema } from './schemas';
