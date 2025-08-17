@@ -1,10 +1,11 @@
 import { ArrowRight, LogIn, UserPlus } from 'lucide-react';
 
+import { openLoginDialog, openSignupDialog } from '@/apps/home/components/auth';
 import { Button } from '@/shared/components/ui/button';
 
 interface ActionButtonsProps {
   isLoggedIn: boolean;
-  onLogin: (username: string) => void;
+  onLogin: (token: string) => void;
   onNavigateToLobby: () => void;
 }
 
@@ -13,6 +14,20 @@ export default function ActionButtons({
   onLogin,
   onNavigateToLobby,
 }: ActionButtonsProps) {
+  const handleLogin = async () => {
+    const token = await openLoginDialog();
+    if (token) {
+      onLogin(token);
+    }
+  };
+
+  const handleSignup = async () => {
+    const token = await openSignupDialog();
+    if (token) {
+      onLogin(token);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {isLoggedIn ? (
@@ -30,7 +45,7 @@ export default function ActionButtons({
       ) : (
         <div className="space-y-4">
           <Button
-            onClick={() => onLogin('test')}
+            onClick={handleLogin}
             size="lg"
             className="w-full max-w-md h-14 text-lg font-semibold bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white border-0 shadow-2xl transform hover:scale-105 transition-all duration-300"
             aria-label="로그인하여 게임 시작"
@@ -39,6 +54,7 @@ export default function ActionButtons({
             로그인하기
           </Button>
           <Button
+            onClick={handleSignup}
             size="lg"
             variant="ghost"
             className="w-full max-w-md h-14 text-lg font-semibold text-white border-2 border-white/30 hover:bg-white/10 backdrop-blur-sm transform hover:scale-105 transition-all duration-300"
