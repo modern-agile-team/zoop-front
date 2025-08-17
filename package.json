@@ -23,7 +23,9 @@
     "commit:help": "echo '📝 커밋 메시지 작성 도움말:\n\n🎯 사용 방법:\n  yarn commit        # 대화형 커밋 메시지 작성\n  yarn commit:prompt # commitlint 프롬프트 사용\n\n✅ 커밋 메시지 포맷:\n  <타입>: <설명> #<이슈번호>\n\n🚀 타입 목록:\n  feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert\n\n💡 예시:\n  feat: 사용자 로그인 기능 추가 #123\n  fix: 헤더 컴포넌트 버그 수정 #456'",
     "codegen": "yarn node ./scripts/codegen/codeGen.mjs && yarn node ./scripts/codegen/postCodeGen.mjs",
     "codegen:sync": "yarn node ./scripts/codegen/syncCodeGenSpec.mjs",
-    "codegen:auto": "bash ./scripts/codegen/automationCodegen.sh"
+    "codegen:auto": "bash ./scripts/codegen/automationCodegen.sh",
+    "codegen:socket": "node scripts/codegen-asyncapi.js",
+    "codegen:all": "yarn codegen && yarn codegen:socket"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -45,6 +47,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.62.0",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.0.6",
     "zod": "^4.0.17"

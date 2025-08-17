@@ -1,72 +1,70 @@
-import ky, { HTTPError } from 'ky';
+import { io, type Socket } from 'socket.io-client';
 
-import { API_URL } from '@/shared/constant/env';
+import type {
+  ClientToServerEvents,
+  ServerToClientEvents,
+} from '@/lib/asyncApi/types';
+import { SOCKET_URL } from '@/shared/constant/env';
 
-export const connectApi = ky.create({
-  prefixUrl: API_URL,
-  headers: {
-    'Accept-Language': 'ko-KR',
-  },
-  retry: { limit: 0 },
-  hooks: {
-    beforeRequest: [
-      (request) => {
-        const token = localStorage.getItem('token');
-        request.headers.set('Authorization', `Bearer ${token}`);
-      },
-    ],
-    afterResponse: [
-      async (_, _1, response) => {
-        const json = await response.clone().json();
+type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
-        return json;
-      },
-    ],
-  },
-});
+class SocketClient {
+  private socket: TypedSocket | null = null;
+  private static instance: SocketClient;
 
-export const orvalInstance = async <T>({
-  url,
-  method,
-  headers,
-  data,
-}: {
-  url: string;
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-  params?: Record<string, string | number | boolean | unknown>;
-  headers?:
-    | NonNullable<RequestInit['headers']>
-    | Record<string, string | undefined>;
-  data?: unknown;
-}) => {
-  const [, ...rawUrl] = url.split('/');
+  private constructor() {}
 
-  try {
-    const response = await connectApi(rawUrl.join('/'), {
-      method,
-      json: data,
-      hooks: {
-        beforeRequest: [
-          (request) => {
-            Object.entries(headers ?? {})
-              .filter(([, value]) => value !== undefined)
-              .forEach(([key, value]) =>
-                request.headers.set(key, value as string)
-              );
-          },
-        ],
-      },
-    });
+  static getInstance(): SocketClient {
+    if (!SocketClient.instance) {
+      SocketClient.instance = new SocketClient();
+    }
+    return SocketClient.instance;
+  }
 
-    return response.json<T>();
-  } catch (error: unknown) {
-    if (!(error instanceof HTTPError)) {
-      throw error;
+  connect(): TypedSocket {
+    if (this.socket?.connected) {
+      return this.socket;
     }
 
-    const status = error.response.status;
-    const body = await error.response.json();
+    const token = localStorage.getItem('token');
 
-    throw new Error(`HTTP Error ${status}: ${body}`);
+    this.socket = io(SOCKET_URL, {
+      auth: {
+        token: token ? `Bearer ${token}` : undefined,
+      },
+      transports: ['websocket'],
+    });
+
+    return this.socket;
   }
-};
+
+  disconnect(): void {
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = null;
+    }
+  }
+
+  getSocket(): TypedSocket | null {
+    return this.socket;
+  }
+
+  // 타입 안전한 이벤트 리스너
+  onAccountEntered(callback: ServerToClientEvents['account.entered']) {
+    if (this.socket) {
+      this.socket.on('account.entered', callback);
+    }
+    return this;
+  }
+
+  // 타입 안전한 이벤트 리스너 제거
+  offAccountEntered(callback?: ServerToClientEvents['account.entered']) {
+    if (this.socket) {
+      this.socket.off('account.entered', callback);
+    }
+    return this;
+  }
+}
+
+export const socketClient = SocketClient.getInstance();
+export type { TypedSocket };

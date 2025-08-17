@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
-import type { SignInWithUsernameDto } from '@/lib/orval/api/_generated/quizzesGameIoBackend.schemas';
+import type { SignInWithUsernameDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
