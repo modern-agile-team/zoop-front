@@ -18,38 +18,8 @@ env:
   PORT: '3000'
 
 jobs:
-  integrate:
-    name: 통합 단계 (빌드 및 아티팩트 업로드)
-    runs-on: self-hosted
-    timeout-minutes: 20
-    concurrency:
-      group: ci-${{ github.ref }}
-      cancel-in-progress: true
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: yarn
-      - name: 의존성 설치
-        run: yarn install --frozen-lockfile
-
-      - name: 린트 검사
-        run: yarn check
-
-      - name: 빌드
-        run: yarn build
-      - name: Upload artifact (${{ env.BUILD_DIR }})
-        uses: actions/upload-artifact@v4
-        with:
-          name: site-build
-          path: ${{ env.BUILD_DIR }}
-          if-no-files-found: error
-          retention-days: 3
-
   determine-env:
     name: Determine target environment
-    needs: [integrate]
     runs-on: self-hosted
     outputs:
       target_env: ${{ steps.set.outputs.target_env }}
@@ -66,6 +36,52 @@ jobs:
               echo "target_env=prod" >> "$GITHUB_OUTPUT"
             fi
           fi
+
+  integrate:
+    name: 통합 단계 (빌드 및 아티팩트 업로드)
+    runs-on: self-hosted
+    timeout-minutes: 20
+    concurrency:
+      group: ci-${{ github.ref }}
+      cancel-in-progress: true
+    needs: determine-env
+    environment:
+      name: ${{ needs.determine-env.outputs.target_env }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: yarn
+      - name: 의존성 설치
+        run: yarn install --frozen-lockfile
+
+      - name: 린트 검사
+        run: yarn check
+
+      - name: 빌드 (dev)
+        if: needs.determine-env.outputs.target_env == 'dev'
+        run: yarn build:dev
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
+          VITE_APP_ENV: dev
+
+      - name: 빌드 (prod)
+        if: needs.determine-env.outputs.target_env == 'prod'
+        run: yarn build:prod
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
+          VITE_APP_ENV: prod
+
+      - name: Upload artifact (${{ env.BUILD_DIR }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-build
+          path: ${{ env.BUILD_DIR }}
+          if-no-files-found: error
+          retention-days: 3
 
   deploy:
     name: Deploy (Requires Approval)

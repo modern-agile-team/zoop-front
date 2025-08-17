@@ -16,6 +16,9 @@ jobs:
       matrix:
         node-version: [18.x, 20.x]
 
+    environment:
+      name: dev
+
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v4
@@ -35,7 +38,11 @@ jobs:
         run: yarn lint
 
       - name: 프로젝트 빌드
-        run: yarn build
+        run: yarn build:dev
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
+          VITE_APP_ENV: dev
 
       - name: 빌드 산출물 확인
         run: |
