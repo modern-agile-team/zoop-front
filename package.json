@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build --mode prod && tsc",
+    "build:dev": "vite build --mode dev && tsc",
+    "build:prod": "vite build --mode prod && tsc",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier",
