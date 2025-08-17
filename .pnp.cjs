@@ -32,6 +32,7 @@ const RAW_RUNTIME_STATE =
           ["@commitlint/config-conventional", "npm:19.8.1"],\
           ["@commitlint/prompt-cli", "npm:19.8.1"],\
           ["@eslint/js", "npm:9.33.0"],\
+          ["@hookform/resolvers", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:5.2.1"],\
           ["@radix-ui/react-dialog", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.1.15"],\
           ["@radix-ui/react-scroll-area", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.2.9"],\
           ["@radix-ui/react-slot", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.2.3"],\
@@ -82,6 +83,7 @@ const RAW_RUNTIME_STATE =
           ["quiz-game-io-front", "workspace:."],\
           ["react", "npm:19.1.1"],\
           ["react-dom", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:19.1.1"],\
+          ["react-hook-form", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:7.62.0"],\
           ["tailwind-merge", "npm:3.3.1"],\
           ["tailwindcss", "npm:4.1.11"],\
           ["tiny-invariant", "npm:1.3.3"],\
@@ -1640,6 +1642,29 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@hookform/resolvers", [\
+      ["npm:5.2.1", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@hookform-resolvers-npm-5.2.1-eced9accda-10c0.zip/node_modules/@hookform/resolvers/",\
+        "packageDependencies": [\
+          ["@hookform/resolvers", "npm:5.2.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:5.2.1", {\
+        "packageLocation": "./.yarn/__virtual__/@hookform-resolvers-virtual-8ba9f2801a/5/.yarn/berry/cache/@hookform-resolvers-npm-5.2.1-eced9accda-10c0.zip/node_modules/@hookform/resolvers/",\
+        "packageDependencies": [\
+          ["@hookform/resolvers", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:5.2.1"],\
+          ["@standard-schema/utils", "npm:0.3.0"],\
+          ["@types/react-hook-form", null],\
+          ["react-hook-form", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:7.62.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/react-hook-form",\
+          "react-hook-form"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@humanfs/core", [\
       ["npm:0.19.1", {\
         "packageLocation": "../../../../.yarn/berry/cache/@humanfs-core-npm-0.19.1-e2e7aaeb6e-10c0.zip/node_modules/@humanfs/core/",\
@@ -3187,6 +3212,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../.yarn/berry/cache/@shikijs-vscode-textmate-npm-10.0.2-c80a8c15da-10c0.zip/node_modules/@shikijs/vscode-textmate/",\
         "packageDependencies": [\
           ["@shikijs/vscode-textmate", "npm:10.0.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@standard-schema/utils", [\
+      ["npm:0.3.0", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@standard-schema-utils-npm-0.3.0-37537c524c-10c0.zip/node_modules/@standard-schema/utils/",\
+        "packageDependencies": [\
+          ["@standard-schema/utils", "npm:0.3.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10590,6 +10624,7 @@ const RAW_RUNTIME_STATE =
           ["@commitlint/config-conventional", "npm:19.8.1"],\
           ["@commitlint/prompt-cli", "npm:19.8.1"],\
           ["@eslint/js", "npm:9.33.0"],\
+          ["@hookform/resolvers", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:5.2.1"],\
           ["@radix-ui/react-dialog", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.1.15"],\
           ["@radix-ui/react-scroll-area", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.2.9"],\
           ["@radix-ui/react-slot", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.2.3"],\
@@ -10640,6 +10675,7 @@ const RAW_RUNTIME_STATE =
           ["quiz-game-io-front", "workspace:."],\
           ["react", "npm:19.1.1"],\
           ["react-dom", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:19.1.1"],\
+          ["react-hook-form", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:7.62.0"],\
           ["tailwind-merge", "npm:3.3.1"],\
           ["tailwindcss", "npm:4.1.11"],\
           ["tiny-invariant", "npm:1.3.3"],\
@@ -10678,6 +10714,28 @@ const RAW_RUNTIME_STATE =
           ["react", "npm:19.1.1"],\
           ["react-dom", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:19.1.1"],\
           ["scheduler", "npm:0.26.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/react",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["react-hook-form", [\
+      ["npm:7.62.0", {\
+        "packageLocation": "../../../../.yarn/berry/cache/react-hook-form-npm-7.62.0-69aa06accc-10c0.zip/node_modules/react-hook-form/",\
+        "packageDependencies": [\
+          ["react-hook-form", "npm:7.62.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:7.62.0", {\
+        "packageLocation": "./.yarn/__virtual__/react-hook-form-virtual-1793e47b59/5/.yarn/berry/cache/react-hook-form-npm-7.62.0-69aa06accc-10c0.zip/node_modules/react-hook-form/",\
+        "packageDependencies": [\
+          ["@types/react", "npm:19.1.9"],\
+          ["react", "npm:19.1.1"],\
+          ["react-hook-form", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:7.62.0"]\
         ],\
         "packagePeers": [\
           "@types/react",\
