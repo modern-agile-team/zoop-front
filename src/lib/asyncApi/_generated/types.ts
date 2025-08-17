@@ -14,6 +14,7 @@ export interface ServerToClientEvents {
   'account.entered': (data: AccountEnteredSocketEvent) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ClientToServerEvents {
   // 현재 클라이언트에서 서버로 보내는 이벤트가 정의되지 않았습니다
   // AsyncAPI 스펙에서 subscribe 이벤트를 추가하면 여기에 자동으로 생성됩니다
