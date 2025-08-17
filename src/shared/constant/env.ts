@@ -2,7 +2,7 @@
 export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 export const SOCKET_URL =
   import.meta.env.VITE_SOCKET_URL || 'ws://localhost:8080';
-export const APP_ENV = import.meta.env.VITE_APP_ENV || 'development';
+export const APP_ENV = import.meta.env.VITE_APP_ENV || 'dev';
 
 // 환경 변수 검증
 const requiredEnvVars = {

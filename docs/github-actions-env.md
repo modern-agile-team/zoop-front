@@ -8,14 +8,14 @@
 
 GitHub Repository → Settings → Secrets and variables → Actions → Variables 탭에서 다음 변수들을 설정하세요:
 
-### Development 환경 변수
+### dev 환경 변수
 
 ```
 DEV_VITE_API_URL=https://dev-api.quiz-game.io
 DEV_VITE_SOCKET_URL=wss://dev-socket.quiz-game.io
 ```
 
-### Production 환경 변수
+### prod 환경 변수
 
 ```
 PROD_VITE_API_URL=https://api.quiz-game.io
@@ -39,7 +39,7 @@ GitHub Repository → Settings → Environments에서 다음 환경을 생성하
 - Environment variables:
   - `VITE_API_URL`: `https://dev-api.quiz-game.io`
   - `VITE_SOCKET_URL`: `wss://dev-socket.quiz-game.io`
-  - `VITE_APP_ENV`: `development`
+  - `VITE_APP_ENV`: `dev`
 
 ### prod 환경
 
@@ -50,7 +50,7 @@ GitHub Repository → Settings → Environments에서 다음 환경을 생성하
 - Environment variables:
   - `VITE_API_URL`: `https://api.quiz-game.io`
   - `VITE_SOCKET_URL`: `wss://socket.quiz-game.io`
-  - `VITE_APP_ENV`: `production`
+  - `VITE_APP_ENV`: `prod`
 
 ## 워크플로우 동작 방식
 
@@ -67,17 +67,17 @@ GitHub Repository → Settings → Environments에서 다음 환경을 생성하
 
 ## 빌드 스크립트 매핑
 
-| 환경        | 워크플로우         | 빌드 명령어       | 환경 변수            |
-| ----------- | ------------------ | ----------------- | -------------------- |
-| Development | CICD.yml (dev)     | `yarn build:dev`  | DEV\_\* 변수 사용    |
-| Production  | CICD.yml (prod)    | `yarn build:prod` | PROD\_\* 변수 사용   |
-| PR 검증     | pr-build-check.yml | `yarn build`      | 하드코딩된 개발용 값 |
-| Main 빌드   | main-build.yml     | `yarn build`      | VITE\_\* 변수 사용   |
+| 환경      | 워크플로우         | 빌드 명령어       | 환경 변수            |
+| --------- | ------------------ | ----------------- | -------------------- |
+| dev       | CICD.yml (dev)     | `yarn build:dev`  | DEV\_\* 변수 사용    |
+| prod      | CICD.yml (prod)    | `yarn build:prod` | PROD\_\* 변수 사용   |
+| PR 검증   | pr-build-check.yml | `yarn build`      | 하드코딩된 개발용 값 |
+| Main 빌드 | main-build.yml     | `yarn build`      | VITE\_\* 변수 사용   |
 
 ## 환경 변수 우선순위
 
 1. GitHub Actions 환경 변수 (가장 높음)
-2. .env.production / .env.development 파일
+2. .env.prod / .env.dev 파일
 3. 코드에서 설정한 기본값 (가장 낮음)
 
 ## 배포 전 체크리스트

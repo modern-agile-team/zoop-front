@@ -39,7 +39,7 @@ jobs:
         env:
           VITE_API_URL: http://localhost:8080
           VITE_SOCKET_URL: ws://localhost:8080
-          VITE_APP_ENV: development
+          VITE_APP_ENV: dev
 
       - name: 빌드 산출물 확인
         run: |

@@ -40,21 +40,21 @@ jobs:
       - name: 린트 검사
         run: yarn check
 
-      - name: 빌드 (Development)
+      - name: 빌드 (dev)
         if: needs.determine-env.outputs.target_env == 'dev'
         run: yarn build:dev
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
           VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
-          VITE_APP_ENV: development
+          VITE_APP_ENV: dev
 
-      - name: 빌드 (Production)
+      - name: 빌드 (prod)
         if: needs.determine-env.outputs.target_env == 'prod'
         run: yarn build:prod
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
           VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
-          VITE_APP_ENV: production
+          VITE_APP_ENV: prod
 
       - name: Upload artifact (${{ env.BUILD_DIR }})
         uses: actions/upload-artifact@v4

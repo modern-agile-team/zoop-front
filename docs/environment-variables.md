@@ -11,12 +11,12 @@
 - 환경 변수의 예시 파일
 - 새로운 개발자가 참고할 수 있는 템플릿
 
-### `.env.development`
+### `.env.dev`
 
 - 개발 환경용 설정
 - 로컬 서버 URL 등이 포함
 
-### `.env.production`
+### `.env.prod`
 
 - 프로덕션 환경용 설정
 - 실제 배포 서버 URL 등이 포함
@@ -25,7 +25,7 @@
 
 - `VITE_API_URL`: API 서버 URL
 - `VITE_SOCKET_URL`: 소켓 서버 URL
-- `VITE_APP_ENV`: 애플리케이션 환경 (development, production)
+- `VITE_APP_ENV`: 애플리케이션 환경 (dev, prod)
 
 ## 빌드 스크립트
 
@@ -43,7 +43,7 @@ yarn build
 
 1. **CI/CD 환경에서는 환경 변수를 직접 설정해야 합니다**
    - GitHub Actions, Vercel, Netlify 등에서 환경 변수를 직접 설정
-   - `.env.production` 파일은 참고용으로만 사용
+   - `.env.prod` 파일은 참고용으로만 사용
 
 2. **환경 변수 검증**
    - 개발 모드에서는 누락된 환경 변수에 대한 경고가 콘솔에 표시됩니다
@@ -55,6 +55,6 @@ yarn build
 
 ## 로컬 개발 설정
 
-1. `.env.development` 파일의 설정을 확인
+1. `.env.dev` 파일의 설정을 확인
 2. 필요에 따라 `.env.local` 파일을 생성하여 개인 설정 추가
 3. 개발 서버 실행: `yarn dev`
