@@ -18,6 +18,25 @@ env:
   PORT: '3000'
 
 jobs:
+  determine-env:
+    name: Determine target environment
+    runs-on: self-hosted
+    outputs:
+      target_env: ${{ steps.set.outputs.target_env }}
+    steps:
+      - id: set
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "target_env=${{ inputs.env }}" >> "$GITHUB_OUTPUT"
+          else
+            if [[ "${{ github.ref_name }}" == "develop" ]]; then
+              echo "target_env=dev" >> "$GITHUB_OUTPUT"
+            else
+              echo "target_env=prod" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
   integrate:
     name: 통합 단계 (빌드 및 아티팩트 업로드)
     runs-on: self-hosted
@@ -63,25 +82,6 @@ jobs:
           path: ${{ env.BUILD_DIR }}
           if-no-files-found: error
           retention-days: 3
-
-  determine-env:
-    name: Determine target environment
-    runs-on: self-hosted
-    outputs:
-      target_env: ${{ steps.set.outputs.target_env }}
-    steps:
-      - id: set
-        shell: bash
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "target_env=${{ inputs.env }}" >> "$GITHUB_OUTPUT"
-          else
-            if [[ "${{ github.ref_name }}" == "develop" ]]; then
-              echo "target_env=dev" >> "$GITHUB_OUTPUT"
-            else
-              echo "target_env=prod" >> "$GITHUB_OUTPUT"
-            fi
-          fi
 
   deploy:
     name: Deploy (Requires Approval)
