@@ -132,7 +132,7 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   const modelsDir = path.basename(modelsPath);
   let content = '// Auto-generated Socket event types\n\n';
 
-  // 모델 타입들 re-export (더 깔끔한 형태로)
+  // 모델 타입들 re-export
   const schemas = Object.keys(asyncApiSpec.components?.schemas || {});
   schemas.forEach((schemaName) => {
     content += `export type { ${schemaName} } from './${modelsDir}/${schemaName}';\n`;
@@ -149,7 +149,28 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
     }
   });
 
-  content += '\n// Socket.io 이벤트 맵 정의\n';
+  content += '\n';
+
+  // SocketEventNames enum 생성
+  const channels = Object.keys(asyncApiSpec.channels || {});
+  if (channels.length > 0) {
+    content += 'export const enum SocketEventNames {\n';
+    channels.forEach((channelName) => {
+      const enumKey = channelName.toUpperCase().replace(/[.-]/g, '_');
+      content += `  ${enumKey} = '${channelName}',\n`;
+    });
+    content += '}\n\n';
+  }
+
+  // 유틸리티 타입들
+  content += '// 유틸리티 타입들\n';
+  content +=
+    'export type SocketEventData<T extends SocketEventNames> = Parameters<\n';
+  content += '  ServerToClientEvents[T]\n';
+  content += '>[0];\n\n';
+
+  // ServerToClientEvents 인터페이스 생성
+  content += '// Socket.io 이벤트 맵 정의\n';
   content += 'export interface ServerToClientEvents {\n';
 
   // 채널별 이벤트 타입 매핑 (publish = 서버에서 클라이언트로)
@@ -160,8 +181,9 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
         if (payloadRef) {
           const eventType = payloadRef.split('/').pop();
           const description = channelSpec.publish.description || '';
+          const enumKey = channelName.toUpperCase().replace(/[.-]/g, '_');
           content += `  /** ${description} */\n`;
-          content += `  '${channelName}': (data: ${eventType}) => void;\n`;
+          content += `  [SocketEventNames.${enumKey}]: (data: ${eventType}) => void;\n`;
         }
       }
     }
@@ -180,8 +202,9 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
         if (payloadRef) {
           const eventType = payloadRef.split('/').pop();
           const description = channelSpec.subscribe.description || '';
+          const enumKey = channelName.toUpperCase().replace(/[.-]/g, '_');
           content += `  /** ${description} */\n`;
-          content += `  '${channelName}': (data: ${eventType}) => void;\n`;
+          content += `  [SocketEventNames.${enumKey}]: (data: ${eventType}) => void;\n`;
           hasClientEvents = true;
         }
       }
@@ -197,23 +220,16 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
 
   content += '}\n\n';
 
-  // 유틸리티 타입들 추가
-  content += '// 유틸리티 타입들\n';
-  content += 'export type SocketEventNames = keyof ServerToClientEvents;\n';
-  content +=
-    'export type SocketEventData<T extends SocketEventNames> = Parameters<ServerToClientEvents[T]>[0];\n\n';
-
+  // 타입 가드 함수들
   content += '// 타입 가드 함수들\n';
-  eventTypes.forEach((eventType) => {
-    const eventName = eventType
-      .replace(/SocketEvent$/, '')
-      .toLowerCase()
-      .replace(/([A-Z])/g, '.$1')
-      .replace(/^\./, '')
-      .replace(/\./g, '.');
-    content += `export const is${eventType} = (data: unknown): data is ${eventType} => {\n`;
-    content += `  return typeof data === 'object' && data !== null && 'eventName' in data;\n`;
-    content += `};\n\n`;
+  schemas.forEach((schemaName) => {
+    if (schemaName.includes('SocketEvent')) {
+      content += `export const is${schemaName} = (\n`;
+      content += `  data: unknown\n`;
+      content += `): data is ${schemaName} => {\n`;
+      content += `  return typeof data === 'object' && data !== null && 'eventName' in data;\n`;
+      content += `};\n\n`;
+    }
   });
 
   return content;
