@@ -8,49 +8,9 @@
 
 GitHub Repository → Settings → Secrets and variables → Actions → Variables 탭에서 다음 변수들을 설정하세요:
 
-### dev 환경 변수
-
-```
-DEV_VITE_API_URL=https://dev-api.quiz-game.io
-DEV_VITE_SOCKET_URL=wss://dev-socket.quiz-game.io
-```
-
-### prod 환경 변수
-
-```
-PROD_VITE_API_URL=https://api.quiz-game.io
-PROD_VITE_SOCKET_URL=wss://socket.quiz-game.io
-```
-
-### 메인 빌드용 변수 (호환성)
-
-```
-VITE_API_URL=https://api.quiz-game.io
-VITE_SOCKET_URL=wss://socket.quiz-game.io
-```
-
 ## Environments 설정
 
 GitHub Repository → Settings → Environments에서 다음 환경을 생성하세요:
-
-### dev 환경
-
-- Environment name: `dev`
-- Environment variables:
-  - `VITE_API_URL`: `https://dev-api.quiz-game.io`
-  - `VITE_SOCKET_URL`: `wss://dev-socket.quiz-game.io`
-  - `VITE_APP_ENV`: `dev`
-
-### prod 환경
-
-- Environment name: `prod`
-- Protection rules 설정 권장:
-  - Required reviewers: 배포 승인자 설정
-  - Wait timer: 필요시 대기 시간 설정
-- Environment variables:
-  - `VITE_API_URL`: `https://api.quiz-game.io`
-  - `VITE_SOCKET_URL`: `wss://socket.quiz-game.io`
-  - `VITE_APP_ENV`: `prod`
 
 ## 워크플로우 동작 방식
 
