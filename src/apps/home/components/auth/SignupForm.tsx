@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-
 import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
 
 import type { SignUpWithUsernameDto } from '@/api/_generated/quizzesGameIoBackend.schemas';
 import { authQueries } from '@/api/query/auth';
