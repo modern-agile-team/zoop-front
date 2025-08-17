@@ -8182,6 +8182,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"overlay-kit@npm:^1.8.4":
+  version: 1.8.4
+  resolution: "overlay-kit@npm:1.8.4"
+  peerDependencies:
+    react: ^16.8 || ^17 || ^18 || ^19
+    react-dom: ^16.8 || ^17 || ^18 || ^19
+  checksum: 10c0/85e486c753672023686e5f07c7de6943e3e9e981bf637d6ac51fd858fb52e342b030ae8fddd2a83ab50750d0a439b567bd0183c0fd628543c470c4b97ec48509
+  languageName: node
+  linkType: hard
+
 "own-keys@npm:^1.0.1":
   version: 1.0.1
   resolution: "own-keys@npm:1.0.1"
@@ -8531,6 +8541,7 @@ __metadata:
     ky: "npm:^1.8.2"
     lucide-react: "npm:^0.539.0"
     orval: "npm:^7.11.2"
+    overlay-kit: "npm:^1.8.4"
     prettier: "npm:^3.5.3"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
