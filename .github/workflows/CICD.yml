@@ -25,6 +25,9 @@ jobs:
     concurrency:
       group: ci-${{ github.ref }}
       cancel-in-progress: true
+    needs: determine-env
+    environment:
+      name: ${{ needs.determine-env.outputs.target_env }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,8 +40,22 @@ jobs:
       - name: 린트 검사
         run: yarn check
 
-      - name: 빌드
-        run: yarn build
+      - name: 빌드 (Development)
+        if: needs.determine-env.outputs.target_env == 'dev'
+        run: yarn build:dev
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
+          VITE_APP_ENV: development
+
+      - name: 빌드 (Production)
+        if: needs.determine-env.outputs.target_env == 'prod'
+        run: yarn build:prod
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
+          VITE_APP_ENV: production
+
       - name: Upload artifact (${{ env.BUILD_DIR }})
         uses: actions/upload-artifact@v4
         with:
@@ -49,7 +66,6 @@ jobs:
 
   determine-env:
     name: Determine target environment
-    needs: [integrate]
     runs-on: self-hosted
     outputs:
       target_env: ${{ steps.set.outputs.target_env }}
