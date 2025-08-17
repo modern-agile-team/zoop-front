@@ -20,4 +20,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Environment Variables
 .env
+.env.local
+.env.*.local
+
+# But allow example and specific environment files
+!.env.example
+!.env.development
+!.env.production
