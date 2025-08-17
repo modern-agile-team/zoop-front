@@ -164,6 +164,93 @@
         "summary": "username 기반 로그인",
         "tags": ["auth"]
       }
+    },
+    "/game-rooms": {
+      "post": {
+        "operationId": "CreateGameRoomController_createGameRoom",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGameRoomDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameRoomDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "게임 방 생성",
+        "tags": ["game-room"]
+      }
     }
   },
   "info": {
@@ -219,6 +306,57 @@
           }
         },
         "required": ["username", "password"]
+      },
+      "CreateGameRoomDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "게임 방 제목",
+            "example": "My Awesome Game Room",
+            "maxLength": 50,
+            "minLength": 1
+          }
+        },
+        "required": ["title"]
+      },
+      "GameRoomDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "hostId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["waiting", "ready", "inProgress", "finished", "paused"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "maxPlayersCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "hostId",
+          "status",
+          "title",
+          "maxPlayersCount"
+        ]
       }
     }
   }

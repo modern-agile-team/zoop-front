@@ -16,6 +16,29 @@ export interface SignInWithUsernameDto {
   username: string;
   password: string;
 }
+export interface CreateGameRoomDto {
+  /**
+   * 게임 방 제목
+   * @minLength 1
+   * @maxLength 50
+   */
+  title: string;
+}
+export type GameRoomDtoStatus =
+  | 'waiting'
+  | 'ready'
+  | 'inProgress'
+  | 'finished'
+  | 'paused';
+export interface GameRoomDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  hostId: string;
+  status: GameRoomDtoStatus;
+  title: string;
+  maxPlayersCount: number;
+}
 /**
  * error code
  */
@@ -67,4 +90,30 @@ export type SignInWithUsernameControllerSignInWithUsername401 = {
   message?: string;
   /** error code */
   code?: SignInWithUsernameControllerSignInWithUsername401Code;
+};
+/**
+ * error code
+ */
+export type CreateGameRoomControllerCreateGameRoom400Code =
+  'COMMON.REQUEST_VALIDATION_ERROR';
+export type CreateGameRoomControllerCreateGameRoom400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateGameRoomControllerCreateGameRoom400Code;
+};
+/**
+ * error code
+ */
+export type CreateGameRoomControllerCreateGameRoom401Code =
+  'COMMON.UNAUTHORIZED';
+export type CreateGameRoomControllerCreateGameRoom401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateGameRoomControllerCreateGameRoom401Code;
 };
