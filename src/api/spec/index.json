@@ -45,9 +45,7 @@
                       "type": "string",
                       "description": "error code",
                       "example": "COMMON.REQUEST_VALIDATION_ERROR",
-                      "enum": [
-                        "COMMON.REQUEST_VALIDATION_ERROR"
-                      ]
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
                     }
                   }
                 }
@@ -73,9 +71,7 @@
                       "type": "string",
                       "description": "error code",
                       "example": "ACCOUNT.USERNAME_ALREADY_OCCUPIED",
-                      "enum": [
-                        "ACCOUNT.USERNAME_ALREADY_OCCUPIED"
-                      ]
+                      "enum": ["ACCOUNT.USERNAME_ALREADY_OCCUPIED"]
                     }
                   }
                 }
@@ -84,9 +80,7 @@
           }
         },
         "summary": "username 기반 회원가입",
-        "tags": [
-          "auth"
-        ]
+        "tags": ["auth"]
       }
     },
     "/auth/sign-in/username": {
@@ -133,9 +127,7 @@
                       "type": "string",
                       "description": "error code",
                       "example": "COMMON.REQUEST_VALIDATION_ERROR",
-                      "enum": [
-                        "COMMON.REQUEST_VALIDATION_ERROR"
-                      ]
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
                     }
                   }
                 }
@@ -161,9 +153,7 @@
                       "type": "string",
                       "description": "error code",
                       "example": "AUTH.SIGN_IN_INFO_NOT_MATCHED",
-                      "enum": [
-                        "AUTH.SIGN_IN_INFO_NOT_MATCHED"
-                      ]
+                      "enum": ["AUTH.SIGN_IN_INFO_NOT_MATCHED"]
                     }
                   }
                 }
@@ -172,9 +162,7 @@
           }
         },
         "summary": "username 기반 로그인",
-        "tags": [
-          "auth"
-        ]
+        "tags": ["auth"]
       }
     }
   },
@@ -209,10 +197,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "username",
-          "password"
-        ]
+        "required": ["username", "password"]
       },
       "AuthTokenDto": {
         "type": "object",
@@ -221,9 +206,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "accessToken"
-        ]
+        "required": ["accessToken"]
       },
       "SignInWithUsernameDto": {
         "type": "object",
@@ -235,10 +218,7 @@
             "type": "string"
           }
         },
-        "required": [
-          "username",
-          "password"
-        ]
+        "required": ["username", "password"]
       }
     }
   }
