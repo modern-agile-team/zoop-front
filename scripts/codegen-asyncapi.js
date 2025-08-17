@@ -48,6 +48,10 @@ function generateModels(projectName, config) {
   try {
     execSync(cmd, { stdio: 'inherit' });
     console.log(`✅ Models generated successfully for ${projectName}`);
+
+    // 생성된 파일들 후처리
+    postProcessGeneratedModels(modelsOutput);
+    console.log(`✅ Models post-processed for ${projectName}`);
   } catch (error) {
     console.error(
       `❌ Error generating models for ${projectName}:`,
@@ -57,6 +61,42 @@ function generateModels(projectName, config) {
   }
 
   return true;
+}
+
+// 생성된 모델 파일들 후처리 함수
+function postProcessGeneratedModels(modelsDir) {
+  if (!fs.existsSync(modelsDir)) {
+    return;
+  }
+
+  const files = fs.readdirSync(modelsDir, { withFileTypes: true });
+
+  files.forEach((file) => {
+    if (file.isFile() && file.name.endsWith('.ts')) {
+      const filePath = path.join(modelsDir, file.name);
+      let content = fs.readFileSync(filePath, 'utf-8');
+
+      // 문제점들 수정
+      content =
+        content
+          // Map<string, any> -> Record<string, unknown> 변경
+          .replace(/Map<string,\s*any>/g, 'Record<string, unknown>')
+          // any -> unknown 변경 (단, ...args: any[]는 유지)
+          .replace(/:\s*any(?!\[\])/g, ': unknown')
+          // export { Interface } -> export type { Interface } 형태로 변경
+          .replace(/export\s*{\s*([^}]+)\s*}/g, (match, interfaceName) => {
+            return `export type { ${interfaceName.trim()} }`;
+          })
+          // additionalProperties 제거 (optional)
+          .replace(/\s*additionalProperties\?\:\s*[^;]+;/g, '')
+          // 빈 줄 정리
+          .replace(/\n\n+/g, '\n\n')
+          // 파일 끝 정리
+          .trim() + '\n';
+
+      fs.writeFileSync(filePath, content);
+    }
+  });
 }
 
 // Socket 이벤트 타입과 클라이언트 생성
@@ -92,7 +132,7 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   const modelsDir = path.basename(modelsPath);
   let content = '// Auto-generated Socket event types\n\n';
 
-  // 모델 타입들 import
+  // 모델 타입들 re-export (더 깔끔한 형태로)
   const schemas = Object.keys(asyncApiSpec.components?.schemas || {});
   schemas.forEach((schemaName) => {
     content += `export type { ${schemaName} } from './${modelsDir}/${schemaName}';\n`;
@@ -112,13 +152,15 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   content += '\n// Socket.io 이벤트 맵 정의\n';
   content += 'export interface ServerToClientEvents {\n';
 
-  // 채널별 이벤트 타입 매핑
+  // 채널별 이벤트 타입 매핑 (publish = 서버에서 클라이언트로)
   Object.entries(asyncApiSpec.channels || {}).forEach(
     ([channelName, channelSpec]) => {
       if (channelSpec.publish) {
         const payloadRef = channelSpec.publish.message?.payload?.$ref;
         if (payloadRef) {
           const eventType = payloadRef.split('/').pop();
+          const description = channelSpec.publish.description || '';
+          content += `  /** ${description} */\n`;
           content += `  '${channelName}': (data: ${eventType}) => void;\n`;
         }
       }
@@ -126,12 +168,53 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   );
 
   content += '}\n\n';
+
+  // ClientToServerEvents는 subscribe 이벤트들로 구성
   content += 'export interface ClientToServerEvents {\n';
-  content += '  // 클라이언트에서 서버로 보내는 이벤트들\n';
+
+  let hasClientEvents = false;
+  Object.entries(asyncApiSpec.channels || {}).forEach(
+    ([channelName, channelSpec]) => {
+      if (channelSpec.subscribe) {
+        const payloadRef = channelSpec.subscribe.message?.payload?.$ref;
+        if (payloadRef) {
+          const eventType = payloadRef.split('/').pop();
+          const description = channelSpec.subscribe.description || '';
+          content += `  /** ${description} */\n`;
+          content += `  '${channelName}': (data: ${eventType}) => void;\n`;
+          hasClientEvents = true;
+        }
+      }
+    }
+  );
+
+  if (!hasClientEvents) {
+    content +=
+      '  // 현재 클라이언트에서 서버로 보내는 이벤트가 정의되지 않았습니다\n';
+    content +=
+      '  // AsyncAPI 스펙에서 subscribe 이벤트를 추가하면 여기에 자동으로 생성됩니다\n';
+  }
+
+  content += '}\n\n';
+
+  // 유틸리티 타입들 추가
+  content += '// 유틸리티 타입들\n';
+  content += 'export type SocketEventNames = keyof ServerToClientEvents;\n';
   content +=
-    '  // eslint-disable-next-line @typescript-eslint/no-explicit-any\n';
-  content += '  [event: string]: (...args: any[]) => void;\n';
-  content += '}\n';
+    'export type SocketEventData<T extends SocketEventNames> = Parameters<ServerToClientEvents[T]>[0];\n\n';
+
+  content += '// 타입 가드 함수들\n';
+  eventTypes.forEach((eventType) => {
+    const eventName = eventType
+      .replace(/SocketEvent$/, '')
+      .toLowerCase()
+      .replace(/([A-Z])/g, '.$1')
+      .replace(/^\./, '')
+      .replace(/\./g, '.');
+    content += `export const is${eventType} = (data: unknown): data is ${eventType} => {\n`;
+    content += `  return typeof data === 'object' && data !== null && 'eventName' in data;\n`;
+    content += `};\n\n`;
+  });
 
   return content;
 }

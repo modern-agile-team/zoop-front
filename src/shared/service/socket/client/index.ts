@@ -3,7 +3,7 @@ import { io, type Socket } from 'socket.io-client';
 import type {
   ClientToServerEvents,
   ServerToClientEvents,
-} from '@/lib/asyncApi/types';
+} from '@/lib/asyncApi/_generated/types';
 import { SOCKET_URL } from '@/shared/constant/env';
 
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
