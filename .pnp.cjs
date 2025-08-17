@@ -77,6 +77,7 @@ const RAW_RUNTIME_STATE =
           ["ky", "npm:1.8.2"],\
           ["lucide-react", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:0.539.0"],\
           ["orval", "npm:7.11.2"],\
+          ["overlay-kit", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.8.4"],\
           ["prettier", "npm:3.6.2"],\
           ["quiz-game-io-front", "workspace:."],\
           ["react", "npm:19.1.1"],\
@@ -10213,6 +10214,32 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["overlay-kit", [\
+      ["npm:1.8.4", {\
+        "packageLocation": "../../../../.yarn/berry/cache/overlay-kit-npm-1.8.4-9ea0a55343-10c0.zip/node_modules/overlay-kit/",\
+        "packageDependencies": [\
+          ["overlay-kit", "npm:1.8.4"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.8.4", {\
+        "packageLocation": "./.yarn/__virtual__/overlay-kit-virtual-2368304a1d/5/.yarn/berry/cache/overlay-kit-npm-1.8.4-9ea0a55343-10c0.zip/node_modules/overlay-kit/",\
+        "packageDependencies": [\
+          ["@types/react", "npm:19.1.9"],\
+          ["@types/react-dom", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:19.1.7"],\
+          ["overlay-kit", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.8.4"],\
+          ["react", "npm:19.1.1"],\
+          ["react-dom", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:19.1.1"]\
+        ],\
+        "packagePeers": [\
+          "@types/react-dom",\
+          "@types/react",\
+          "react-dom",\
+          "react"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["own-keys", [\
       ["npm:1.0.1", {\
         "packageLocation": "../../../../.yarn/berry/cache/own-keys-npm-1.0.1-1253f9b344-10c0.zip/node_modules/own-keys/",\
@@ -10608,6 +10635,7 @@ const RAW_RUNTIME_STATE =
           ["ky", "npm:1.8.2"],\
           ["lucide-react", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:0.539.0"],\
           ["orval", "npm:7.11.2"],\
+          ["overlay-kit", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:1.8.4"],\
           ["prettier", "npm:3.6.2"],\
           ["quiz-game-io-front", "workspace:."],\
           ["react", "npm:19.1.1"],\
