@@ -176,8 +176,8 @@ export default tseslint.config(
       '*.config.ts',
 
       // Generated files
-      '**/_generated/**',
-      '**/generated/**',
+      // '**/_generated/**',
+      // '**/generated/**',
       'routeTree.gen.ts',
       '**/*.gen.ts',
       '**/*.gen.js',

@@ -4,8 +4,8 @@
     "socket": {
       "input": "src/lib/asyncApi/spec.json",
       "output": {
-        "models": "src/lib/asyncApi/models",
-        "types": "src/lib/asyncApi/types.ts",
+        "models": "src/lib/asyncApi/_generated/models",
+        "types": "src/lib/asyncApi/_generated/types.ts",
         "client": "src/shared/service/socket/client"
       },
       "options": {

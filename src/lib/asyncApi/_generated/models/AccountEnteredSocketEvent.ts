@@ -1,8 +1,8 @@
 import type { AccountEnteredSocketEventBody } from './AccountEnteredSocketEventBody';
-export interface AccountEnteredSocketEvent {
+interface AccountEnteredSocketEvent {
   eventName: string;
   timestamp: string;
   body: AccountEnteredSocketEventBody;
-  meta: Map<string, unknown>;
-  additionalProperties?: Map<string, unknown>;
+  meta: Record<string, unknown>;
 }
+export type { AccountEnteredSocketEvent };
