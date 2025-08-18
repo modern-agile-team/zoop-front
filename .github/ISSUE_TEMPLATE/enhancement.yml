@@ -8,15 +8,6 @@ body:
     attributes:
       value: |
         기존 기능 개선 제안해 주셔서 감사합니다! 가능한 한 자세히 작성해 주세요.
-
-  - type: textarea
-    id: feature-to-improve
-    attributes:
-      label: 🎯 개선하려는 기능
-      description: 어떤 기능을 개선하고 싶은지 설명해주세요
-    validations:
-      required: true
-
   - type: textarea
     id: current-problems
     attributes:
@@ -26,53 +17,12 @@ body:
       required: true
 
   - type: textarea
-    id: improvement-proposal
+    id: feature-to-improve
     attributes:
-      label: 💡 개선 방안
-      description: 어떻게 개선하면 좋을지 구체적으로 설명해주세요
+      label: 🎯 개선하려는 기능
+      description: 어떤 기능을 개선하고 싶은지 설명해주세요
     validations:
       required: true
-
-  - type: checkboxes
-    id: expected-effects
-    attributes:
-      label: 📈 기대 효과
-      description: 이 개선으로 어떤 효과를 기대하는지 선택해주세요
-      options:
-        - label: 성능 향상
-        - label: 사용성 개선
-        - label: 코드 품질 향상
-        - label: 유지보수성 개선
-
-  - type: input
-    id: other-effects
-    attributes:
-      label: 기타 기대 효과
-      placeholder: 위에 없는 다른 기대 효과가 있다면 입력해주세요
-
-  - type: textarea
-    id: current-situation
-    attributes:
-      label: 📊 현재 상황
-      description: 현재 상황에 대한 구체적인 정보를 제공해주세요
-
-  - type: textarea
-    id: ui-ux-improvements
-    attributes:
-      label: 🎨 UI/UX 개선 (해당시)
-      description: UI나 UX 개선과 관련된 경우 구체적인 제안을 해주세요
-
-  - type: textarea
-    id: technical-considerations
-    attributes:
-      label: 🔧 기술적 고려사항
-      description: 기술적으로 고려해야 할 사항이 있다면 작성해주세요
-
-  - type: textarea
-    id: references
-    attributes:
-      label: 📚 참고 자료
-      description: 참고할 만한 자료가 있다면 첨부해주세요
 
   - type: dropdown
     id: priority

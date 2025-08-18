@@ -18,22 +18,6 @@ body:
       required: true
 
   - type: textarea
-    id: problem-to-solve
-    attributes:
-      label: 💡 해결하고자 하는 문제
-      description: 이 기능이 어떤 문제를 해결하는지 설명해주세요
-    validations:
-      required: true
-
-  - type: textarea
-    id: proposed-solution
-    attributes:
-      label: 🔧 제안하는 해결책
-      description: 어떻게 구현하면 좋을지 설명해주세요
-    validations:
-      required: true
-
-  - type: textarea
     id: detailed-requirements
     attributes:
       label: 📋 상세 요구사항
