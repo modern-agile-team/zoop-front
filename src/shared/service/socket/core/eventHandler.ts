@@ -50,8 +50,8 @@ export class SocketEventHandler {
       socket = this.socketClient.connect();
     }
     /**
-     * TODO: ClientToServerEventNames가 정의되면 test를 event로 변경
+     * TODO: ClientToServerEventNames가 정의되면 String을 제거하고 event로 변경
      */
-    socket.emit('test', data);
+    socket.emit(String(event), data);
   }
 }
