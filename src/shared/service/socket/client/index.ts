@@ -31,6 +31,7 @@ class SocketClient {
     const token = STORAGE.getAuthToken();
 
     this.socket = io(SOCKET_URL, {
+      path: '/backend/socket.io',
       auth: {
         token: token ? `Bearer ${token}` : undefined,
       },
