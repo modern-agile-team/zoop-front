@@ -1,21 +1,20 @@
 import { Plus, Gamepad2, Users } from 'lucide-react';
+import { overlay } from 'overlay-kit';
+import { useState } from 'react';
 
+import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
 import { Button } from '@/shared/components/ui/button';
 import {
   useResponsive,
   useResponsiveClasses,
 } from '@/shared/hooks/useResponsive';
+import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 
-interface ResponsiveHeaderProps {
-  onlineCount: number;
-  onCreateRoom: () => void;
-}
+import CreateRoomDialog from './CreateRoomDialog';
+import { PARTICIPANTS } from '../data/mockData';
 
-export default function ResponsiveHeader({
-  onlineCount,
-  onCreateRoom,
-}: ResponsiveHeaderProps) {
+export default function ResponsiveHeader() {
   const { deviceType } = useResponsive();
 
   const headerPaddingStyles = useResponsiveClasses({
@@ -62,8 +61,8 @@ export default function ResponsiveHeader({
             className={`flex items-center ${buttonGapStyles}`}
             role="complementary"
           >
-            <OnlineCounter count={onlineCount} deviceType={deviceType} />
-            <CreateRoomButton onClick={onCreateRoom} deviceType={deviceType} />
+            <OnlineCounter />
+            <CreateRoomButton />
           </div>
         </nav>
       </div>
@@ -71,12 +70,14 @@ export default function ResponsiveHeader({
   );
 }
 
-interface OnlineCounterProps {
-  count: number;
-  deviceType: 'mobile' | 'tablet' | 'desktop';
-}
+function OnlineCounter() {
+  const { deviceType } = useResponsive();
 
-function OnlineCounter({ count, deviceType }: OnlineCounterProps) {
+  // TODO: API 응답값 사용
+  const [count, setCount] = useState(
+    PARTICIPANTS.filter((p) => p.status === 'online').length
+  );
+
   const containerPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
     tablet: 'px-2 sm:px-3 py-1 sm:py-1.5',
@@ -107,6 +108,11 @@ function OnlineCounter({ count, deviceType }: OnlineCounterProps) {
     desktop: 'gap-2',
   });
 
+  // TODO: ACCOUNT_LEFT 이벤트 추가
+  useSocketListener(ServerToClientEventNames.ACCOUNT_ENTERED, () => {
+    setCount((prevCount) => prevCount + 1);
+  });
+
   return (
     <div
       className={`flex items-center ${gapSizeStyles} ${containerPaddingStyles} bg-green-50 border border-green-200 rounded-full`}
@@ -129,12 +135,8 @@ function OnlineCounter({ count, deviceType }: OnlineCounterProps) {
   );
 }
 
-interface CreateRoomButtonProps {
-  onClick: () => void;
-  deviceType: 'mobile' | 'tablet' | 'desktop';
-}
-
-function CreateRoomButton({ onClick, deviceType }: CreateRoomButtonProps) {
+function CreateRoomButton() {
+  const { deviceType } = useResponsive();
   const buttonSize = deviceType === 'mobile' ? 'sm' : 'default';
 
   const iconSizeStyles = useResponsiveClasses({
@@ -162,18 +164,32 @@ function CreateRoomButton({ onClick, deviceType }: CreateRoomButtonProps) {
   });
 
   return (
-    <Button
-      onClick={onClick}
-      size={buttonSize}
-      className={`bg-blue-600 hover:bg-blue-700 text-white flex items-center ${gapSizeStyles} ${textSizeStyles} ${buttonPaddingStyles}`}
-      aria-label="새 방 만들기"
-    >
-      <Plus className={iconSizeStyles} aria-hidden="true" />
-      {deviceType === 'mobile' ? (
-        <span>방 생성</span>
-      ) : (
-        <span className="hidden sm:inline">방 만들기</span>
-      )}
-    </Button>
+    <>
+      <Button
+        onClick={async () => {
+          const data = await overlay.openAsync(({ isOpen, close }) => (
+            <CreateRoomDialog
+              open={isOpen}
+              onOpenChange={close}
+              onCreateRoom={(roomTitle) => {
+                close(roomTitle);
+              }}
+            />
+          ));
+
+          console.log('새 방 생성:', data);
+        }}
+        size={buttonSize}
+        className={`bg-blue-600 hover:bg-blue-700 text-white flex items-center ${gapSizeStyles} ${textSizeStyles} ${buttonPaddingStyles}`}
+        aria-label="새 방 만들기"
+      >
+        <Plus className={iconSizeStyles} aria-hidden="true" />
+        {deviceType === 'mobile' ? (
+          <span>방 생성</span>
+        ) : (
+          <span className="hidden sm:inline">방 만들기</span>
+        )}
+      </Button>
+    </>
   );
 }
