@@ -1,6 +1,9 @@
 import { ArrowRight, LogIn, UserPlus } from 'lucide-react';
 
-import { openLoginDialog, openSignupDialog } from '@/apps/home/components/auth';
+import {
+  openLoginDialog,
+  openSignupDialog,
+} from '@/apps/home/components/AuthDialog';
 import { Button } from '@/shared/components/ui/button';
 
 interface ActionButtonsProps {
