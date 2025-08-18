@@ -1,4 +1,6 @@
+import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
 import { useResponsive } from '@/shared/hooks/useResponsive';
+import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 
 import CreateRoomDialog from './components/CreateRoomDialog';
 import DesktopLayout from './components/layouts/DesktopLayout';
@@ -32,6 +34,10 @@ export default function LobbyPage() {
     participants: PARTICIPANTS,
     announcements: ANNOUNCEMENTS,
   };
+
+  useSocketListener(ServerToClientEventNames.ACCOUNT_ENTERED, (data) => {
+    console.info('account entered:', data);
+  });
 
   return (
     <>
