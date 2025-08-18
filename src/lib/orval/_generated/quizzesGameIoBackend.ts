@@ -7,11 +7,13 @@
  */
 import type {
   AuthTokenDto,
+  CreateGameRoomDto,
+  GameRoomDto,
   SignInWithUsernameDto,
   SignUpWithUsernameDto,
 } from './quizzesGameIoBackend.schemas';
 
-import { orvalInstance } from '../httpClient/index';
+import { orvalInstance } from '../../../shared/service/api/client/index';
 
 /**
  * @summary username 기반 회원가입
@@ -41,9 +43,26 @@ export const signInWithUsernameControllerSignInWithUsername = (
   });
 };
 
+/**
+ * @summary 게임 방 생성
+ */
+export const createGameRoomControllerCreateGameRoom = (
+  createGameRoomDto: CreateGameRoomDto
+) => {
+  return orvalInstance<GameRoomDto>({
+    url: `/game-rooms`,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: createGameRoomDto,
+  });
+};
+
 export type SignUpWithUsernameControllerSignUpWithUsernameResult = NonNullable<
   Awaited<ReturnType<typeof signUpWithUsernameControllerSignUpWithUsername>>
 >;
 export type SignInWithUsernameControllerSignInWithUsernameResult = NonNullable<
   Awaited<ReturnType<typeof signInWithUsernameControllerSignInWithUsername>>
+>;
+export type CreateGameRoomControllerCreateGameRoomResult = NonNullable<
+  Awaited<ReturnType<typeof createGameRoomControllerCreateGameRoom>>
 >;

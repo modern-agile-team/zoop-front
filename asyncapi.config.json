@@ -1,0 +1,19 @@
+{
+  "generator": "3.15.0",
+  "projects": {
+    "socket": {
+      "input": "src/lib/asyncApi/spec.json",
+      "output": {
+        "models": "src/lib/asyncApi/_generated/models",
+        "types": "src/lib/asyncApi/_generated/types.ts",
+        "client": "src/shared/service/socket/client"
+      },
+      "options": {
+        "modelType": "interface",
+        "includeComments": true,
+        "exportType": "named",
+        "moduleSystem": "ESM"
+      }
+    }
+  }
+}
