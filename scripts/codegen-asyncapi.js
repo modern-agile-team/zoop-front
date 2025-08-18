@@ -151,23 +151,51 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
 
   content += '\n';
 
-  // SocketEventNames enum 생성
+  // ServerToClientEventNames와 ClientToServerEventNames enum 생성
   const channels = Object.keys(asyncApiSpec.channels || {});
-  if (channels.length > 0) {
-    content += 'export const enum SocketEventNames {\n';
-    channels.forEach((channelName) => {
+
+  // ServerToClientEventNames (publish 이벤트들)
+  const serverToClientChannels = channels.filter((channelName) => {
+    return asyncApiSpec.channels[channelName].publish;
+  });
+
+  if (serverToClientChannels.length > 0) {
+    content += 'export const enum ServerToClientEventNames {\n';
+    serverToClientChannels.forEach((channelName) => {
       const enumKey = channelName.toUpperCase().replace(/[.-]/g, '_');
       content += `  ${enumKey} = '${channelName}',\n`;
     });
     content += '}\n\n';
   }
 
+  // ClientToServerEventNames (subscribe 이벤트들)
+  const clientToServerChannels = channels.filter((channelName) => {
+    return asyncApiSpec.channels[channelName].subscribe;
+  });
+
+  content += 'export const enum ClientToServerEventNames {\n';
+  if (clientToServerChannels.length > 0) {
+    clientToServerChannels.forEach((channelName) => {
+      const enumKey = channelName.toUpperCase().replace(/[.-]/g, '_');
+      content += `  ${enumKey} = '${channelName}',\n`;
+    });
+  } else {
+    content +=
+      '  // 현재 클라이언트에서 서버로 보내는 이벤트가 정의되지 않았습니다\n';
+    content +=
+      '  // AsyncAPI 스펙에서 subscribe 이벤트를 추가하면 여기에 자동으로 생성됩니다\n';
+  }
+  content += '}\n\n';
+
   // 유틸리티 타입들
   content += '// 유틸리티 타입들\n';
   content +=
-    'export type SocketEventData<T extends SocketEventNames> = Parameters<\n';
+    'export type ServerToClientEventData<T extends ServerToClientEventNames> = Parameters<\n';
   content += '  ServerToClientEvents[T]\n';
   content += '>[0];\n\n';
+
+  content +=
+    'export type ClientToServerEventData<T extends ClientToServerEventNames> = ClientToServerEvents[T];\n\n';
 
   // ServerToClientEvents 인터페이스 생성
   content += '// Socket.io 이벤트 맵 정의\n';
@@ -183,7 +211,7 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
           const description = channelSpec.publish.description || '';
           const enumKey = channelName.toUpperCase().replace(/[.-]/g, '_');
           content += `  /** ${description} */\n`;
-          content += `  [SocketEventNames.${enumKey}]: (data: ${eventType}) => void;\n`;
+          content += `  [ServerToClientEventNames.${enumKey}]: (data: ${eventType}) => void;\n`;
         }
       }
     }
@@ -204,7 +232,7 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
           const description = channelSpec.subscribe.description || '';
           const enumKey = channelName.toUpperCase().replace(/[.-]/g, '_');
           content += `  /** ${description} */\n`;
-          content += `  [SocketEventNames.${enumKey}]: (data: ${eventType}) => void;\n`;
+          content += `  [ClientToServerEventNames.${enumKey}]: (data: ${eventType}) => void;\n`;
           hasClientEvents = true;
         }
       }
@@ -212,25 +240,10 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   );
 
   if (!hasClientEvents) {
-    content +=
-      '  // 현재 클라이언트에서 서버로 보내는 이벤트가 정의되지 않았습니다\n';
-    content +=
-      '  // AsyncAPI 스펙에서 subscribe 이벤트를 추가하면 여기에 자동으로 생성됩니다\n';
+    content += '[eventName: string]: (data: unknown) => void;';
   }
 
   content += '}\n\n';
-
-  // 타입 가드 함수들
-  content += '// 타입 가드 함수들\n';
-  schemas.forEach((schemaName) => {
-    if (schemaName.includes('SocketEvent')) {
-      content += `export const is${schemaName} = (\n`;
-      content += `  data: unknown\n`;
-      content += `): data is ${schemaName} => {\n`;
-      content += `  return typeof data === 'object' && data !== null && 'eventName' in data;\n`;
-      content += `};\n\n`;
-    }
-  });
 
   return content;
 }
