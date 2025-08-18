@@ -31,5 +31,5 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  [eventName: string]: unknown;
+  [eventName: string]: (data: unknown) => void;
 }

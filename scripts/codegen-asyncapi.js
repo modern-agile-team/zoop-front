@@ -240,7 +240,7 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   );
 
   if (!hasClientEvents) {
-    content += '[eventName: string]: unknown;';
+    content += '[eventName: string]: (data: unknown) => void;';
   }
 
   content += '}\n\n';
