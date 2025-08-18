@@ -1,16 +1,15 @@
 import { io, type Socket } from 'socket.io-client';
 
 import {
-  ServerToClientEventNames,
   type ClientToServerEvents,
   type ServerToClientEvents,
 } from '@/lib/asyncApi/_generated/types';
 import { SOCKET_URL } from '@/shared/constant/env';
 import { STORAGE } from '@/shared/utils/storage';
 
-type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
+export type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
-class SocketClient {
+export class SocketClient {
   private socket: TypedSocket | null = null;
   private static instance: SocketClient;
 
@@ -51,27 +50,6 @@ class SocketClient {
   getSocket(): TypedSocket | null {
     return this.socket;
   }
-
-  // 타입 안전한 이벤트 리스너
-  onAccountEntered(
-    callback: ServerToClientEvents[ServerToClientEventNames.ACCOUNT_ENTERED]
-  ) {
-    if (this.socket) {
-      this.socket.on(ServerToClientEventNames.ACCOUNT_ENTERED, callback);
-    }
-    return this;
-  }
-
-  // 타입 안전한 이벤트 리스너 제거
-  offAccountEntered(
-    callback?: ServerToClientEvents[ServerToClientEventNames.ACCOUNT_ENTERED]
-  ) {
-    if (this.socket) {
-      this.socket.off(ServerToClientEventNames.ACCOUNT_ENTERED, callback);
-    }
-    return this;
-  }
 }
 
 export const socketClient = SocketClient.getInstance();
-export type { TypedSocket };
