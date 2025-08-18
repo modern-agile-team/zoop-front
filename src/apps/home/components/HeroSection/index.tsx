@@ -1,7 +1,8 @@
 import ActionButtons from './ActionButtons';
 import Features from './Features';
-import { FEATURES } from '../data/mockData';
-import type { HeroSectionProps } from '../types';
+
+import { FEATURES } from '../../data/mockData';
+import type { HeroSectionProps } from '../../types';
 
 export default function HeroSection({
   isLoggedIn,
