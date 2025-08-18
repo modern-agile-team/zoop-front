@@ -1,6 +1,5 @@
 import { Users, Play } from 'lucide-react';
 
-import AnnouncementCard from '../AnnouncementCard';
 import ParticipantCard from '../ParticipantCard';
 import Room from '../Room';
 import { LobbyScrollSection } from '../Section';
@@ -18,7 +17,6 @@ export default function MobileLayout({
   waitingRooms,
   playingRooms,
   participants,
-  announcements,
 }: MobileLayoutProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -106,7 +104,7 @@ export default function MobileLayout({
         </aside>
 
         {/* 공지사항 */}
-        <aside className="h-[250px] md:h-[300px]" aria-label="공지사항">
+        {/* <aside className="h-[250px] md:h-[300px]" aria-label="공지사항">
           <LobbyScrollSection>
             <LobbyScrollSection.Header>
               <div className="flex items-center gap-2">
@@ -130,7 +128,7 @@ export default function MobileLayout({
               </ul>
             </LobbyScrollSection.Content>
           </LobbyScrollSection>
-        </aside>
+        </aside> */}
       </div>
     </div>
   );
