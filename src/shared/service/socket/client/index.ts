@@ -1,7 +1,7 @@
 import { io, type Socket } from 'socket.io-client';
 
 import {
-  SocketEventNames,
+  ServerToClientEventNames,
   type ClientToServerEvents,
   type ServerToClientEvents,
 } from '@/lib/asyncApi/_generated/types';
@@ -54,20 +54,20 @@ class SocketClient {
 
   // 타입 안전한 이벤트 리스너
   onAccountEntered(
-    callback: ServerToClientEvents[SocketEventNames.ACCOUNT_ENTERED]
+    callback: ServerToClientEvents[ServerToClientEventNames.ACCOUNT_ENTERED]
   ) {
     if (this.socket) {
-      this.socket.on(SocketEventNames.ACCOUNT_ENTERED, callback);
+      this.socket.on(ServerToClientEventNames.ACCOUNT_ENTERED, callback);
     }
     return this;
   }
 
   // 타입 안전한 이벤트 리스너 제거
   offAccountEntered(
-    callback?: ServerToClientEvents[SocketEventNames.ACCOUNT_ENTERED]
+    callback?: ServerToClientEvents[ServerToClientEventNames.ACCOUNT_ENTERED]
   ) {
     if (this.socket) {
-      this.socket.off(SocketEventNames.ACCOUNT_ENTERED, callback);
+      this.socket.off(ServerToClientEventNames.ACCOUNT_ENTERED, callback);
     }
     return this;
   }
