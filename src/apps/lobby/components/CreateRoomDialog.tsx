@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Button } from '@/shared/components/ui/button';
 import {
   Dialog,
@@ -14,18 +16,16 @@ import { GAME_SETTINGS } from '../constants';
 interface CreateRoomDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  roomTitle: string;
-  onRoomTitleChange: (title: string) => void;
-  onCreateRoom: () => void;
+  onCreateRoom: (roomTitle: string) => void;
 }
 
 export default function CreateRoomDialog({
   open,
   onOpenChange,
-  roomTitle,
-  onRoomTitleChange,
   onCreateRoom,
 }: CreateRoomDialogProps) {
+  const [roomTitle, setRoomTitle] = useState('');
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -40,7 +40,7 @@ export default function CreateRoomDialog({
               id="roomTitle"
               placeholder="재밌는 퀴즈 게임에 참여하세요!"
               value={roomTitle}
-              onChange={(e) => onRoomTitleChange(e.target.value)}
+              onChange={(e) => setRoomTitle(e.target.value)}
               className="mt-1"
             />
           </div>
@@ -62,7 +62,7 @@ export default function CreateRoomDialog({
             취소
           </Button>
           <Button
-            onClick={onCreateRoom}
+            onClick={() => onCreateRoom(roomTitle)}
             disabled={!roomTitle.trim()}
             className="bg-blue-600 hover:bg-blue-700"
           >
