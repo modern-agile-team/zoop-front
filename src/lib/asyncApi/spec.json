@@ -1,0 +1,74 @@
+{
+  "asyncapi": "2.5.0",
+  "info": {
+    "title": "quizzes-game-io-backend",
+    "description": "The Quizzes Game IO Backend Async API",
+    "version": "0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": {},
+  "components": {
+    "schemas": {
+      "AccountEnteredSocketEventBodyAccount": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "enteredAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": ["id", "enteredAt"]
+      },
+      "AccountEnteredSocketEventBody": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "$ref": "#/components/schemas/AccountEnteredSocketEventBodyAccount"
+          },
+          "currentActiveAccountsCount": {
+            "type": "number"
+          }
+        },
+        "required": ["account", "currentActiveAccountsCount"]
+      },
+      "AccountEnteredSocketEvent": {
+        "type": "object",
+        "properties": {
+          "eventName": {
+            "type": "string",
+            "example": "account.entered"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "body": {
+            "$ref": "#/components/schemas/AccountEnteredSocketEventBody"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": ["eventName", "timestamp", "body", "meta"]
+      }
+    }
+  },
+  "defaultContentType": "application/json",
+  "channels": {
+    "account.entered": {
+      "publish": {
+        "description": "유저가 접속했을 때 발생하는 이벤트",
+        "message": {
+          "payload": {
+            "$ref": "#/components/schemas/AccountEnteredSocketEvent"
+          },
+          "name": "AppGateway#handleConnection"
+        }
+      }
+    }
+  }
+}

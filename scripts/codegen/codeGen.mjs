@@ -3,18 +3,22 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-const GEN_PATH = '../../src/api/_generated';
+const GEN_PATH = {
+  API: '../../src/lib/orval/_generated',
+};
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(import.meta.url);
 
-const BASE_PATH = path.join(__dirname, GEN_PATH);
+const BASE_PATH = {
+  API: path.join(__dirname, GEN_PATH.API),
+};
 
 console.log('>>> generated 폴더를 삭제합니다.');
 
-const refreshCodegen = async () => {
+const refreshCodegen = async (type) => {
   return new Promise((resolve, reject) => {
-    fs.rm(BASE_PATH, { recursive: true }, (err) => {
+    fs.rm(BASE_PATH[type], { recursive: true }, (err) => {
       if (err && err.code !== 'ENOENT') {
         console.log('>>> 폴더 삭제 중 에러 발생:', err);
         reject(err);
@@ -51,7 +55,7 @@ const refreshCodegen = async () => {
   });
 };
 
-const results = await Promise.allSettled([refreshCodegen()]);
+const results = await Promise.allSettled([refreshCodegen('API')]);
 
 results.forEach((result, index) => {
   if (result.status === 'fulfilled') {

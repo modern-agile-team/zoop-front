@@ -30,7 +30,7 @@ jobs:
         run: yarn lint
 
       - name: 프로젝트 빌드
-        run: yarn build
+        run: yarn build:prod
         env:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
           VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
