@@ -6,6 +6,7 @@ import {
   type ServerToClientEvents,
 } from '@/lib/asyncApi/_generated/types';
 import { SOCKET_URL } from '@/shared/constant/env';
+import { STORAGE } from '@/shared/utils/storage';
 
 type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -27,7 +28,7 @@ class SocketClient {
       return this.socket;
     }
 
-    const token = localStorage.getItem('token');
+    const token = STORAGE.getAuthToken();
 
     this.socket = io(SOCKET_URL, {
       auth: {

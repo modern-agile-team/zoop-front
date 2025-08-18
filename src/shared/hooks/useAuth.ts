@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-const STORAGE_KEY = 'authToken';
+import { STORAGE } from '../utils/storage';
+
 const AUTH_QUERY_KEY = ['authToken'];
 
 export default function useAuth() {
@@ -11,7 +12,7 @@ export default function useAuth() {
     queryKey: AUTH_QUERY_KEY,
     queryFn: () => {
       if (typeof window === 'undefined') return false;
-      const token = localStorage.getItem(STORAGE_KEY);
+      const token = STORAGE.getAuthToken();
       return token;
     },
     select: (token) => {
@@ -22,12 +23,12 @@ export default function useAuth() {
   });
 
   const login = (token: string) => {
-    localStorage.setItem(STORAGE_KEY, token);
+    STORAGE.setAuthToken(token);
     queryClient.setQueryData(AUTH_QUERY_KEY, token);
   };
 
   const logout = () => {
-    localStorage.removeItem(STORAGE_KEY);
+    STORAGE.removeAuthToken();
     queryClient.setQueryData(AUTH_QUERY_KEY, null);
   };
 
