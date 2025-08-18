@@ -2,7 +2,10 @@ import { useNavigate } from '@tanstack/react-router';
 
 import useAuth from '@/shared/hooks/useAuth';
 
-import { BackgroundDecorations, HomeHeader, HeroSection, Footer } from './home';
+import BackgroundDecorations from './components/BackgroundDecorations';
+import Footer from './components/Footer';
+import HeroSection from './components/HeroSection';
+import HomeHeader from './components/HomeHeader';
 
 export default function HomePage() {
   const { isLoggedIn = false, login, logout } = useAuth();
