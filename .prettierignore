@@ -15,3 +15,5 @@ build/
 
 # Dependencies  
 node_modules/
+.yarn/
+.pnp.*
