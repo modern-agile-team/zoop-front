@@ -15,7 +15,7 @@ import { SocketEventHandler } from '../core/eventHandler';
  */
 export const emitSocketEvent = (
   eventName: ClientToServerEventNames,
-  data: ClientToServerEvents[ClientToServerEventNames]
+  data: Parameters<ClientToServerEvents[ClientToServerEventNames]>[0]
 ) => {
   try {
     const socketEventHandler = new SocketEventHandler(socketClient);

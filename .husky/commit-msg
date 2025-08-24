@@ -1,6 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# 현재 브랜치 이름 확인
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# 자동화 코드 생성 브랜치인지 확인
+if [[ "$current_branch" == chore/server_spec_* ]]; then
+  echo "🤖 자동화 코드 생성 브랜치 감지됨 - 커밋 메시지 검증 건너뜀"
+  exit 0
+fi
+
 echo "📝 커밋 메시지 포맷 검증 중..."
 
 # commitlint로 커밋 메시지 검증

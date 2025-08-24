@@ -30,9 +30,7 @@ export const useSocketListener = <T extends ServerToClientEventNames>(
     const socketEventHandler = new SocketEventHandler(socketClient);
 
     // 안정적인 콜백 함수 (재구독을 방지하기 위해)
-    const stableCallback: ServerToClientEvents[ServerToClientEventNames] = (
-      data
-    ) => callbackRef.current(data);
+    const stableCallback: typeof callback = callbackRef.current;
 
     socketEventHandler.on(eventName, stableCallback);
 
