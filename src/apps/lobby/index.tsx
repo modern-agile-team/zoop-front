@@ -6,7 +6,7 @@ import { gameRoomQuery } from '@/shared/service/api/query/room';
 import DesktopLayout from './components/layouts/DesktopLayout';
 import MobileLayout from './components/layouts/MobileLayout';
 import ResponsiveHeader from './components/ResponsiveHeader';
-import { PARTICIPANTS, ANNOUNCEMENTS } from './data/mockData';
+import { PARTICIPANTS } from './data/mockData';
 
 export default function LobbyPage() {
   const { isDesktop } = useResponsive();
@@ -17,7 +17,6 @@ export default function LobbyPage() {
     waitingRooms: data?.data.filter((v) => v.status === 'waiting') || [],
     playingRooms: data?.data.filter((v) => v.status === 'inProgress') || [],
     participants: PARTICIPANTS,
-    announcements: ANNOUNCEMENTS,
   };
 
   return (

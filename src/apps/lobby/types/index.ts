@@ -8,10 +8,3 @@ export interface Participant {
   isHost?: boolean;
   tier: UserTier;
 }
-
-export interface Announcement {
-  id: number;
-  title: string;
-  date: string;
-  content: string;
-}
