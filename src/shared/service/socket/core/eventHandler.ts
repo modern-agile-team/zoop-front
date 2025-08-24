@@ -42,7 +42,7 @@ export class SocketEventHandler {
 
   emit(
     event: ClientToServerEventNames,
-    data: ClientToServerEvents[ClientToServerEventNames]
+    data: Parameters<ClientToServerEvents[ClientToServerEventNames]>[0]
   ) {
     let socket = this.socketClient.getSocket();
 
@@ -52,6 +52,6 @@ export class SocketEventHandler {
     /**
      * TODO: ClientToServerEventNames가 정의되면 String을 제거하고 event로 변경
      */
-    socket.emit(String(event), data);
+    socket.emit(event, data);
   }
 }
