@@ -1,14 +1,16 @@
 import { Users, Play } from 'lucide-react';
 
+import type { GameRoomDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
+
 import ParticipantCard from '../ParticipantCard';
 import Room from '../Room';
 import { LobbyScrollSection } from '../Section';
 
-import type { Announcement, Participant, RoomInfo } from '../../types';
+import type { Announcement, Participant } from '../../types';
 
 interface DesktopLayoutProps {
-  waitingRooms: RoomInfo[];
-  playingRooms: RoomInfo[];
+  waitingRooms: GameRoomDto[];
+  playingRooms: GameRoomDto[];
   participants: Participant[];
   announcements: Announcement[];
 }
@@ -75,7 +77,7 @@ export default function DesktopLayout({
           <LobbyScrollSection.Content>
             <ul className="space-y-3 p-4" role="list">
               {waitingRooms.map((room) => (
-                <li key={room.roomId}>
+                <li key={room.id}>
                   <Room {...room} />
                 </li>
               ))}
@@ -96,7 +98,7 @@ export default function DesktopLayout({
           <LobbyScrollSection.Content>
             <ul className="space-y-3 p-4" role="list">
               {playingRooms.map((room) => (
-                <li key={room.roomId}>
+                <li key={room.id}>
                   <Room {...room} />
                 </li>
               ))}

@@ -1,33 +1,37 @@
+import type { GameRoomDtoStatus } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/components/ui/button';
 
 import { getButtonStyles, getButtonText } from '../utils/roomHelpers';
 
-import type { RoomStatus } from '../../../types';
-
 interface RoomActionProps {
-  status: RoomStatus;
-  isJoinable: boolean;
+  status: GameRoomDtoStatus;
   roomId: string;
+  currentMembersCount: number;
+  maxMembersCount: number;
 }
 
 export default function RoomAction({
   status,
-  isJoinable,
+  currentMembersCount,
+  maxMembersCount,
   roomId,
 }: RoomActionProps) {
+  const isJoinable =
+    status === 'waiting' && currentMembersCount < maxMembersCount;
+
   return (
     <footer>
       <Button
-        disabled={status === 'full'}
+        disabled={!isJoinable}
         size="sm"
         className={cn(
           'w-full h-8 sm:h-10 transition-all duration-300 font-medium text-xs sm:text-sm',
-          getButtonStyles(status, isJoinable)
+          getButtonStyles({ status, currentMembersCount, maxMembersCount })
         )}
         aria-describedby={`room-${roomId}-status`}
       >
-        {getButtonText(status)}
+        {getButtonText({ status, currentMembersCount, maxMembersCount })}
       </Button>
     </footer>
   );

@@ -1,38 +1,4 @@
-import type { RoomInfo, Participant, Announcement } from '../types';
-import {
-  generateRoomTitle,
-  getRandomInt,
-  getRandomBoolean,
-} from '../utils/helpers';
-
-/**
- * 게임 중인 방들 모의 데이터
- */
-export const PLAYING_ROOMS: RoomInfo[] = Array.from({ length: 8 }, (_, i) => ({
-  roomId: `${i + 21}`,
-  title: `진행중인 게임 ${i + 1} - 흥미진진한 퀴즈 배틀!`,
-  participantInfo: {
-    current: getRandomInt(2, 8),
-    max: 8,
-  },
-  status: 'playing',
-  isPrivate: getRandomBoolean(0.3),
-}));
-
-/**
- * 대기 중인 방들 모의 데이터
- */
-export const WAITING_ROOMS: RoomInfo[] = Array.from({ length: 15 }, (_, i) => {
-  const current = getRandomInt(0, 7);
-  const max = 8;
-  return {
-    roomId: `${i + 1}`,
-    title: generateRoomTitle(i),
-    participantInfo: { current, max },
-    status: current >= max ? 'full' : 'waiting',
-    isPrivate: getRandomBoolean(0.2),
-  } as RoomInfo;
-});
+import type { Participant, Announcement } from '../types';
 
 /**
  * 참여자 목록 모의 데이터
