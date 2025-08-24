@@ -1,9 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/room/$roomId')({
-  component: RouteComponent,
-});
+import GameRoomDetailPage from '@/apps/room/[id]';
 
-function RouteComponent() {
-  return <div>Hello "/room/$roomId"!</div>;
-}
+export const Route = createFileRoute('/room/$roomId')({
+  component: GameRoomDetailPage,
+});
