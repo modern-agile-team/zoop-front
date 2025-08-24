@@ -16,7 +16,8 @@
     "codegen": "yarn node ./scripts/codegen/codeGen.mjs && yarn node ./scripts/codegen/postCodeGen.mjs",
     "codegen:sync": "yarn node ./scripts/codegen/syncCodeGenSpec.mjs",
     "codegen:socket": "node scripts/codegen-asyncapi.js",
-    "codegen:all": "yarn codegen && yarn codegen:socket && yarn check"
+    "codegen:all": "yarn codegen && yarn codegen:socket && yarn check",
+    "codegen:auto": "bash ./scripts/codegen/automationCodegen.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
