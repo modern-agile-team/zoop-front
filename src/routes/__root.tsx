@@ -3,6 +3,8 @@ import { Outlet, createRootRoute, useLocation } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { OverlayProvider } from 'overlay-kit';
 
+import { ToastContainer } from '@/shared/components/ToastContainer';
+
 const queryClient = new QueryClient();
 
 const Component = () => {
@@ -12,6 +14,7 @@ const Component = () => {
     <QueryClientProvider client={queryClient}>
       <OverlayProvider key={location.pathname}>
         <Outlet />
+        <ToastContainer />
         <TanStackRouterDevtools />
       </OverlayProvider>
     </QueryClientProvider>
