@@ -185,7 +185,7 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   content += '  ServerToClientEvents[T]\n';
   content += '>[0];\n\n';
   content +=
-    'export type ClientToServerEventData<T extends ClientToServerEventNames> = Parameters<ClientToServerEvents[T]>;\n\n';
+    'export type ClientToServerEventData<T extends ClientToServerEventNames> = Parameters<ClientToServerEvents[T]>[0];\n\n';
 
   // ServerToClientEvents 인터페이스 생성
   content += '// Socket.io 이벤트 맵 정의\n';
