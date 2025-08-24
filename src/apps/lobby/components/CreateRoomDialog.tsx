@@ -13,10 +13,14 @@ import { Label } from '@/shared/components/ui/label';
 
 import { GAME_SETTINGS } from '../constants';
 
+type RoomInfo = {
+  title: string;
+};
+
 interface CreateRoomDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateRoom: (roomTitle: string) => void;
+  onCreateRoom: (roomInfo: RoomInfo) => void;
 }
 
 export default function CreateRoomDialog({
@@ -62,7 +66,7 @@ export default function CreateRoomDialog({
             취소
           </Button>
           <Button
-            onClick={() => onCreateRoom(roomTitle)}
+            onClick={() => onCreateRoom({ title: roomTitle })}
             disabled={!roomTitle.trim()}
             className="bg-blue-600 hover:bg-blue-700"
           >
