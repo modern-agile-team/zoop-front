@@ -184,9 +184,8 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
     'export type ServerToClientEventData<T extends ServerToClientEventNames> = Parameters<\n';
   content += '  ServerToClientEvents[T]\n';
   content += '>[0];\n\n';
-
   content +=
-    'export type ClientToServerEventData<T extends ClientToServerEventNames> = ClientToServerEvents[T];\n\n';
+    'export type ClientToServerEventData<T extends ClientToServerEventNames> = Parameters<ClientToServerEvents[T]>[0];\n\n';
 
   // ServerToClientEvents 인터페이스 생성
   content += '// Socket.io 이벤트 맵 정의\n';
@@ -250,6 +249,8 @@ function main() {
   }
 
   let allSuccess = true;
+
+  fs.rmSync('src/lib/asyncApi/_generated', { recursive: true, force: true });
 
   Object.entries(projects).forEach(([projectName, projectConfig]) => {
     console.log(`\n📦 Processing project: ${projectName}`);

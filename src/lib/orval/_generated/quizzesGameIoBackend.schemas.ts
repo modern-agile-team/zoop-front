@@ -37,7 +37,20 @@ export interface GameRoomDto {
   hostId: string;
   status: GameRoomDtoStatus;
   title: string;
-  maxPlayersCount: number;
+  maxMembersCount: number;
+  currentMembersCount: number;
+}
+export type GameRoomMemberDtoRole = 'host' | 'player';
+export interface GameRoomMemberDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  accountId: string;
+  gameRoomId: string;
+  role: GameRoomMemberDtoRole;
+}
+export interface GameRoomCollectionDto {
+  data: GameRoomDto[];
 }
 /**
  * error code
@@ -116,4 +129,67 @@ export type CreateGameRoomControllerCreateGameRoom401 = {
   message?: string;
   /** error code */
   code?: CreateGameRoomControllerCreateGameRoom401Code;
+};
+export type ListGameRoomsControllerListGameRoomsParams = {
+  /**
+     *
+        정렬 쿼리. 다중 정렬은 콤마(,)로 구분.
+        허용되지 않은 정렬 필드 및 방향은 무시합니다.
+        형식: field:asc | field:desc
+        허용 필드: createdAt,
+        예: sort=-title:asc,createdAt:asc
+          
+     */
+  sort?: string;
+};
+/**
+ * error code
+ */
+export type JoinGameRoomControllerJoinGameRoom400Code =
+  'COMMON.REQUEST_VALIDATION_ERROR';
+export type JoinGameRoomControllerJoinGameRoom400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: JoinGameRoomControllerJoinGameRoom400Code;
+};
+/**
+ * error code
+ */
+export type JoinGameRoomControllerJoinGameRoom401Code = 'COMMON.UNAUTHORIZED';
+export type JoinGameRoomControllerJoinGameRoom401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: JoinGameRoomControllerJoinGameRoom401Code;
+};
+/**
+ * error code
+ */
+export type JoinGameRoomControllerJoinGameRoom404Code = 'GAME_ROOM.NOT_FOUND';
+export type JoinGameRoomControllerJoinGameRoom404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: JoinGameRoomControllerJoinGameRoom404Code;
+};
+/**
+ * error code
+ */
+export type JoinGameRoomControllerJoinGameRoom409Code =
+  | 'GAME_ROOM_MEMBER.ALREADY_EXISTS'
+  | 'GAME_ROOM_MEMBER.CAPACITY_EXCEEDED';
+export type JoinGameRoomControllerJoinGameRoom409 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: JoinGameRoomControllerJoinGameRoom409Code;
 };

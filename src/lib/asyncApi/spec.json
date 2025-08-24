@@ -54,6 +54,62 @@
           }
         },
         "required": ["eventName", "timestamp", "body", "meta"]
+      },
+      "GameRoomSubscribeDto": {
+        "type": "object",
+        "properties": {
+          "roomId": {
+            "type": "string"
+          }
+        },
+        "required": ["roomId"]
+      },
+      "GameRoomMemberRole": {
+        "type": "string",
+        "enum": ["host", "player"]
+      },
+      "GameRoomMemberJoinedSocketEventBody": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string"
+          },
+          "gameRoomId": {
+            "type": "string"
+          },
+          "role": {
+            "title": "GameRoomMemberRole",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomMemberRole"
+              }
+            ]
+          },
+          "currentMembersCount": {
+            "type": "number"
+          }
+        },
+        "required": ["accountId", "gameRoomId", "role", "currentMembersCount"]
+      },
+      "GameRoomMemberJoinedSocketEvent": {
+        "type": "object",
+        "properties": {
+          "eventName": {
+            "type": "string",
+            "example": "game_room.member_joined"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "body": {
+            "$ref": "#/components/schemas/GameRoomMemberJoinedSocketEventBody"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": ["eventName", "timestamp", "body", "meta"]
       }
     }
   },
@@ -67,6 +123,38 @@
             "$ref": "#/components/schemas/AccountEnteredSocketEvent"
           },
           "name": "AppGateway#handleConnection"
+        }
+      }
+    },
+    "game_room.subscribe": {
+      "subscribe": {
+        "tags": [
+          {
+            "name": "game_room"
+          }
+        ],
+        "summary": "특정 게임룸 구독",
+        "message": {
+          "payload": {
+            "$ref": "#/components/schemas/GameRoomSubscribeDto"
+          },
+          "name": "JoinGameRoomGateway#subscribe"
+        }
+      }
+    },
+    "game_room.member_joined": {
+      "publish": {
+        "tags": [
+          {
+            "name": "game_room"
+          }
+        ],
+        "description": "유저가 게임방에 접속",
+        "message": {
+          "payload": {
+            "$ref": "#/components/schemas/GameRoomMemberJoinedSocketEvent"
+          },
+          "name": "GameRoomMemberJoinedHandler#handle"
         }
       }
     }

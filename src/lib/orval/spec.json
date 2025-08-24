@@ -250,6 +250,178 @@
         ],
         "summary": "게임 방 생성",
         "tags": ["game-room"]
+      },
+      "get": {
+        "operationId": "ListGameRoomsController_listGameRooms",
+        "parameters": [
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "\n    정렬 쿼리. 다중 정렬은 콤마(,)로 구분.\n    허용되지 않은 정렬 필드 및 방향은 무시합니다.\n    형식: field:asc | field:desc\n    허용 필드: createdAt,\n    예: sort=-title:asc,createdAt:asc\n      ",
+            "allowFields": {},
+            "schema": {
+              "default": "createdAt:asc",
+              "example": "createdAt:asc",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameRoomCollectionDto"
+                }
+              }
+            }
+          }
+        },
+        "summary": "게임방 목록 조회",
+        "tags": ["game-room"]
+      }
+    },
+    "/game-room/{gameRoomId}/members": {
+      "post": {
+        "operationId": "JoinGameRoomController_joinGameRoom",
+        "parameters": [
+          {
+            "name": "gameRoomId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameRoomMemberDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "GAME_ROOM.NOT_FOUND",
+                      "enum": ["GAME_ROOM.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "GAME_ROOM_MEMBER.ALREADY_EXISTS",
+                      "enum": [
+                        "GAME_ROOM_MEMBER.ALREADY_EXISTS",
+                        "GAME_ROOM_MEMBER.CAPACITY_EXCEEDED"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "게임 방 입장",
+        "tags": ["room-member"]
       }
     }
   },
@@ -344,7 +516,10 @@
           "title": {
             "type": "string"
           },
-          "maxPlayersCount": {
+          "maxMembersCount": {
+            "type": "number"
+          },
+          "currentMembersCount": {
             "type": "number"
           }
         },
@@ -355,8 +530,55 @@
           "hostId",
           "status",
           "title",
-          "maxPlayersCount"
+          "maxMembersCount",
+          "currentMembersCount"
         ]
+      },
+      "GameRoomMemberDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "gameRoomId": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["host", "player"]
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "accountId",
+          "gameRoomId",
+          "role"
+        ]
+      },
+      "GameRoomCollectionDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameRoomDto"
+            }
+          }
+        },
+        "required": ["data"]
       }
     }
   }

@@ -1,6 +1,6 @@
 import type {
+  ClientToServerEventData,
   ClientToServerEventNames,
-  ClientToServerEvents,
 } from '@/lib/asyncApi/_generated/types';
 
 import { socketClient } from '../core/client';
@@ -15,7 +15,7 @@ import { SocketEventHandler } from '../core/eventHandler';
  */
 export const emitSocketEvent = (
   eventName: ClientToServerEventNames,
-  data: Parameters<ClientToServerEvents[ClientToServerEventNames]>[0]
+  data: ClientToServerEventData<ClientToServerEventNames>
 ) => {
   try {
     const socketEventHandler = new SocketEventHandler(socketClient);

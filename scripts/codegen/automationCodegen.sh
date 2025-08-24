@@ -30,7 +30,7 @@ git checkout -b "$new_branch"
 yarn codegen:sync
 sleep 2
 
-yarn codegen
+yarn codegen:all
 sleep 2
 
 # 변경 사항이 있는지 확인하고, 있으면 커밋 및 푸시
