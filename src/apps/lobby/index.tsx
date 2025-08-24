@@ -7,15 +7,20 @@ import DesktopLayout from './components/layouts/DesktopLayout';
 import MobileLayout from './components/layouts/MobileLayout';
 import ResponsiveHeader from './components/ResponsiveHeader';
 import { PARTICIPANTS } from './data/mockData';
+import { roomFilters } from './utils/gameRoomPolicy';
 
 export default function LobbyPage() {
   const { isDesktop } = useResponsive();
 
   const { data } = useQuery(gameRoomQuery.getList());
 
+  const allRooms = data?.data || [];
+  const waitingRooms = roomFilters.waiting(allRooms);
+  const playingRooms = roomFilters.inProgress(allRooms);
+
   const layoutProps = {
-    waitingRooms: data?.data.filter((v) => v.status === 'waiting') || [],
-    playingRooms: data?.data.filter((v) => v.status === 'inProgress') || [],
+    waitingRooms,
+    playingRooms,
     participants: PARTICIPANTS,
   };
 
