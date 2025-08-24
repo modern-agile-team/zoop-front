@@ -13,6 +13,7 @@ import {
 import { gameRoomQuery } from '@/shared/service/api/query/room';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
+import { toast } from '@/shared/utils/toast';
 
 import CreateRoomDialog from './CreateRoomDialog';
 import { PARTICIPANTS } from '../data/mockData';
@@ -178,12 +179,18 @@ function CreateRoomButton() {
               open={isOpen}
               onOpenChange={close}
               onCreateRoom={async (roomInfo) => {
-                const roomData = await createRoom(roomInfo);
-                router.navigate({
-                  to: '/room/$roomId',
-                  params: { roomId: roomData.id },
-                });
-                close();
+                try {
+                  const roomData = await createRoom(roomInfo);
+                  await router.navigate({
+                    to: '/room/$roomId',
+                    params: { roomId: roomData.id },
+                  });
+                  toast.success('방을 생성했습니다.');
+                } catch {
+                  toast.error('방 생성에 실패했습니다.');
+                } finally {
+                  close();
+                }
               }}
             />
           ));
