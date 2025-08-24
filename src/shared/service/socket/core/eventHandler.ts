@@ -1,6 +1,6 @@
 import type {
+  ClientToServerEventData,
   ClientToServerEventNames,
-  ClientToServerEvents,
   ServerToClientEventNames,
   ServerToClientEvents,
 } from '@/lib/asyncApi/_generated/types';
@@ -42,7 +42,7 @@ export class SocketEventHandler {
 
   emit(
     event: ClientToServerEventNames,
-    data: Parameters<ClientToServerEvents[ClientToServerEventNames]>[0]
+    data: ClientToServerEventData<ClientToServerEventNames>
   ) {
     let socket = this.socketClient.getSocket();
 

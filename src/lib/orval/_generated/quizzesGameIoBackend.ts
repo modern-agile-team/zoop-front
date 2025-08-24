@@ -8,7 +8,10 @@
 import type {
   AuthTokenDto,
   CreateGameRoomDto,
+  GameRoomCollectionDto,
   GameRoomDto,
+  GameRoomMemberDto,
+  ListGameRoomsControllerListGameRoomsParams,
   SignInWithUsernameDto,
   SignUpWithUsernameDto,
 } from './quizzesGameIoBackend.schemas';
@@ -57,6 +60,29 @@ export const createGameRoomControllerCreateGameRoom = (
   });
 };
 
+/**
+ * @summary 게임방 목록 조회
+ */
+export const listGameRoomsControllerListGameRooms = (
+  params?: ListGameRoomsControllerListGameRoomsParams
+) => {
+  return orvalInstance<GameRoomCollectionDto>({
+    url: `/game-rooms`,
+    method: 'GET',
+    params,
+  });
+};
+
+/**
+ * @summary 게임 방 입장
+ */
+export const joinGameRoomControllerJoinGameRoom = (gameRoomId: string) => {
+  return orvalInstance<GameRoomMemberDto>({
+    url: `/game-room/${gameRoomId}/members`,
+    method: 'POST',
+  });
+};
+
 export type SignUpWithUsernameControllerSignUpWithUsernameResult = NonNullable<
   Awaited<ReturnType<typeof signUpWithUsernameControllerSignUpWithUsername>>
 >;
@@ -65,4 +91,10 @@ export type SignInWithUsernameControllerSignInWithUsernameResult = NonNullable<
 >;
 export type CreateGameRoomControllerCreateGameRoomResult = NonNullable<
   Awaited<ReturnType<typeof createGameRoomControllerCreateGameRoom>>
+>;
+export type ListGameRoomsControllerListGameRoomsResult = NonNullable<
+  Awaited<ReturnType<typeof listGameRoomsControllerListGameRooms>>
+>;
+export type JoinGameRoomControllerJoinGameRoomResult = NonNullable<
+  Awaited<ReturnType<typeof joinGameRoomControllerJoinGameRoom>>
 >;
