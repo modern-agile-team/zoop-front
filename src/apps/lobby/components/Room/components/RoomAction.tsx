@@ -1,33 +1,30 @@
+import type { GameRoomDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
 import { cn } from '@/lib/utils';
 import { Button } from '@/shared/components/ui/button';
 
 import { getButtonStyles, getButtonText } from '../utils/roomHelpers';
 
-import type { RoomStatus } from '../../../types';
+import { calculateRoomState } from '../../../utils/gameRoomPolicy';
 
 interface RoomActionProps {
-  status: RoomStatus;
-  isJoinable: boolean;
-  roomId: string;
+  room: GameRoomDto;
 }
 
-export default function RoomAction({
-  status,
-  isJoinable,
-  roomId,
-}: RoomActionProps) {
+export default function RoomAction({ room }: RoomActionProps) {
+  const state = calculateRoomState(room);
+
   return (
     <footer>
       <Button
-        disabled={status === 'full'}
+        disabled={!state.isJoinable}
         size="sm"
         className={cn(
           'w-full h-8 sm:h-10 transition-all duration-300 font-medium text-xs sm:text-sm',
-          getButtonStyles(status, isJoinable)
+          getButtonStyles(room)
         )}
-        aria-describedby={`room-${roomId}-status`}
+        aria-describedby={`room-${room.id}-status`}
       >
-        {getButtonText(status)}
+        {getButtonText(room)}
       </Button>
     </footer>
   );

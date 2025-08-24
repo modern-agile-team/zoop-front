@@ -1,3 +1,4 @@
+import type { GameRoomDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
 import { cn } from '@/lib/utils';
 import { useResponsiveClasses } from '@/shared/hooks/useResponsive';
 
@@ -6,18 +7,10 @@ import RoomHeader from './components/RoomHeader';
 import RoomInfoSection from './components/RoomInfo';
 import { getStatusConfig, getCardStyles } from './utils/roomHelpers';
 
-import type { RoomInfo } from '../../types';
+export default function Room(roomInfo: GameRoomDto) {
+  const { title, id } = roomInfo;
 
-export default function Room({
-  title,
-  roomId,
-  participantInfo,
-  status = 'waiting',
-  isPrivate = false,
-}: RoomInfo) {
-  const isJoinable =
-    status === 'waiting' && participantInfo.current < participantInfo.max;
-  const statusConfig = getStatusConfig(status);
+  const statusConfig = getStatusConfig(roomInfo);
 
   const cardPaddingStyles = useResponsiveClasses({
     mobile: 'p-3',
@@ -29,21 +22,21 @@ export default function Room({
     <article
       className={cn(
         'group relative overflow-hidden rounded-lg border transition-all duration-300 transform',
-        getCardStyles(status, isJoinable)
+        getCardStyles(roomInfo)
       )}
       role="button"
       tabIndex={0}
-      aria-label={`방 ${roomId}: ${title} - ${statusConfig.text}`}
+      aria-label={`방 ${id}: ${title} - ${statusConfig.text}`}
     >
       <div className={`flex flex-col gap-2 ${cardPaddingStyles}`}>
-        <RoomHeader roomId={roomId} title={title} statusConfig={statusConfig} />
+        <RoomHeader title={title} statusConfig={statusConfig} />
 
         <RoomInfoSection
-          participantInfo={participantInfo}
-          isPrivate={isPrivate}
+          maxMembersCount={roomInfo.maxMembersCount}
+          currentMembersCount={roomInfo.currentMembersCount}
         />
 
-        <RoomAction status={status} isJoinable={isJoinable} roomId={roomId} />
+        <RoomAction room={roomInfo} />
       </div>
     </article>
   );
