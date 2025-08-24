@@ -18,7 +18,7 @@ export type ServerToClientEventData<T extends ServerToClientEventNames> =
   Parameters<ServerToClientEvents[T]>[0];
 
 export type ClientToServerEventData<T extends ClientToServerEventNames> =
-  Parameters<ClientToServerEvents[T]>;
+  Parameters<ClientToServerEvents[T]>[0];
 
 // Socket.io 이벤트 맵 정의
 export interface ServerToClientEvents {
