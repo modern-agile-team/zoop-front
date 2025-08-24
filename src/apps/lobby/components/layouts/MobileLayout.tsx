@@ -6,13 +6,12 @@ import ParticipantCard from '../ParticipantCard';
 import Room from '../Room';
 import { LobbyScrollSection } from '../Section';
 
-import type { Announcement, Participant } from '../../types';
+import type { Participant } from '../../types';
 
 interface MobileLayoutProps {
   waitingRooms: GameRoomDto[];
   playingRooms: GameRoomDto[];
   participants: Participant[];
-  announcements: Announcement[];
 }
 
 export default function MobileLayout({
