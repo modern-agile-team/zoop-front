@@ -3,7 +3,7 @@ import { toast as toastifyToast } from 'react-toastify';
 
 // 기본 토스트 옵션 설정
 const defaultOptions: ToastOptions = {
-  position: 'top-right',
+  position: 'top-center',
   autoClose: 3000,
   hideProgressBar: false,
   closeOnClick: true,
