@@ -1,6 +1,7 @@
 import ky, { HTTPError } from 'ky';
 
 import { API_URL } from '@/shared/constant/env';
+import { STORAGE } from '@/shared/utils/storage';
 
 export const connectApi = ky.create({
   prefixUrl: API_URL,
@@ -11,7 +12,7 @@ export const connectApi = ky.create({
   hooks: {
     beforeRequest: [
       (request) => {
-        const token = localStorage.getItem('token');
+        const token = STORAGE.getAuthToken();
         request.headers.set('Authorization', `Bearer ${token}`);
       },
     ],

@@ -1,3 +1,5 @@
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from '@tanstack/react-router';
 import { Plus, Gamepad2, Users } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 import { useState } from 'react';
@@ -8,6 +10,7 @@ import {
   useResponsive,
   useResponsiveClasses,
 } from '@/shared/hooks/useResponsive';
+import { gameRoomQuery } from '@/shared/service/api/query/room';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 
@@ -137,7 +140,10 @@ function OnlineCounter() {
 
 function CreateRoomButton() {
   const { deviceType } = useResponsive();
+  const router = useRouter();
   const buttonSize = deviceType === 'mobile' ? 'sm' : 'default';
+
+  const { mutateAsync: createRoom } = useMutation(gameRoomQuery.createRoom);
 
   const iconSizeStyles = useResponsiveClasses({
     mobile: 'w-3 h-3',
@@ -167,17 +173,20 @@ function CreateRoomButton() {
     <>
       <Button
         onClick={async () => {
-          const data = await overlay.openAsync(({ isOpen, close }) => (
+          overlay.open(({ isOpen, close }) => (
             <CreateRoomDialog
               open={isOpen}
               onOpenChange={close}
-              onCreateRoom={(roomTitle) => {
-                close(roomTitle);
+              onCreateRoom={async (roomInfo) => {
+                const roomData = await createRoom(roomInfo);
+                router.navigate({
+                  to: '/room/$roomId',
+                  params: { roomId: roomData.id },
+                });
+                close();
               }}
             />
           ));
-
-          console.log('새 방 생성:', data);
         }}
         size={buttonSize}
         className={`bg-blue-600 hover:bg-blue-700 text-white flex items-center ${gapSizeStyles} ${textSizeStyles} ${buttonPaddingStyles}`}
