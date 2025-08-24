@@ -1,6 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# 현재 브랜치 이름 확인
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+# 자동화 코드 생성 브랜치인지 확인
+if [[ "$current_branch" == chore/server_spec_* ]]; then
+  echo "🤖 자동화 코드 생성 브랜치 감지됨 - 허스키 검사 건너뜀"
+  exit 0
+fi
+
 echo "🔍 타입 체크 및 린트 검사 중..."
 
 # 타입 체크

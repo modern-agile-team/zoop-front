@@ -2,14 +2,14 @@
 
 createPR() {
     # PR 생성 로직
-    gh pr create --base develop --title "chore: 서버 스펙 변경에 따른 codegen 업데이트" --body "/reviewbot: ignore \n Generated server specifications update" --head "$new_branch"
+    gh pr create --base develop --title "chore: 코드젠" --body "/reviewbot: ignore \n Generated server specifications update" --head "$new_branch"
     if [ $? -eq 0 ]; then
         echo "PR created successfully."
     else
         echo "Failed to create PR."
         git checkout "$original_branch"
         return 1
-    fi
+    fi  
 }
 
 # 현재 브랜치 이름 저장

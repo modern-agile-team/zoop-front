@@ -132,21 +132,12 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
   const modelsDir = path.basename(modelsPath);
   let content = '// Auto-generated Socket event types\n\n';
 
-  // 모델 타입들 re-export
   const schemas = Object.keys(asyncApiSpec.components?.schemas || {});
-  schemas.forEach((schemaName) => {
-    content += `export type { ${schemaName} } from './${modelsDir}/${schemaName}';\n`;
-  });
-
-  content += '\n';
-
   // 이벤트별 import (타입 사용을 위해)
   const eventTypes = [];
   schemas.forEach((schemaName) => {
-    if (schemaName.includes('SocketEvent')) {
-      content += `import type { ${schemaName} } from './${modelsDir}/${schemaName}';\n`;
-      eventTypes.push(schemaName);
-    }
+    content += `import type { ${schemaName} } from './${modelsDir}/${schemaName}';\n`;
+    eventTypes.push(schemaName);
   });
 
   content += '\n';
