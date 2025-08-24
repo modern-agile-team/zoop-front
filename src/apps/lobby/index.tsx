@@ -1,21 +1,21 @@
+import { useQuery } from '@tanstack/react-query';
+
 import { useResponsive } from '@/shared/hooks/useResponsive';
+import { gameRoomQuery } from '@/shared/service/api/query/room';
 
 import DesktopLayout from './components/layouts/DesktopLayout';
 import MobileLayout from './components/layouts/MobileLayout';
 import ResponsiveHeader from './components/ResponsiveHeader';
-import {
-  PLAYING_ROOMS,
-  WAITING_ROOMS,
-  PARTICIPANTS,
-  ANNOUNCEMENTS,
-} from './data/mockData';
+import { PARTICIPANTS, ANNOUNCEMENTS } from './data/mockData';
 
 export default function LobbyPage() {
   const { isDesktop } = useResponsive();
 
+  const { data } = useQuery(gameRoomQuery.getList());
+
   const layoutProps = {
-    waitingRooms: WAITING_ROOMS,
-    playingRooms: PLAYING_ROOMS,
+    waitingRooms: data?.data.filter((v) => v.status === 'waiting') || [],
+    playingRooms: data?.data.filter((v) => v.status === 'inProgress') || [],
     participants: PARTICIPANTS,
     announcements: ANNOUNCEMENTS,
   };

@@ -6,7 +6,6 @@ import {
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 
 interface RoomHeaderProps {
-  roomId: string;
   title: string;
   statusConfig: {
     color: string;
@@ -16,19 +15,9 @@ interface RoomHeaderProps {
   };
 }
 
-export default function RoomHeader({
-  roomId,
-  title,
-  statusConfig,
-}: RoomHeaderProps) {
+export default function RoomHeader({ title, statusConfig }: RoomHeaderProps) {
   const { deviceType } = useResponsive();
   const StatusIcon = statusConfig.icon;
-
-  const roomIdSizeStyles = useResponsiveClasses({
-    mobile: 'size-6 text-xs',
-    tablet: 'size-6 sm:size-8 text-xs sm:text-sm',
-    desktop: 'size-8 text-sm',
-  });
 
   const titleSize = RESPONSIVE_TEXT_SIZE.small[deviceType];
 
@@ -53,13 +42,6 @@ export default function RoomHeader({
   return (
     <header className="flex items-center justify-between gap-2">
       <div className="flex gap-2 items-center min-w-0 flex-1">
-        <span
-          className={`flex items-center justify-center ${roomIdSizeStyles} bg-blue-100 text-blue-600 rounded-lg font-semibold flex-shrink-0`}
-          aria-label={`방 번호 ${roomId}`}
-        >
-          {roomId}
-        </span>
-
         <h3
           className={`${titleSize} font-semibold text-gray-900 line-clamp-2 leading-tight min-w-0`}
         >
