@@ -8,13 +8,9 @@ import RoomInfoSection from './components/RoomInfo';
 import { getStatusConfig, getCardStyles } from './utils/roomHelpers';
 
 export default function Room(roomInfo: GameRoomDto) {
-  const { title, id, currentMembersCount, maxMembersCount, status } = roomInfo;
+  const { title, id } = roomInfo;
 
-  const statusConfig = getStatusConfig({
-    maxMembersCount,
-    currentMembersCount,
-    status,
-  });
+  const statusConfig = getStatusConfig(roomInfo);
 
   const cardPaddingStyles = useResponsiveClasses({
     mobile: 'p-3',
@@ -26,7 +22,7 @@ export default function Room(roomInfo: GameRoomDto) {
     <article
       className={cn(
         'group relative overflow-hidden rounded-lg border transition-all duration-300 transform',
-        getCardStyles({ maxMembersCount, currentMembersCount, status })
+        getCardStyles(roomInfo)
       )}
       role="button"
       tabIndex={0}
@@ -36,16 +32,11 @@ export default function Room(roomInfo: GameRoomDto) {
         <RoomHeader title={title} statusConfig={statusConfig} />
 
         <RoomInfoSection
-          maxMembersCount={maxMembersCount}
-          currentMembersCount={currentMembersCount}
+          maxMembersCount={roomInfo.maxMembersCount}
+          currentMembersCount={roomInfo.currentMembersCount}
         />
 
-        <RoomAction
-          status={status}
-          roomId={id}
-          currentMembersCount={currentMembersCount}
-          maxMembersCount={maxMembersCount}
-        />
+        <RoomAction room={roomInfo} />
       </div>
     </article>
   );
