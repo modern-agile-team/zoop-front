@@ -5,6 +5,7 @@ import {
   openSignupDialog,
 } from '@/apps/home/components/AuthDialog';
 import { Button } from '@/shared/components/ui/button';
+import { toast } from '@/shared/utils/toast';
 
 interface ActionButtonsProps {
   isLoggedIn: boolean;
@@ -18,16 +19,26 @@ export default function ActionButtons({
   onNavigateToLobby,
 }: ActionButtonsProps) {
   const handleLogin = async () => {
-    const token = await openLoginDialog();
-    if (token) {
-      onLogin(token);
+    try {
+      const token = await openLoginDialog();
+      toast.info('환영합니다!');
+      if (token) {
+        onLogin(token);
+      }
+    } catch {
+      toast.error('로그인에 실패했습니다.');
     }
   };
 
   const handleSignup = async () => {
-    const token = await openSignupDialog();
-    if (token) {
-      onLogin(token);
+    try {
+      const token = await openSignupDialog();
+      toast.info('환영합니다!');
+      if (token) {
+        onLogin(token);
+      }
+    } catch {
+      toast.error('회원가입에 실패했습니다.');
     }
   };
 
