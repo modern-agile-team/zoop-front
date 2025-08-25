@@ -14,7 +14,7 @@ export default defineConfig({
           path: 'src/shared/service/api/client/index.ts',
           name: 'orvalInstance',
         },
-        enumGenerationType: 'union',
+        enumGenerationType: 'const',
       },
     },
   },
