@@ -34,7 +34,7 @@ export default function GameRoomDetailPage() {
   };
 
   const handleBackToLobby = () => {
-    return navigate({ to: '/lobby', replace: false });
+    navigate({ to: '/lobby', replace: false });
   };
 
   const { mutateAsync: joinRoom } = useMutation({
@@ -47,8 +47,8 @@ export default function GameRoomDetailPage() {
       switch (code) {
         case 'GAME_ROOM.NOT_FOUND':
         case 'GAME_ROOM_MEMBER.CAPACITY_EXCEEDED':
-          await handleBackToLobby();
           toast.error(ERROR_MESSAGE_MAP[code]);
+          handleBackToLobby();
           break;
         default:
           toast.error(ERROR_MESSAGE_MAP[code]);
