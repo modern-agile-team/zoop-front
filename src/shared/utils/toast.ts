@@ -4,7 +4,7 @@ import { toast as toastifyToast } from 'react-toastify';
 // 기본 토스트 옵션 설정
 const defaultOptions: ToastOptions = {
   position: 'top-center',
-  autoClose: 3000,
+  autoClose: 1000,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: true,
@@ -21,7 +21,6 @@ const toastTypeOptions = {
   error: {
     ...defaultOptions,
     type: 'error' as const,
-    autoClose: 5000, // 에러 메시지는 조금 더 길게
   },
   info: {
     ...defaultOptions,
