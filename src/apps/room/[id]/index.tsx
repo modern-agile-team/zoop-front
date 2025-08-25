@@ -1,58 +1,66 @@
+import { useMutation } from '@tanstack/react-query';
 import { useParams, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Button } from '@/shared/components/ui/button';
+import { parseApiError } from '@/shared/service/api/client/ApiError';
+import { ERROR_MESSAGE_MAP } from '@/shared/service/api/constant/errorMessage';
+import { gameRoomQuery } from '@/shared/service/api/query/room';
+import { toast } from '@/shared/utils/toast';
 
 import GameInfoCard from './components/GameInfoCard';
 import GameRoomHeader from './components/GameRoomHeader';
 import PlayersList from './components/PlayersList';
 import ReadyControls from './components/ReadyControls';
 import { mockGameRoom, mockCurrentUser } from './data/mockData';
-import type { GameRoom } from './types';
 
 export default function GameRoomDetailPage() {
   const { roomId } = useParams({ from: '/room/$roomId' });
   const navigate = useNavigate();
 
-  // 실제로는 API나 소켓을 통해 데이터를 받아올 것
-  const [room, setRoom] = useState<GameRoom>(mockGameRoom);
-  const [currentUser] = useState(mockCurrentUser);
+  const room = mockGameRoom;
+  const currentUser = mockCurrentUser;
 
-  // 현재 사용자의 플레이어 정보
   const currentPlayer = room.players.find((p) => p.id === currentUser.id);
   const isHost = currentPlayer?.isHost || false;
 
-  // 8명이 모두 모이면 게임 시작 가능
   const canStartGame = room.players.length === room.maxPlayers;
 
-  // 게임 시작
   const handleStartGame = () => {
     if (!isHost || !canStartGame) return;
 
-    // TODO: 게임 시작 로직 구현
-    // 실제로는 서버에 게임 시작 요청을 보내고
-    // 게임 화면으로 전환되어야 합니다.
-    setRoom((prevRoom) => ({
-      ...prevRoom,
-      status: 'playing',
-    }));
+    toast.info('개발중인 기능입니다.');
   };
 
-  // 로비로 돌아가기
   const handleBackToLobby = () => {
-    navigate({ to: '/lobby' });
+    return navigate({ to: '/lobby', replace: false });
   };
 
-  // 방 상태가 변경되면 업데이트 (실제로는 소켓 이벤트로 처리)
-  useEffect(() => {
-    const totalCount = room.players.length;
+  const { mutateAsync: joinRoom } = useMutation({
+    ...gameRoomQuery.joinRoom,
+    onSuccess: () => {
+      toast.success('방에 입장했습니다!');
+    },
+    onError: async (error) => {
+      const { code } = parseApiError(error);
+      switch (code) {
+        case 'GAME_ROOM.NOT_FOUND':
+        case 'GAME_ROOM_MEMBER.CAPACITY_EXCEEDED':
+          await handleBackToLobby();
+          toast.error(ERROR_MESSAGE_MAP[code]);
+          break;
+        default:
+          toast.error(ERROR_MESSAGE_MAP[code]);
+          break;
+      }
+    },
+    retry: false,
+  });
 
-    setRoom((prevRoom) => ({
-      ...prevRoom,
-      status: totalCount === room.maxPlayers ? 'ready' : 'waiting',
-    }));
-  }, [room.players, room.maxPlayers]);
+  useEffect(() => {
+    joinRoom(roomId);
+  }, [roomId, joinRoom]);
 
   if (!currentPlayer) {
     return (
