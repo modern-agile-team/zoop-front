@@ -3,6 +3,8 @@ import ky, { HTTPError } from 'ky';
 import { API_URL } from '@/shared/constant/env';
 import { STORAGE } from '@/shared/utils/storage';
 
+import { ApiError, type ApiErrorResponse } from './ApiError';
+
 export const connectApi = ky.create({
   prefixUrl: API_URL,
   headers: {
@@ -60,14 +62,12 @@ export const orvalInstance = async <T>({
     });
 
     return response.json<T>();
-  } catch (error: unknown) {
-    if (!(error instanceof HTTPError)) {
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      const json = await error.response.json();
+      throw new ApiError(json as ApiErrorResponse);
+    } else {
       throw error;
     }
-
-    const status = error.response.status;
-    const body = await error.response.json();
-
-    throw new Error(`HTTP Error ${status}: ${body}`);
   }
 };
