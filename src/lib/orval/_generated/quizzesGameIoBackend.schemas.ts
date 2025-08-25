@@ -25,11 +25,15 @@ export interface CreateGameRoomDto {
   title: string;
 }
 export type GameRoomDtoStatus =
-  | 'waiting'
-  | 'ready'
-  | 'inProgress'
-  | 'finished'
-  | 'paused';
+  (typeof GameRoomDtoStatus)[keyof typeof GameRoomDtoStatus];
+
+export const GameRoomDtoStatus = {
+  waiting: 'waiting',
+  ready: 'ready',
+  inProgress: 'inProgress',
+  finished: 'finished',
+  paused: 'paused',
+} as const;
 export interface GameRoomDto {
   id: string;
   createdAt: string;
@@ -40,7 +44,13 @@ export interface GameRoomDto {
   maxMembersCount: number;
   currentMembersCount: number;
 }
-export type GameRoomMemberDtoRole = 'host' | 'player';
+export type GameRoomMemberDtoRole =
+  (typeof GameRoomMemberDtoRole)[keyof typeof GameRoomMemberDtoRole];
+
+export const GameRoomMemberDtoRole = {
+  host: 'host',
+  player: 'player',
+} as const;
 export interface GameRoomMemberDto {
   id: string;
   createdAt: string;
@@ -56,7 +66,11 @@ export interface GameRoomCollectionDto {
  * error code
  */
 export type SignUpWithUsernameControllerSignUpWithUsername400Code =
-  'COMMON.REQUEST_VALIDATION_ERROR';
+  (typeof SignUpWithUsernameControllerSignUpWithUsername400Code)[keyof typeof SignUpWithUsernameControllerSignUpWithUsername400Code];
+
+export const SignUpWithUsernameControllerSignUpWithUsername400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
 export type SignUpWithUsernameControllerSignUpWithUsername400 = {
   /** http status code */
   statusCode?: number;
@@ -69,7 +83,11 @@ export type SignUpWithUsernameControllerSignUpWithUsername400 = {
  * error code
  */
 export type SignUpWithUsernameControllerSignUpWithUsername409Code =
-  'ACCOUNT.USERNAME_ALREADY_OCCUPIED';
+  (typeof SignUpWithUsernameControllerSignUpWithUsername409Code)[keyof typeof SignUpWithUsernameControllerSignUpWithUsername409Code];
+
+export const SignUpWithUsernameControllerSignUpWithUsername409Code = {
+  ACCOUNTUSERNAME_ALREADY_OCCUPIED: 'ACCOUNT.USERNAME_ALREADY_OCCUPIED',
+} as const;
 export type SignUpWithUsernameControllerSignUpWithUsername409 = {
   /** http status code */
   statusCode?: number;
@@ -82,7 +100,11 @@ export type SignUpWithUsernameControllerSignUpWithUsername409 = {
  * error code
  */
 export type SignInWithUsernameControllerSignInWithUsername400Code =
-  'COMMON.REQUEST_VALIDATION_ERROR';
+  (typeof SignInWithUsernameControllerSignInWithUsername400Code)[keyof typeof SignInWithUsernameControllerSignInWithUsername400Code];
+
+export const SignInWithUsernameControllerSignInWithUsername400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
 export type SignInWithUsernameControllerSignInWithUsername400 = {
   /** http status code */
   statusCode?: number;
@@ -95,7 +117,11 @@ export type SignInWithUsernameControllerSignInWithUsername400 = {
  * error code
  */
 export type SignInWithUsernameControllerSignInWithUsername401Code =
-  'AUTH.SIGN_IN_INFO_NOT_MATCHED';
+  (typeof SignInWithUsernameControllerSignInWithUsername401Code)[keyof typeof SignInWithUsernameControllerSignInWithUsername401Code];
+
+export const SignInWithUsernameControllerSignInWithUsername401Code = {
+  AUTHSIGN_IN_INFO_NOT_MATCHED: 'AUTH.SIGN_IN_INFO_NOT_MATCHED',
+} as const;
 export type SignInWithUsernameControllerSignInWithUsername401 = {
   /** http status code */
   statusCode?: number;
@@ -108,7 +134,11 @@ export type SignInWithUsernameControllerSignInWithUsername401 = {
  * error code
  */
 export type CreateGameRoomControllerCreateGameRoom400Code =
-  'COMMON.REQUEST_VALIDATION_ERROR';
+  (typeof CreateGameRoomControllerCreateGameRoom400Code)[keyof typeof CreateGameRoomControllerCreateGameRoom400Code];
+
+export const CreateGameRoomControllerCreateGameRoom400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
 export type CreateGameRoomControllerCreateGameRoom400 = {
   /** http status code */
   statusCode?: number;
@@ -121,7 +151,11 @@ export type CreateGameRoomControllerCreateGameRoom400 = {
  * error code
  */
 export type CreateGameRoomControllerCreateGameRoom401Code =
-  'COMMON.UNAUTHORIZED';
+  (typeof CreateGameRoomControllerCreateGameRoom401Code)[keyof typeof CreateGameRoomControllerCreateGameRoom401Code];
+
+export const CreateGameRoomControllerCreateGameRoom401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
 export type CreateGameRoomControllerCreateGameRoom401 = {
   /** http status code */
   statusCode?: number;
@@ -146,7 +180,11 @@ export type ListGameRoomsControllerListGameRoomsParams = {
  * error code
  */
 export type JoinGameRoomControllerJoinGameRoom400Code =
-  'COMMON.REQUEST_VALIDATION_ERROR';
+  (typeof JoinGameRoomControllerJoinGameRoom400Code)[keyof typeof JoinGameRoomControllerJoinGameRoom400Code];
+
+export const JoinGameRoomControllerJoinGameRoom400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
 export type JoinGameRoomControllerJoinGameRoom400 = {
   /** http status code */
   statusCode?: number;
@@ -158,7 +196,12 @@ export type JoinGameRoomControllerJoinGameRoom400 = {
 /**
  * error code
  */
-export type JoinGameRoomControllerJoinGameRoom401Code = 'COMMON.UNAUTHORIZED';
+export type JoinGameRoomControllerJoinGameRoom401Code =
+  (typeof JoinGameRoomControllerJoinGameRoom401Code)[keyof typeof JoinGameRoomControllerJoinGameRoom401Code];
+
+export const JoinGameRoomControllerJoinGameRoom401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
 export type JoinGameRoomControllerJoinGameRoom401 = {
   /** http status code */
   statusCode?: number;
@@ -170,7 +213,12 @@ export type JoinGameRoomControllerJoinGameRoom401 = {
 /**
  * error code
  */
-export type JoinGameRoomControllerJoinGameRoom404Code = 'GAME_ROOM.NOT_FOUND';
+export type JoinGameRoomControllerJoinGameRoom404Code =
+  (typeof JoinGameRoomControllerJoinGameRoom404Code)[keyof typeof JoinGameRoomControllerJoinGameRoom404Code];
+
+export const JoinGameRoomControllerJoinGameRoom404Code = {
+  GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
+} as const;
 export type JoinGameRoomControllerJoinGameRoom404 = {
   /** http status code */
   statusCode?: number;
@@ -183,8 +231,12 @@ export type JoinGameRoomControllerJoinGameRoom404 = {
  * error code
  */
 export type JoinGameRoomControllerJoinGameRoom409Code =
-  | 'GAME_ROOM_MEMBER.ALREADY_EXISTS'
-  | 'GAME_ROOM_MEMBER.CAPACITY_EXCEEDED';
+  (typeof JoinGameRoomControllerJoinGameRoom409Code)[keyof typeof JoinGameRoomControllerJoinGameRoom409Code];
+
+export const JoinGameRoomControllerJoinGameRoom409Code = {
+  GAME_ROOM_MEMBERALREADY_EXISTS: 'GAME_ROOM_MEMBER.ALREADY_EXISTS',
+  GAME_ROOM_MEMBERCAPACITY_EXCEEDED: 'GAME_ROOM_MEMBER.CAPACITY_EXCEEDED',
+} as const;
 export type JoinGameRoomControllerJoinGameRoom409 = {
   /** http status code */
   statusCode?: number;
