@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { useResponsive } from '@/shared/hooks/useResponsive';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
@@ -12,7 +12,10 @@ import { roomFilters } from './utils/gameRoomPolicy';
 export default function LobbyPage() {
   const { isDesktop } = useResponsive();
 
-  const { data } = useQuery(gameRoomQuery.getList());
+  const { data } = useSuspenseQuery({
+    ...gameRoomQuery.getList(),
+    staleTime: 1_000 * 60 * 5,
+  });
 
   const allRooms = data?.data || [];
   const waitingRooms = roomFilters.waiting(allRooms);
