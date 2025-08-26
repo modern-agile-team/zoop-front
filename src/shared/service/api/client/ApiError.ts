@@ -26,7 +26,7 @@ export function parseApiError(error: unknown): ApiError {
     return error;
   }
   throw new ApiError({
-    statusCode: 500,
+    statusCode: 400,
     message: 'Unknown error',
     code: 'COMMON.REQUEST_VALIDATION_ERROR',
   });
