@@ -12,3 +12,7 @@ export const ERROR_MESSAGE_MAP = {
     '게임 방을 찾을 수 없습니다.',
   'COMMON.REQUEST_VALIDATION_ERROR': '잘못된 요청입니다.',
 } as const;
+
+export const getErrorMessage = (code: keyof typeof ERROR_MESSAGE_MAP) => {
+  return ERROR_MESSAGE_MAP[code];
+};
