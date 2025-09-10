@@ -10,6 +10,7 @@ import type {
   CreateGameRoomDto,
   GameRoomCollectionDto,
   GameRoomDto,
+  GameRoomMemberCollectionDto,
   GameRoomMemberDto,
   ListGameRoomsControllerListGameRoomsParams,
   SignInWithUsernameDto,
@@ -83,6 +84,28 @@ export const joinGameRoomControllerJoinGameRoom = (gameRoomId: string) => {
   });
 };
 
+/**
+ * @summary 게임 방 퇴장
+ */
+export const leaveGameRoomControllerLeaveGameRoom = (gameRoomId: string) => {
+  return orvalInstance<null>({
+    url: `/game-room/${gameRoomId}/members/me`,
+    method: 'DELETE',
+  });
+};
+
+/**
+ * @summary 게임방 유저 목록 조회
+ */
+export const listGameRoomMembersControllerListGameRoomMembers = (
+  gameRoomId: string
+) => {
+  return orvalInstance<GameRoomMemberCollectionDto>({
+    url: `/game-rooms/${gameRoomId}/members`,
+    method: 'GET',
+  });
+};
+
 export type SignUpWithUsernameControllerSignUpWithUsernameResult = NonNullable<
   Awaited<ReturnType<typeof signUpWithUsernameControllerSignUpWithUsername>>
 >;
@@ -98,3 +121,10 @@ export type ListGameRoomsControllerListGameRoomsResult = NonNullable<
 export type JoinGameRoomControllerJoinGameRoomResult = NonNullable<
   Awaited<ReturnType<typeof joinGameRoomControllerJoinGameRoom>>
 >;
+export type LeaveGameRoomControllerLeaveGameRoomResult = NonNullable<
+  Awaited<ReturnType<typeof leaveGameRoomControllerLeaveGameRoom>>
+>;
+export type ListGameRoomMembersControllerListGameRoomMembersResult =
+  NonNullable<
+    Awaited<ReturnType<typeof listGameRoomMembersControllerListGameRoomMembers>>
+  >;
