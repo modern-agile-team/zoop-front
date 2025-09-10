@@ -175,6 +175,7 @@ function generateSocketEventTypes(asyncApiSpec, modelsPath) {
       '  // 현재 클라이언트에서 서버로 보내는 이벤트가 정의되지 않았습니다\n';
     content +=
       '  // AsyncAPI 스펙에서 subscribe 이벤트를 추가하면 여기에 자동으로 생성됩니다\n';
+    content += "DUMMY_EVENT = 'dummy_event'\n";
   }
   content += '}\n\n';
 
