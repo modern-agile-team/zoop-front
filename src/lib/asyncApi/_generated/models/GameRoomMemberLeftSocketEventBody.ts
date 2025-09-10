@@ -1,9 +1,9 @@
 import type { GameRoomMemberRole } from './GameRoomMemberRole';
-interface GameRoomMemberJoinedSocketEventBody {
+interface GameRoomMemberLeftSocketEventBody {
   accountId: string;
   gameRoomId: string;
   role: GameRoomMemberRole;
   nickname: string;
   currentMembersCount: number;
 }
-export type { GameRoomMemberJoinedSocketEventBody };
+export type { GameRoomMemberLeftSocketEventBody };
