@@ -34,7 +34,7 @@ function generateModels(projectName, config) {
   ensureDirectoryExists(modelsOutput);
 
   const cmd = [
-    'npx @asyncapi/cli generate models typescript',
+    'npx -y @asyncapi/cli generate models typescript',
     input,
     `-o ${modelsOutput}`,
     `--tsModelType ${options.modelType}`,
