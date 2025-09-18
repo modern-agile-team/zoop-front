@@ -6,5 +6,6 @@ interface LobbyGameRoomDeletedSocketEvent {
   timestamp: string;
   body: GameRoomIdentifierSocketEventDto;
   meta: Record<string, unknown>;
+  additionalProperties?: Record<string, unknown>;
 }
 export type { LobbyGameRoomDeletedSocketEvent };

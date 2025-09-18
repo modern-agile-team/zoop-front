@@ -41,6 +41,7 @@ function generateModels(projectName, config) {
     options.includeComments ? '--tsIncludeComments' : '',
     `--tsExportType ${options.exportType}`,
     `--tsModuleSystem ${options.moduleSystem}`,
+    '--tsRawPropertyNames',
   ]
     .filter(Boolean)
     .join(' ');
