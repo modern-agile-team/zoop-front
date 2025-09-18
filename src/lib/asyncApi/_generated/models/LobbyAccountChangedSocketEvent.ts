@@ -6,5 +6,6 @@ interface LobbyAccountChangedSocketEvent {
   timestamp: string;
   body: AccountSocketEventDto;
   meta: Record<string, unknown>;
+  additionalProperties?: Record<string, unknown>;
 }
 export type { LobbyAccountChangedSocketEvent };
