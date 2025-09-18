@@ -16,7 +16,6 @@ import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 import { toast } from '@/shared/utils/toast';
 
 import CreateRoomDialog from './CreateRoomDialog';
-import { PARTICIPANTS } from '../data/mockData';
 
 export default function ResponsiveHeader() {
   const { deviceType } = useResponsive();
@@ -77,10 +76,7 @@ export default function ResponsiveHeader() {
 function OnlineCounter() {
   const { deviceType } = useResponsive();
 
-  // TODO: API 응답값 사용
-  const [count, setCount] = useState(
-    PARTICIPANTS.filter((p) => p.status === 'online').length
-  );
+  const [count, setCount] = useState(0);
 
   const containerPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
