@@ -6,5 +6,6 @@ interface GameRoomChangedSocketEvent {
   timestamp: string;
   body: GameRoomSocketEventDto;
   meta: Record<string, unknown>;
+  additionalProperties?: Record<string, unknown>;
 }
 export type { GameRoomChangedSocketEvent };
