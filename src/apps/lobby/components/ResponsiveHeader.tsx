@@ -112,10 +112,12 @@ function OnlineCounter() {
     desktop: 'gap-2',
   });
 
-  // TODO: ACCOUNT_LEFT 이벤트 추가
-  useSocketListener(ServerToClientEventNames.ACCOUNT_ENTERED, () => {
-    setCount((prevCount) => prevCount + 1);
-  });
+  useSocketListener(
+    ServerToClientEventNames.LOBBY_ACTIVE_ACCOUNT_CHANGED,
+    ({ body }) => {
+      setCount(body.currentActiveAccountsCount);
+    }
+  );
 
   return (
     <div

@@ -1,19 +1,17 @@
 // Auto-generated Socket event types
 
-import type { AccountEnteredSocketEvent } from './models/AccountEnteredSocketEvent';
-import type { GameRoomClosedSocketEvent } from './models/GameRoomClosedSocketEvent';
-import type { GameRoomCreatedSocketEvent } from './models/GameRoomCreatedSocketEvent';
-import type { GameRoomMemberJoinedSocketEvent } from './models/GameRoomMemberJoinedSocketEvent';
-import type { GameRoomMemberLeftSocketEvent } from './models/GameRoomMemberLeftSocketEvent';
-import type { GameRoomMemberRoleChangedSocketEvent } from './models/GameRoomMemberRoleChangedSocketEvent';
+import type { GameRoomChangedSocketEvent } from './models/GameRoomChangedSocketEvent';
+import type { LobbyAccountChangedSocketEvent } from './models/LobbyAccountChangedSocketEvent';
+import type { LobbyActiveAccountChangedSocketEvent } from './models/LobbyActiveAccountChangedSocketEvent';
+import type { LobbyGameRoomCreatedSocketEvent } from './models/LobbyGameRoomCreatedSocketEvent';
+import type { LobbyGameRoomDeletedSocketEvent } from './models/LobbyGameRoomDeletedSocketEvent';
 
 export const enum ServerToClientEventNames {
-  ACCOUNT_ENTERED = 'account.entered',
-  GAME_ROOM_CLOSED = 'game_room.closed',
-  GAME_ROOM_CREATED = 'game_room.created',
-  GAME_ROOM_MEMBER_JOINED = 'game_room.member_joined',
-  GAME_ROOM_MEMBER_LEFT = 'game_room.member_left',
-  GAME_ROOM_MEMBER_ROLE_CHANGED = 'game_room.member_role_changed',
+  LOBBY_ACCOUNT_CHANGED = 'lobby.account.changed',
+  LOBBY_ACTIVE_ACCOUNT_CHANGED = 'lobby.active_account.changed',
+  LOBBY_GAME_ROOM_DELETED = 'lobby.game_room.deleted',
+  LOBBY_GAME_ROOM_CREATED = 'lobby.game_room.created',
+  GAME_ROOM_GAME_ROOM_CHANGED = 'game_room.game_room.changed',
 }
 
 export const enum ClientToServerEventNames {
@@ -31,29 +29,25 @@ export type ClientToServerEventData<T extends ClientToServerEventNames> =
 
 // Socket.io 이벤트 맵 정의
 export interface ServerToClientEvents {
-  /** 유저가 접속했을 때 발생하는 이벤트 */
-  [ServerToClientEventNames.ACCOUNT_ENTERED]: (
-    data: AccountEnteredSocketEvent
+  /** 유저가 서비스에 접속 */
+  [ServerToClientEventNames.LOBBY_ACCOUNT_CHANGED]: (
+    data: LobbyAccountChangedSocketEvent
+  ) => void;
+  /** 유저가 서비스에 접속 */
+  [ServerToClientEventNames.LOBBY_ACTIVE_ACCOUNT_CHANGED]: (
+    data: LobbyActiveAccountChangedSocketEvent
   ) => void;
   /** 게임방이 폐쇄됨 */
-  [ServerToClientEventNames.GAME_ROOM_CLOSED]: (
-    data: GameRoomClosedSocketEvent
+  [ServerToClientEventNames.LOBBY_GAME_ROOM_DELETED]: (
+    data: LobbyGameRoomDeletedSocketEvent
   ) => void;
   /** 게임방이 생성됨 */
-  [ServerToClientEventNames.GAME_ROOM_CREATED]: (
-    data: GameRoomCreatedSocketEvent
+  [ServerToClientEventNames.LOBBY_GAME_ROOM_CREATED]: (
+    data: LobbyGameRoomCreatedSocketEvent
   ) => void;
   /** 유저가 게임방에 접속 */
-  [ServerToClientEventNames.GAME_ROOM_MEMBER_JOINED]: (
-    data: GameRoomMemberJoinedSocketEvent
-  ) => void;
-  /** 유저가 게임방에 퇴장 */
-  [ServerToClientEventNames.GAME_ROOM_MEMBER_LEFT]: (
-    data: GameRoomMemberLeftSocketEvent
-  ) => void;
-  /** 유저의 게임방 역할이 변경 */
-  [ServerToClientEventNames.GAME_ROOM_MEMBER_ROLE_CHANGED]: (
-    data: GameRoomMemberRoleChangedSocketEvent
+  [ServerToClientEventNames.GAME_ROOM_GAME_ROOM_CHANGED]: (
+    data: GameRoomChangedSocketEvent
   ) => void;
 }
 
