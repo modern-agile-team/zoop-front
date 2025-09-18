@@ -1,13 +1,17 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
+import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
+import { queryClient } from '@/lib/queryClient';
 import { useResponsive } from '@/shared/hooks/useResponsive';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
+import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 
 import DesktopLayout from './components/layouts/DesktopLayout';
 import MobileLayout from './components/layouts/MobileLayout';
 import ResponsiveHeader from './components/ResponsiveHeader';
 import { PARTICIPANTS } from './data/mockData';
 import { roomFilters } from './utils/gameRoomPolicy';
+import { roomFromEvent } from './utils/helpers';
 
 export default function LobbyPage() {
   const { isDesktop } = useResponsive();
@@ -26,6 +30,32 @@ export default function LobbyPage() {
     playingRooms,
     participants: PARTICIPANTS,
   };
+
+  useSocketListener(
+    ServerToClientEventNames.LOBBY_GAME_ROOM_CREATED,
+    (data) => {
+      queryClient.setQueryData(gameRoomQuery.getList().queryKey, (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          data: [...oldData.data, roomFromEvent(data)],
+        };
+      });
+    }
+  );
+
+  useSocketListener(
+    ServerToClientEventNames.LOBBY_GAME_ROOM_DELETED,
+    ({ body }) => {
+      queryClient.setQueryData(gameRoomQuery.getList().queryKey, (oldData) => {
+        if (!oldData) return oldData;
+        return {
+          ...oldData,
+          data: oldData.data.filter((room) => room.id !== body.gameRoomId),
+        };
+      });
+    }
+  );
 
   return (
     <>

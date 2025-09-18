@@ -1,3 +1,6 @@
+import type { LobbyGameRoomCreatedSocketEvent } from '@/lib/asyncApi/_generated/models/LobbyGameRoomCreatedSocketEvent';
+import type { GameRoomDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
+
 import type { UserTier } from '../types';
 
 /**
@@ -44,4 +47,23 @@ export const getRandomInt = (min: number, max: number): number => {
  */
 export const getRandomBoolean = (probability: number = 0.5): boolean => {
   return Math.random() < probability;
+};
+
+export const roomFromEvent = (
+  event: LobbyGameRoomCreatedSocketEvent
+): GameRoomDto => {
+  const { body, timestamp } = event;
+  const hostMember =
+    body.members.find((member) => member.role === 'host') ?? body.members[0];
+
+  return {
+    createdAt: timestamp,
+    id: body.gameRoomId,
+    status: body.status,
+    title: body.title,
+    updatedAt: timestamp,
+    currentMembersCount: body.currentMembersCount,
+    hostId: hostMember.accountId,
+    maxMembersCount: body.maxPlayers,
+  };
 };
