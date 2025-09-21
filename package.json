@@ -4,15 +4,24 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 3000",
-    "start": "vite --port 3000",
-    "build": "vite build && tsc",
-    "serve": "vite preview",
+    "build": "vite build --mode prod && tsc",
+    "build:dev": "vite build --mode dev && tsc",
+    "build:prod": "vite build --mode prod && tsc",
     "test": "vitest run",
     "lint": "eslint",
     "format": "prettier",
-    "check": "prettier --write . && eslint --fix"
+    "check": "prettier --write . && eslint --fix",
+    "type-check": "tsc --noEmit",
+    "commit": "node scripts/commit-helper.js",
+    "codegen": "yarn node ./scripts/codegen/codeGen.mjs && yarn node ./scripts/codegen/postCodeGen.mjs",
+    "codegen:sync": "yarn node ./scripts/codegen/syncCodeGenSpec.mjs",
+    "codegen:socket": "node scripts/codegen-asyncapi.js",
+    "codegen:all": "yarn codegen && yarn codegen:socket && yarn check",
+    "codegen:auto": "bash ./scripts/codegen/automationCodegen.sh"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-scroll-area": "^1.2.9",
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/vite": "^4.0.6",
@@ -24,13 +33,22 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "es-toolkit": "^1.39.8",
+    "ky": "^1.8.2",
     "lucide-react": "^0.539.0",
+    "overlay-kit": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.62.0",
+    "react-toastify": "^11.0.5",
+    "socket.io-client": "^4.8.1",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.0.6"
+    "tailwindcss": "^4.0.6",
+    "zod": "^4.0.17"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/prompt-cli": "^19.8.1",
     "@eslint/js": "^9.28.0",
     "@tanstack/eslint-config": "^0.2.0",
     "@testing-library/dom": "^10.4.0",
@@ -44,6 +62,10 @@
     "@typescript-eslint/utils": "^8.39.0",
     "@vitejs/plugin-react": "^4.3.4",
     "babel-plugin-react-compiler": "^19.1.0-rc.2",
+    "chalk": "^5.5.0",
+    "change-case": "^5.4.4",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.28.0",
     "eslint-import-resolver-typescript": "^4.4.2",
     "eslint-plugin-import": "^2.32.0",
@@ -52,8 +74,13 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "git-cz": "^4.9.0",
+    "glob": "^11.0.3",
     "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "inquirer": "^12.9.1",
     "jsdom": "^26.0.0",
+    "orval": "^7.11.2",
     "prettier": "^3.5.3",
     "tiny-invariant": "^1.3.3",
     "tw-animate-css": "^1.3.4",
@@ -62,6 +89,66 @@
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
     "web-vitals": "^4.2.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog",
+      "maxHeaderWidth": 100,
+      "maxLineWidth": 100,
+      "defaultType": "feat",
+      "defaultScope": "",
+      "defaultSubject": "",
+      "defaultBody": "",
+      "defaultIssues": "",
+      "disableScopeLowerCase": true,
+      "disableSubjectLowerCase": true,
+      "types": {
+        "feat": {
+          "description": "새로운 기능 추가",
+          "title": "Features"
+        },
+        "fix": {
+          "description": "버그 수정",
+          "title": "Bug Fixes"
+        },
+        "docs": {
+          "description": "문서 변경",
+          "title": "Documentation"
+        },
+        "style": {
+          "description": "코드 포맷팅, 세미콜론 누락 등",
+          "title": "Styles"
+        },
+        "refactor": {
+          "description": "코드 리팩토링",
+          "title": "Code Refactoring"
+        },
+        "test": {
+          "description": "테스트 코드",
+          "title": "Tests"
+        },
+        "chore": {
+          "description": "기타 변경사항 (빌드, 패키지 매니저 등)",
+          "title": "Chores"
+        },
+        "perf": {
+          "description": "성능 개선",
+          "title": "Performance Improvements"
+        },
+        "ci": {
+          "description": "CI 설정 변경",
+          "title": "Continuous Integrations"
+        },
+        "build": {
+          "description": "빌드 시스템 변경",
+          "title": "Builds"
+        },
+        "revert": {
+          "description": "이전 커밋 되돌리기",
+          "title": "Reverts"
+        }
+      }
+    }
   },
   "packageManager": "yarn@4.9.1+sha512.f95ce356460e05be48d66401c1ae64ef84d163dd689964962c6888a9810865e39097a5e9de748876c2e0bf89b232d583c33982773e9903ae7a76257270986538"
 }

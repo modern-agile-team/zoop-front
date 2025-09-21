@@ -1,0 +1,25 @@
+name: PR Size Label
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  size-label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: PR 사이즈 레이블 달기
+        uses: pascalgn/size-label-action@v0.4.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          sizes: >
+            {
+              "0": "So Cute🥚",
+              "50": "Cute🐣",
+              "200": "Normal🐤",
+              "500": "Large🐓",
+              "1000": "Hard🦃",
+              "2000": "Hell🦅"
+            }

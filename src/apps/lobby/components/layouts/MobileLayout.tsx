@@ -1,24 +1,23 @@
 import { Users, Play } from 'lucide-react';
 
-import AnnouncementCard from '../AnnouncementCard';
+import type { GameRoomDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
+
 import ParticipantCard from '../ParticipantCard';
 import Room from '../Room';
 import { LobbyScrollSection } from '../Section';
 
-import type { Announcement, Participant, RoomInfo } from '../../types';
+import type { Participant } from '../../types';
 
 interface MobileLayoutProps {
-  waitingRooms: RoomInfo[];
-  playingRooms: RoomInfo[];
+  waitingRooms: GameRoomDto[];
+  playingRooms: GameRoomDto[];
   participants: Participant[];
-  announcements: Announcement[];
 }
 
 export default function MobileLayout({
   waitingRooms,
   playingRooms,
   participants,
-  announcements,
 }: MobileLayoutProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -41,7 +40,7 @@ export default function MobileLayout({
             <LobbyScrollSection.Content>
               <ul className="space-y-2 sm:space-y-3 p-2 sm:p-4" role="list">
                 {waitingRooms.map((room) => (
-                  <li key={room.roomId}>
+                  <li key={room.id}>
                     <Room {...room} />
                   </li>
                 ))}
@@ -67,7 +66,7 @@ export default function MobileLayout({
             <LobbyScrollSection.Content>
               <ul className="space-y-2 sm:space-y-3 p-2 sm:p-4" role="list">
                 {playingRooms.map((room) => (
-                  <li key={room.roomId}>
+                  <li key={room.id}>
                     <Room {...room} />
                   </li>
                 ))}
@@ -106,7 +105,7 @@ export default function MobileLayout({
         </aside>
 
         {/* 공지사항 */}
-        <aside className="h-[250px] md:h-[300px]" aria-label="공지사항">
+        {/* <aside className="h-[250px] md:h-[300px]" aria-label="공지사항">
           <LobbyScrollSection>
             <LobbyScrollSection.Header>
               <div className="flex items-center gap-2">
@@ -130,7 +129,7 @@ export default function MobileLayout({
               </ul>
             </LobbyScrollSection.Content>
           </LobbyScrollSection>
-        </aside>
+        </aside> */}
       </div>
     </div>
   );

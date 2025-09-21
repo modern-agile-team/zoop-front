@@ -1,0 +1,72 @@
+name: ✨ 기능 요청
+description: 새로운 기능을 요청할 때 사용하세요
+title: '[FEATURE] '
+labels: ['feature']
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        새로운 기능 제안해 주셔서 감사합니다! 가능한 한 자세히 작성해 주세요.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: 🎯 기능 설명
+      description: 어떤 기능이 필요한지 명확하고 간결하게 설명해주세요
+    validations:
+      required: true
+
+  - type: textarea
+    id: detailed-requirements
+    attributes:
+      label: 📋 상세 요구사항
+      description: 기능에 대한 구체적인 요구사항들을 작성해주세요
+      placeholder: |
+        - 요구사항 1
+        - 요구사항 2
+        - 요구사항 3
+
+  - type: textarea
+    id: ui-ux-considerations
+    attributes:
+      label: 🎨 UI/UX 고려사항
+      description: UI나 사용자 경험과 관련된 고려사항이 있다면 작성해주세요
+
+  - type: checkboxes
+    id: supported-platforms
+    attributes:
+      label: 📱 지원 플랫폼
+      options:
+        - label: 🖥️ 데스크톱
+        - label: 📱 모바일
+        - label: 🔄 반응형
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 🔄 대안 방안
+      description: 다른 해결 방법이 있다면 설명해주세요
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 📚 참고 자료
+      description: 참고할 만한 링크나 자료가 있다면 첨부해주세요
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ 우선순위
+      options:
+        - 🔴 높음 (핵심 기능)
+        - 🟡 보통 (중요 기능)
+        - 🟢 낮음 (개선 사항)
+    validations:
+      required: true
+
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: 📊 성공 기준
+      description: 이 기능이 성공적으로 구현되었다고 판단할 수 있는 기준을 작성해주세요

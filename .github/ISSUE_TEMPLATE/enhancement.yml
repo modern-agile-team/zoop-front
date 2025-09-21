@@ -1,0 +1,36 @@
+name: 🔧 개선 사항
+description: 기존 기능 개선을 요청할 때 사용하세요
+title: '[ENHANCEMENT] '
+labels: ['enhancement']
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        기존 기능 개선 제안해 주셔서 감사합니다! 가능한 한 자세히 작성해 주세요.
+  - type: textarea
+    id: current-problems
+    attributes:
+      label: 🤔 현재 문제점
+      description: 현재 어떤 부분이 불편하거나 비효율적인지 설명해주세요
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-to-improve
+    attributes:
+      label: 🎯 개선하려는 기능
+      description: 어떤 기능을 개선하고 싶은지 설명해주세요
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ 우선순위
+      options:
+        - 🔴 높음 (시급한 개선)
+        - 🟡 보통 (필요한 개선)
+        - 🟢 낮음 (있으면 좋은 개선)
+    validations:
+      required: true

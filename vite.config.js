@@ -18,53 +18,52 @@ const ReactCompilerConfig = {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    TanStackRouterVite({ autoCodeSplitting: true }),
-    viteReact({
-      babel: {
-        plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
-      },
-    }),
-    tailwindcss(),
-  ],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-  },
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-    },
-  },
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router',
-      'styled-components',
-      '@tanstack/react-query',
-      '@remember-web/mixin',
-      '@remember-web/primitives',
+export default defineConfig(({ mode }) => {
+  return {
+    plugins: [
+      TanStackRouterVite({ autoCodeSplitting: true }),
+      viteReact({
+        babel: {
+          plugins: [['babel-plugin-react-compiler', ReactCompilerConfig]],
+        },
+      }),
+      tailwindcss(),
     ],
-  },
-  build: {
-    outDir: 'build',
-    assetsDir: 'static',
-    rollupOptions: {
-      external: ['styled-components'],
-      output: {
-        chunkFileNames: 'static/[name]-[hash].js',
-        entryFileNames: 'static/[name]-[hash].js',
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('@remember-web')) {
-              return 'vendor-remember-web';
+    // 환경 변수 설정
+    envPrefix: 'VITE_',
+    envDir: './',
+    test: {
+      globals: true,
+      environment: 'jsdom',
+    },
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, './src'),
+      },
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom', '@tanstack/react-query'],
+      exclude: [],
+      force: true,
+    },
+    build: {
+      outDir: 'build',
+      assetsDir: 'static',
+      rollupOptions: {
+        external: ['styled-components'],
+        output: {
+          chunkFileNames: 'static/[name]-[hash].js',
+          entryFileNames: 'static/[name]-[hash].js',
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('@remember-web')) {
+                return 'vendor-remember-web';
+              }
+              return 'vendors';
             }
-            return 'vendors';
-          }
+          },
         },
       },
     },
-  },
+  };
 });

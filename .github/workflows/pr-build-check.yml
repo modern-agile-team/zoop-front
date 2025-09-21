@@ -1,0 +1,69 @@
+name: PR 빌드 검증
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    name: 빌드 및 린트 검사
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    environment:
+      name: dev
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node.js ${{ matrix.node-version }} 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Corepack 활성화
+        run: corepack enable
+
+      - name: 의존성 설치
+        run: yarn install --immutable
+
+      - name: 린트 실행
+        run: yarn lint
+
+      - name: 프로젝트 빌드
+        run: yarn build:dev
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_SOCKET_URL: ${{ vars.VITE_SOCKET_URL }}
+          VITE_APP_ENV: dev
+
+      - name: 빌드 산출물 확인
+        run: |
+          if [ ! -d "build" ]; then
+            echo "빌드 디렉토리를 찾을 수 없습니다!"
+            exit 1
+          fi
+          echo "빌드가 성공적으로 완료되었습니다!"
+
+  build-status:
+    name: 빌드 상태 확인
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+
+    steps:
+      - name: 빌드 결과 확인
+        run: |
+          if [ "${{ needs.build.result }}" = "success" ]; then
+            echo "✅ 모든 빌드가 성공했습니다!"
+          else
+            echo "❌ 빌드가 실패했습니다!"
+            exit 1
+          fi

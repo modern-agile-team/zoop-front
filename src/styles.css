@@ -129,7 +129,45 @@ code {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Toast 커스터마이징 */
+.Toastify__toast {
+  @apply rounded-lg shadow-lg;
+}
+
+.Toastify__toast--success {
+  @apply bg-green-50 border-l-4 border-green-500;
+}
+
+.Toastify__toast--error {
+  @apply bg-red-50 border-l-4 border-red-500;
+}
+
+.Toastify__toast--info {
+  @apply bg-blue-50 border-l-4 border-blue-500;
+}
+
+.Toastify__toast-body {
+  @apply text-gray-800 font-medium;
+}
+
+.Toastify__progress-bar--success {
+  @apply bg-green-500;
+}
+
+.Toastify__progress-bar--error {
+  @apply bg-red-500;
+}
+
+.Toastify__progress-bar--info {
+  @apply bg-blue-500;
+}
+
+.Toastify__close-button {
+  @apply text-gray-600 hover:text-gray-800;
 }

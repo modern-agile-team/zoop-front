@@ -1,297 +1,206 @@
-Welcome to your new TanStack app!
+# 🎯 Quiz Game IO Frontend
 
-# Getting Started
+실시간 멀티플레이어 퀴즈 게임 플랫폼의 프론트엔드 애플리케이션입니다.
 
-To run this application:
+## 🚀 주요 기능
 
-```bash
-npm install
-npm run start
-```
+- 🎮 **실시간 퀴즈 배틀**: 친구들과 함께하는 스릴 넘치는 실시간 퀴즈 대결
+- 🏆 **게임룸 시스템**: 방 생성 및 참여를 통한 다중 사용자 게임 환경
+- 📱 **반응형 디자인**: 모바일, 태블릿, 데스크톱 모든 디바이스 지원
+- ⚡ **실시간 상태 동기화**: 게임 진행 상황 실시간 업데이트
+- 🎨 **현대적인 UI/UX**: Tailwind CSS와 Radix UI를 활용한 세련된 인터페이스
 
-# Building For Production
+## 🛠 기술 스택
 
-To build this application for production:
+### Core
 
-```bash
-npm run build
-```
+- **React 19** - 최신 React 기능 활용
+- **TypeScript** - 타입 안정성 보장
+- **Vite** - 빠른 개발 서버 및 빌드 도구
 
-## Testing
+### 라우팅 & 상태관리
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+- **TanStack Router** - 파일 기반 라우팅 시스템
+- **TanStack Query** - 서버 상태 관리
 
-```bash
-npm run test
-```
+### 스타일링 & UI
 
-## Styling
+- **Tailwind CSS 4.0** - 유틸리티 우선 CSS 프레임워크
+- **Radix UI** - 접근성을 고려한 UI 컴포넌트
+- **Lucide React** - 아이콘 라이브러리
+- **class-variance-authority** - 조건부 스타일링
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+### 개발도구
 
-## Linting & Formatting
+- **ESLint** - 코드 품질 관리
+- **Prettier** - 코드 포맷팅
+- **Husky** - Git 훅 관리
+- **Commitlint** - 커밋 메시지 규칙 적용
+- **Vitest** - 테스트 프레임워크
 
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+## 🚦 시작하기
 
-```bash
-npm run lint
-npm run format
-npm run check
-```
+### 필요 조건
 
-## Routing
+- Node.js 18+
+- Yarn 4.9.1+
 
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
-
-### Adding A Route
-
-To add a new route to your application just add another a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router';
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-
-import { Link } from '@tanstack/react-router';
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/people',
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people');
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
+### 설치 및 실행
 
 ```bash
-npm install @tanstack/react-query @tanstack/react-query-devtools
+# 의존성 설치
+yarn install
+
+# 개발 서버 실행 (포트: 3000)
+yarn dev
+# 또는
+yarn start
 ```
 
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
-
-```tsx
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// ...
-
-const queryClient = new QueryClient();
-
-// ...
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
-}
-```
-
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from '@tanstack/react-query';
-
-import './App.css';
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ['people'],
-    queryFn: () =>
-      fetch('https://swapi.dev/api/people')
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
-
-  return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export default App;
-```
-
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
-
-## State Management
-
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
-
-First you need to add TanStack Store as a dependency:
+### 빌드
 
 ```bash
-npm install @tanstack/store
+# 프로덕션 빌드
+yarn build
+
+# 빌드 파일 미리보기
+yarn serve
 ```
 
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
+## 📁 프로젝트 구조
 
-```tsx
-import { useStore } from '@tanstack/react-store';
-import { Store } from '@tanstack/store';
-import './App.css';
-
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
+```
+src/
+├── apps/                    # 앱별 기능 모듈
+│   ├── home/               # 홈페이지 관련 컴포넌트
+│   ├── lobby/              # 로비 관련 컴포넌트 (방 생성/참여)
+│   └── room/               # 게임룸 관련 컴포넌트
+├── routes/                 # TanStack Router 라우트 정의
+├── shared/                 # 공통 컴포넌트 및 유틸리티
+│   ├── components/         # 재사용 가능한 UI 컴포넌트
+│   ├── hooks/              # 공통 커스텀 훅
+│   └── utils/              # 유틸리티 함수
+└── lib/                    # 라이브러리 설정 및 유틸리티
 ```
 
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
+## 🧪 테스트
 
-Let's check this out by doubling the count using derived state.
+```bash
+# 테스트 실행
+yarn test
 
-```tsx
-import { useStore } from '@tanstack/react-store';
-import { Store, Derived } from '@tanstack/store';
-import './App.css';
-
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
+# 타입 체크
+yarn type-check
 ```
 
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
+## 🎨 코드 품질
 
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
+```bash
+# 린팅
+yarn lint
 
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
+# 코드 포맷팅
+yarn format
 
-# Demo files
+# 린팅 + 포맷팅 자동 수정
+yarn check
+```
 
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
+## 📝 커밋 가이드
 
-# Learn More
+이 프로젝트는 [Conventional Commits](https://www.conventionalcommits.org/)를 따릅니다.
 
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+```bash
+# 대화형 커밋 메시지 작성 도우미
+yarn commit
+
+# 커밋 메시지 도움말 보기
+yarn commit:help
+```
+
+### 커밋 메시지 형식
+
+```
+<타입>: <설명> #<이슈번호>
+
+예시:
+feat: 사용자 로그인 기능 추가 #123
+fix: 헤더 컴포넌트 버그 수정 #456
+docs: README 파일 업데이트 #789
+```
+
+## 🔄 자동화된 이슈 관리
+
+이 프로젝트는 GitHub Actions를 통한 자동화된 워크플로우를 제공합니다:
+
+- **자동 이슈 연결**: 브랜치나 PR 생성 시 이슈 자동 연결
+- **자동 라벨링**: 작업 시작 시 `in-progress`, PR 머지 시 `completed` 라벨 자동 추가
+- **자동 담당자 지정**: 브랜치/PR 생성자를 이슈 담당자로 자동 지정
+- **자동 이슈 닫기**: 연결된 PR이 머지될 때 이슈 자동 닫기
+
+### 빠른 가이드:
+
+1. **브랜치 생성**: `git checkout -b feature/123-new-feature`
+2. **PR 생성**: 제공된 템플릿을 사용하고 `Closes #123`으로 이슈 연결
+3. **PR 머지**: 이슈가 자동으로 닫히고 완료 표시됨
+
+자세한 설정 및 사용법은 [GitHub Actions 가이드](./docs/github-actions.md)를 참조하세요.
+
+## 🎯 주요 페이지
+
+### 🏠 홈페이지 (`/`)
+
+- 게임 소개 및 주요 기능 안내
+- 로그인/회원가입 버튼
+- 게임 통계 정보
+
+### 🏛 로비 (`/lobby`)
+
+- 게임룸 목록 및 검색
+- 새 게임룸 생성
+- 참여자 정보 표시
+
+### 🎮 게임룸 (`/room/:roomId`)
+
+- 실시간 퀴즈 게임 진행
+- 참여자 상태 및 점수 표시
+- 게임 결과 및 통계
+
+## 🎨 반응형 디자인
+
+이 애플리케이션은 다음과 같은 반응형 브레이크포인트를 사용합니다:
+
+- **Mobile**: < 768px
+- **Tablet**: 768px ~ 1024px
+- **Desktop**: > 1024px
+
+각 컴포넌트는 디바이스별로 최적화된 UI를 제공합니다.
+
+## 🔧 설정 파일
+
+- `vite.config.js` - Vite 설정
+- `tailwind.config.ts` - Tailwind CSS 설정
+- `tsconfig.json` - TypeScript 설정
+- `eslint.config.js` - ESLint 설정
+- `prettier.config.js` - Prettier 설정
+- `commitlint.config.cjs` - Commitlint 설정
+
+## 🤝 기여하기
+
+1. 이슈를 생성하거나 기존 이슈를 선택합니다
+2. 해당 이슈 번호로 브랜치를 생성합니다: `feature-이슈번호/설명`
+3. 변경사항을 커밋합니다 (커밋 컨벤션 준수)
+4. PR을 생성하고 이슈를 연결합니다
+5. 코드 리뷰 후 머지됩니다
+
+## 📚 참고 자료
+
+- [TanStack Router 공식 문서](https://tanstack.com/router)
+- [TanStack Query 공식 문서](https://tanstack.com/query)
+- [Tailwind CSS 공식 문서](https://tailwindcss.com)
+- [Radix UI 공식 문서](https://radix-ui.com)
+- [Vite 공식 문서](https://vitejs.dev)
+
+## 📄 라이선스
+
+이 프로젝트는 MIT 라이선스하에 배포됩니다.

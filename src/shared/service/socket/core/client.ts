@@ -1,0 +1,55 @@
+import { io, type Socket } from 'socket.io-client';
+
+import {
+  type ClientToServerEvents,
+  type ServerToClientEvents,
+} from '@/lib/asyncApi/_generated/types';
+import { SOCKET_URL } from '@/shared/constant/env';
+import { STORAGE } from '@/shared/utils/storage';
+
+export type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
+
+export class SocketClient {
+  private socket: TypedSocket | null = null;
+  private static instance: SocketClient;
+
+  private constructor() {}
+
+  static getInstance(): SocketClient {
+    if (!SocketClient.instance) {
+      SocketClient.instance = new SocketClient();
+    }
+    return SocketClient.instance;
+  }
+
+  connect(): TypedSocket {
+    if (this.socket?.connected) {
+      return this.socket;
+    }
+
+    const token = STORAGE.getAuthToken();
+
+    this.socket = io(SOCKET_URL, {
+      path: '/backend/socket.io',
+      auth: {
+        token: token ? `Bearer ${token}` : undefined,
+      },
+      transports: ['websocket'],
+    });
+
+    return this.socket;
+  }
+
+  disconnect(): void {
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = null;
+    }
+  }
+
+  getSocket(): TypedSocket | null {
+    return this.socket;
+  }
+}
+
+export const socketClient = SocketClient.getInstance();

@@ -27,6 +27,11 @@ const importOrder = ({ ruleSeverities = 'error' } = {}) => [
         position: 'after',
       },
       {
+        pattern: '@',
+        group: 'external',
+        position: 'after',
+      },
+      {
         pattern: '../**',
         group: 'parent',
         position: 'before',
@@ -171,8 +176,8 @@ export default tseslint.config(
       '*.config.ts',
 
       // Generated files
-      '**/_generated/**',
-      '**/generated/**',
+      // '**/_generated/**',
+      // '**/generated/**',
       'routeTree.gen.ts',
       '**/*.gen.ts',
       '**/*.gen.js',
@@ -345,6 +350,9 @@ export default tseslint.config(
         'error',
         { props: true, ignorePropertyModificationsFor: ['draft'] },
       ],
+    },
+    settings: {
+      'import/external-module-folders': ['.yarn'],
     },
   }
 );

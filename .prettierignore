@@ -1,3 +1,19 @@
+# Package manager files
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+
+# Generated files
+routeTree.gen.ts
+**/*.gen.ts
+**/*.gen.js
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Dependencies  
+node_modules/
+.yarn/
+.pnp.*

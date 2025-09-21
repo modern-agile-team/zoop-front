@@ -1,0 +1,83 @@
+name: 🐛 버그 신고
+description: 버그를 신고할 때 사용하세요
+title: '[BUG] '
+labels: ['bug']
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        버그 신고해 주셔서 감사합니다! 가능한 한 자세히 작성해 주세요.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: 🐛 버그 설명
+      description: 어떤 버그가 발생했는지 명확하고 간결하게 설명해주세요
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction-steps
+    attributes:
+      label: 🔄 재현 단계
+      description: 버그를 재현하는 단계를 순서대로 작성해주세요
+      placeholder: |
+        1. '...'로 이동
+        2. '...'을 클릭
+        3. '...'까지 스크롤
+        4. 오류 확인
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 🎯 예상 동작
+      description: 원래 어떻게 동작해야 하는지 설명해주세요
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: 📱 실제 동작
+      description: 실제로 어떤 일이 일어났는지 설명해주세요
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 📸 스크린샷
+      description: 가능하면 스크린샷을 추가해주세요
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 🖥️ 환경 정보
+      description: 버그가 발생한 환경을 알려주세요
+      placeholder: |
+        - OS: [예: iOS, Android, Windows, macOS]
+        - 브라우저: [예: Chrome, Safari, Firefox]
+        - 버전: [예: 22]
+        - 디바이스: [예: iPhone 12, Samsung Galaxy]
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: 📋 추가 정보
+      description: 버그와 관련된 추가 정보가 있다면 작성해주세요
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: ⚡ 우선순위
+      options:
+        - 🔴 높음 (서비스 중단)
+        - 🟡 보통 (기능 문제)
+        - 🟢 낮음 (사소한 문제)
+    validations:
+      required: true
