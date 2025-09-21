@@ -69,9 +69,7 @@
     "COMMIT_EDITMSG": "git-commit"
   },
 
-  "editor.rulers": [50, 72, 100],
   "[git-commit]": {
-    "editor.rulers": [50, 72, 100],
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 72,
     "editor.quickSuggestions": {
