@@ -5,7 +5,10 @@ import {
   joinGameRoomControllerJoinGameRoom,
   listGameRoomsControllerListGameRooms,
 } from '@/lib/orval/_generated/quizzesGameIoBackend';
-import type { ListGameRoomsControllerListGameRoomsParams } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
+import type {
+  CreateGameRoomDto,
+  ListGameRoomsControllerListGameRoomsParams,
+} from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
 
 export const gameRoomQuery = {
   getList: (options?: ListGameRoomsControllerListGameRoomsParams) =>
@@ -15,8 +18,8 @@ export const gameRoomQuery = {
         listGameRoomsControllerListGameRooms(queryKey[1].options),
     }),
   createRoom: mutationOptions({
-    mutationFn: ({ title }: { title: string }) => {
-      return createGameRoomControllerCreateGameRoom({ title });
+    mutationFn: ({ title, quizzesCount }: CreateGameRoomDto) => {
+      return createGameRoomControllerCreateGameRoom({ title, quizzesCount });
     },
   }),
   joinRoom: mutationOptions({

@@ -49,6 +49,9 @@ export const getRandomBoolean = (probability: number = 0.5): boolean => {
   return Math.random() < probability;
 };
 
+/**
+ * 게임 방 생성 이벤트로부터 GameRoomDto 객체를 생성합니다.
+ */
 export const roomFromEvent = (
   event: LobbyGameRoomCreatedSocketEvent
 ): GameRoomDto => {
@@ -61,9 +64,12 @@ export const roomFromEvent = (
     id: body.gameRoomId,
     status: body.status,
     title: body.title,
+    quizzesCount: body.quizzesCount,
     updatedAt: timestamp,
     currentMembersCount: body.currentMembersCount,
     hostId: hostMember.accountId,
+    members: body.members as unknown as GameRoomDto['members'],
     maxMembersCount: body.maxPlayers,
+    quizTimeLimitInSeconds: body.quizTimeLimitInSeconds,
   };
 };
