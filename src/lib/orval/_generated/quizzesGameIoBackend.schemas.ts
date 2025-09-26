@@ -5,6 +5,23 @@
  * The Quizzes Game IO Backend API
  * OpenAPI spec version: 0.1
  */
+export interface AccountDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  /** Account role */
+  role: string;
+  /** Account sign in type */
+  signInType: string;
+  nickname: string;
+  /** 진입 시점 */
+  enteredAt: string;
+  leftAt: string;
+  isActive: boolean;
+}
+export interface AccountCollectionDto {
+  data: AccountDto[];
+}
 export interface SignUpWithUsernameDto {
   username: string;
   password: string;
@@ -23,26 +40,11 @@ export interface CreateGameRoomDto {
    * @maxLength 50
    */
   title: string;
-}
-export type GameRoomDtoStatus =
-  (typeof GameRoomDtoStatus)[keyof typeof GameRoomDtoStatus];
- 
-export const GameRoomDtoStatus = {
-  waiting: 'waiting',
-  ready: 'ready',
-  inProgress: 'inProgress',
-  finished: 'finished',
-  paused: 'paused',
-} as const;
-export interface GameRoomDto {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  hostId: string;
-  status: GameRoomDtoStatus;
-  title: string;
-  maxMembersCount: number;
-  currentMembersCount: number;
+  /**
+   * @minimum 10
+   * @maximum 100
+   */
+  quizzesCount: number;
 }
 export type GameRoomMemberDtoRole =
   (typeof GameRoomMemberDtoRole)[keyof typeof GameRoomMemberDtoRole];
@@ -61,12 +63,77 @@ export interface GameRoomMemberDto {
   /** 게임방 구성원의 닉네임(계정 닉네임과 동일함) */
   nickname: string;
 }
+export type GameRoomDtoStatus =
+  (typeof GameRoomDtoStatus)[keyof typeof GameRoomDtoStatus];
+ 
+export const GameRoomDtoStatus = {
+  waiting: 'waiting',
+  starting: 'starting',
+  inProgress: 'inProgress',
+  finished: 'finished',
+  paused: 'paused',
+} as const;
+export interface GameRoomDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  hostId: string;
+  status: GameRoomDtoStatus;
+  title: string;
+  maxMembersCount: number;
+  currentMembersCount: number;
+  quizTimeLimitInSeconds: number;
+  quizzesCount: number;
+  members: GameRoomMemberDto[];
+}
 export interface GameRoomMemberCollectionDto {
   data: GameRoomMemberDto[];
 }
 export interface GameRoomCollectionDto {
   data: GameRoomDto[];
 }
+export interface QuizDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  /** 퀴즈 유형 */
+  type: string;
+  /** 퀴즈 질문 */
+  question?: string;
+  /** 퀴즈 정답 */
+  answer: string;
+  /** 퀴즈 이미지 URL */
+  imageUrl?: string;
+}
+export interface QuizCollectionDto {
+  data: QuizDto[];
+}
+export type ListAccountsControllerListAccountsParams = {
+  isActive: ListAccountsControllerListAccountsIsActive;
+};
+export type ListAccountsControllerListAccountsIsActive =
+  (typeof ListAccountsControllerListAccountsIsActive)[keyof typeof ListAccountsControllerListAccountsIsActive];
+ 
+export const ListAccountsControllerListAccountsIsActive = {
+  true: 'true',
+} as const;
+/**
+ * error code
+ */
+export type ListAccountsControllerListAccounts400Code =
+  (typeof ListAccountsControllerListAccounts400Code)[keyof typeof ListAccountsControllerListAccounts400Code];
+ 
+export const ListAccountsControllerListAccounts400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type ListAccountsControllerListAccounts400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListAccountsControllerListAccounts400Code;
+};
 /**
  * error code
  */
@@ -197,6 +264,57 @@ export type ListGameRoomsControllerListGameRoomsParams = {
           
      */
   sort?: string;
+};
+/**
+ * error code
+ */
+export type GetGameRoomControllerGetGameRoom401Code =
+  (typeof GetGameRoomControllerGetGameRoom401Code)[keyof typeof GetGameRoomControllerGetGameRoom401Code];
+ 
+export const GetGameRoomControllerGetGameRoom401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type GetGameRoomControllerGetGameRoom401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetGameRoomControllerGetGameRoom401Code;
+};
+/**
+ * error code
+ */
+export type GetGameRoomControllerGetGameRoom403Code =
+  (typeof GetGameRoomControllerGetGameRoom403Code)[keyof typeof GetGameRoomControllerGetGameRoom403Code];
+ 
+export const GetGameRoomControllerGetGameRoom403Code = {
+  GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
+} as const;
+export type GetGameRoomControllerGetGameRoom403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetGameRoomControllerGetGameRoom403Code;
+};
+/**
+ * error code
+ */
+export type GetGameRoomControllerGetGameRoom404Code =
+  (typeof GetGameRoomControllerGetGameRoom404Code)[keyof typeof GetGameRoomControllerGetGameRoom404Code];
+ 
+export const GetGameRoomControllerGetGameRoom404Code = {
+  GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
+} as const;
+export type GetGameRoomControllerGetGameRoom404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetGameRoomControllerGetGameRoom404Code;
 };
 /**
  * error code
@@ -403,4 +521,107 @@ export type ListGameRoomMembersControllerListGameRoomMembers404 = {
   message?: string;
   /** error code */
   code?: ListGameRoomMembersControllerListGameRoomMembers404Code;
+};
+/**
+ * error code
+ */
+export type StartGameControllerStartGame400Code =
+  (typeof StartGameControllerStartGame400Code)[keyof typeof StartGameControllerStartGame400Code];
+ 
+export const StartGameControllerStartGame400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+  GAME_ROOMVALIDATION_ERROR: 'GAME_ROOM.VALIDATION_ERROR',
+} as const;
+export type StartGameControllerStartGame400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: StartGameControllerStartGame400Code;
+};
+/**
+ * error code
+ */
+export type StartGameControllerStartGame403Code =
+  (typeof StartGameControllerStartGame403Code)[keyof typeof StartGameControllerStartGame403Code];
+ 
+export const StartGameControllerStartGame403Code = {
+  GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
+} as const;
+export type StartGameControllerStartGame403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: StartGameControllerStartGame403Code;
+};
+/**
+ * error code
+ */
+export type StartGameControllerStartGame404Code =
+  (typeof StartGameControllerStartGame404Code)[keyof typeof StartGameControllerStartGame404Code];
+ 
+export const StartGameControllerStartGame404Code = {
+  GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
+} as const;
+export type StartGameControllerStartGame404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: StartGameControllerStartGame404Code;
+};
+/**
+ * error code
+ */
+export type ListQuizzesControllerListQuizzes400Code =
+  (typeof ListQuizzesControllerListQuizzes400Code)[keyof typeof ListQuizzesControllerListQuizzes400Code];
+ 
+export const ListQuizzesControllerListQuizzes400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type ListQuizzesControllerListQuizzes400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListQuizzesControllerListQuizzes400Code;
+};
+/**
+ * error code
+ */
+export type ListQuizzesControllerListQuizzes401Code =
+  (typeof ListQuizzesControllerListQuizzes401Code)[keyof typeof ListQuizzesControllerListQuizzes401Code];
+ 
+export const ListQuizzesControllerListQuizzes401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type ListQuizzesControllerListQuizzes401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListQuizzesControllerListQuizzes401Code;
+};
+/**
+ * error code
+ */
+export type ListQuizzesControllerListQuizzes403Code =
+  (typeof ListQuizzesControllerListQuizzes403Code)[keyof typeof ListQuizzesControllerListQuizzes403Code];
+ 
+export const ListQuizzesControllerListQuizzes403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type ListQuizzesControllerListQuizzes403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListQuizzesControllerListQuizzes403Code;
 };

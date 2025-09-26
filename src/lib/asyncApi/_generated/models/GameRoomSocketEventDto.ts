@@ -8,7 +8,9 @@ interface GameRoomSocketEventDto {
   title: string;
   maxPlayers: number;
   currentMembersCount: number;
+  quizTimeLimitInSeconds: number;
   members: GameRoomMemberSocketEventDto[];
+  quizzesCount: number;
   additionalProperties?: Record<string, unknown>;
 }
 export type { GameRoomSocketEventDto };
