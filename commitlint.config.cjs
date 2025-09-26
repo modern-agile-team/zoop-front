@@ -5,6 +5,7 @@ module.exports = {
       2,
       'always',
       [
+        'base', // 베이스 브랜치 커밋
         'feat', // 새로운 기능
         'fix', // 버그 수정
         'docs', // 문서 변경
