@@ -1,6 +1,6 @@
 enum GameRoomStatus {
   WAITING = 'waiting',
-  READY = 'ready',
+  STARTING = 'starting',
   IN_PROGRESS = 'inProgress',
   FINISHED = 'finished',
   PAUSED = 'paused',
