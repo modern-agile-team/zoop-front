@@ -68,7 +68,12 @@ export const roomFromEvent = (
     updatedAt: timestamp,
     currentMembersCount: body.currentMembersCount,
     hostId: hostMember.accountId,
-    members: body.members as unknown as GameRoomDto['members'],
+    members: body.members.map((member) => ({
+      ...member,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      gameRoomId: body.gameRoomId,
+    })),
     maxMembersCount: body.maxPlayers,
     quizTimeLimitInSeconds: body.quizTimeLimitInSeconds,
   };
