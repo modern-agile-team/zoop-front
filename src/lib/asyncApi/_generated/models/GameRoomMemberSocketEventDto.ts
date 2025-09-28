@@ -1,5 +1,6 @@
 import type { GameRoomMemberRole } from './GameRoomMemberRole';
 interface GameRoomMemberSocketEventDto {
+  id: string;
   accountId: string;
   role: GameRoomMemberRole;
   nickname: string;

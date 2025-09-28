@@ -6,18 +6,34 @@
  * OpenAPI spec version: 0.1
  */
 import type {
+  AccountCollectionDto,
   AuthTokenDto,
   CreateGameRoomDto,
   GameRoomCollectionDto,
   GameRoomDto,
   GameRoomMemberCollectionDto,
   GameRoomMemberDto,
+  ListAccountsControllerListAccountsParams,
   ListGameRoomsControllerListGameRoomsParams,
+  QuizCollectionDto,
   SignInWithUsernameDto,
   SignUpWithUsernameDto,
 } from './quizzesGameIoBackend.schemas';
 
 import { orvalInstance } from '../../../shared/service/api/client/index';
+
+/**
+ * @summary 계정 목록 조회
+ */
+export const listAccountsControllerListAccounts = (
+  params: ListAccountsControllerListAccountsParams
+) => {
+  return orvalInstance<AccountCollectionDto>({
+    url: `/accounts`,
+    method: 'GET',
+    params,
+  });
+};
 
 /**
  * @summary username 기반 회원가입
@@ -75,6 +91,16 @@ export const listGameRoomsControllerListGameRooms = (
 };
 
 /**
+ * @summary 게임 방 상세 조회
+ */
+export const getGameRoomControllerGetGameRoom = (gameRoomId: string) => {
+  return orvalInstance<GameRoomDto>({
+    url: `/game-rooms/${gameRoomId}`,
+    method: 'GET',
+  });
+};
+
+/**
  * @summary 게임 방 입장
  */
 export const joinGameRoomControllerJoinGameRoom = (gameRoomId: string) => {
@@ -106,6 +132,29 @@ export const listGameRoomMembersControllerListGameRoomMembers = (
   });
 };
 
+/**
+ * @summary 게임 시작 요청
+ */
+export const startGameControllerStartGame = (gameRoomId: string) => {
+  return orvalInstance<GameRoomDto>({
+    url: `/game-room/${gameRoomId}/start`,
+    method: 'POST',
+  });
+};
+
+/**
+ * @summary 퀴즈 목록 조회
+ */
+export const listQuizzesControllerListQuizzes = () => {
+  return orvalInstance<QuizCollectionDto>({
+    url: `/admin/quizzes`,
+    method: 'GET',
+  });
+};
+
+export type ListAccountsControllerListAccountsResult = NonNullable<
+  Awaited<ReturnType<typeof listAccountsControllerListAccounts>>
+>;
 export type SignUpWithUsernameControllerSignUpWithUsernameResult = NonNullable<
   Awaited<ReturnType<typeof signUpWithUsernameControllerSignUpWithUsername>>
 >;
@@ -118,6 +167,9 @@ export type CreateGameRoomControllerCreateGameRoomResult = NonNullable<
 export type ListGameRoomsControllerListGameRoomsResult = NonNullable<
   Awaited<ReturnType<typeof listGameRoomsControllerListGameRooms>>
 >;
+export type GetGameRoomControllerGetGameRoomResult = NonNullable<
+  Awaited<ReturnType<typeof getGameRoomControllerGetGameRoom>>
+>;
 export type JoinGameRoomControllerJoinGameRoomResult = NonNullable<
   Awaited<ReturnType<typeof joinGameRoomControllerJoinGameRoom>>
 >;
@@ -128,3 +180,9 @@ export type ListGameRoomMembersControllerListGameRoomMembersResult =
   NonNullable<
     Awaited<ReturnType<typeof listGameRoomMembersControllerListGameRoomMembers>>
   >;
+export type StartGameControllerStartGameResult = NonNullable<
+  Awaited<ReturnType<typeof startGameControllerStartGame>>
+>;
+export type ListQuizzesControllerListQuizzesResult = NonNullable<
+  Awaited<ReturnType<typeof listQuizzesControllerListQuizzes>>
+>;
