@@ -10,6 +10,235 @@
   "servers": {},
   "components": {
     "schemas": {
+      "GameRoomCreatedSocketEventAction": {
+        "type": "string",
+        "enum": ["created"]
+      },
+      "GameRoomStatus": {
+        "type": "string",
+        "enum": ["waiting", "starting", "inProgress", "finished", "paused"]
+      },
+      "GameRoomVisibility": {
+        "type": "string",
+        "enum": ["public", "private", "hidden"]
+      },
+      "GameRoomMemberRole": {
+        "type": "string",
+        "enum": ["host", "player"]
+      },
+      "GameRoomMemberSocketEventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "string"
+          },
+          "role": {
+            "title": "GameRoomMemberRole",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomMemberRole"
+              }
+            ]
+          },
+          "nickname": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "accountId", "role", "nickname"]
+      },
+      "GameRoomSocketEventDto": {
+        "type": "object",
+        "properties": {
+          "gameRoomId": {
+            "type": "string"
+          },
+          "status": {
+            "title": "GameRoomStatus",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomStatus"
+              }
+            ]
+          },
+          "visibility": {
+            "title": "GameRoomVisibility",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomVisibility"
+              }
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "maxPlayers": {
+            "type": "number"
+          },
+          "currentMembersCount": {
+            "type": "number"
+          },
+          "quizTimeLimitInSeconds": {
+            "type": "number"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameRoomMemberSocketEventDto"
+            }
+          },
+          "quizzesCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "gameRoomId",
+          "status",
+          "visibility",
+          "title",
+          "maxPlayers",
+          "currentMembersCount",
+          "quizTimeLimitInSeconds",
+          "members",
+          "quizzesCount"
+        ]
+      },
+      "LobbyGameRoomCreatedSocketEvent": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "title": "GameRoomCreatedSocketEventAction",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomCreatedSocketEventAction"
+              }
+            ]
+          },
+          "eventName": {
+            "type": "string",
+            "example": "lobby.game_room.created"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "body": {
+            "$ref": "#/components/schemas/GameRoomSocketEventDto"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": ["action", "eventName", "timestamp", "body", "meta"]
+      },
+      "GameRoomChangedSocketEventAction": {
+        "type": "string",
+        "enum": [
+          "member_joined",
+          "member_left",
+          "member_role_changed",
+          "game_starting"
+        ]
+      },
+      "LobbyGameRoomChangedSocketEvent": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "title": "GameRoomChangedSocketEventAction",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomChangedSocketEventAction"
+              }
+            ]
+          },
+          "eventName": {
+            "type": "string",
+            "example": "lobby.game_room.changed"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "body": {
+            "$ref": "#/components/schemas/GameRoomSocketEventDto"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": ["action", "eventName", "timestamp", "body", "meta"]
+      },
+      "GameRoomDeletedSocketEventAction": {
+        "type": "string",
+        "enum": ["closed"]
+      },
+      "GameRoomIdentifierSocketEventDto": {
+        "type": "object",
+        "properties": {
+          "gameRoomId": {
+            "type": "string"
+          }
+        },
+        "required": ["gameRoomId"]
+      },
+      "LobbyGameRoomDeletedSocketEvent": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "title": "GameRoomDeletedSocketEventAction",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomDeletedSocketEventAction"
+              }
+            ]
+          },
+          "eventName": {
+            "type": "string",
+            "example": "lobby.game_room.deleted"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "body": {
+            "$ref": "#/components/schemas/GameRoomIdentifierSocketEventDto"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": ["action", "eventName", "timestamp", "body", "meta"]
+      },
+      "GameRoomChangedSocketEvent": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "title": "GameRoomChangedSocketEventAction",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GameRoomChangedSocketEventAction"
+              }
+            ]
+          },
+          "eventName": {
+            "type": "string",
+            "example": "game_room.game_room.changed"
+          },
+          "timestamp": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "body": {
+            "$ref": "#/components/schemas/GameRoomSocketEventDto"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": ["action", "eventName", "timestamp", "body", "meta"]
+      },
       "AccountChangedSocketEventAction": {
         "type": "string",
         "enum": ["entered"]
@@ -94,225 +323,40 @@
           }
         },
         "required": ["action", "eventName", "timestamp", "body", "meta"]
-      },
-      "GameRoomDeletedSocketEventAction": {
-        "type": "string",
-        "enum": ["closed"]
-      },
-      "GameRoomIdentifierSocketEventDto": {
-        "type": "object",
-        "properties": {
-          "gameRoomId": {
-            "type": "string"
-          }
-        },
-        "required": ["gameRoomId"]
-      },
-      "LobbyGameRoomDeletedSocketEvent": {
-        "type": "object",
-        "properties": {
-          "action": {
-            "title": "GameRoomDeletedSocketEventAction",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GameRoomDeletedSocketEventAction"
-              }
-            ]
-          },
-          "eventName": {
-            "type": "string",
-            "example": "lobby.game_room.deleted"
-          },
-          "timestamp": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "body": {
-            "$ref": "#/components/schemas/GameRoomIdentifierSocketEventDto"
-          },
-          "meta": {
-            "type": "object"
-          }
-        },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
-      },
-      "GameRoomCreatedSocketEventAction": {
-        "type": "string",
-        "enum": ["created"]
-      },
-      "GameRoomStatus": {
-        "type": "string",
-        "enum": ["waiting", "ready", "inProgress", "finished", "paused"]
-      },
-      "GameRoomVisibility": {
-        "type": "string",
-        "enum": ["public", "private", "hidden"]
-      },
-      "GameRoomMemberRole": {
-        "type": "string",
-        "enum": ["host", "player"]
-      },
-      "GameRoomMemberSocketEventDto": {
-        "type": "object",
-        "properties": {
-          "accountId": {
-            "type": "string"
-          },
-          "role": {
-            "title": "GameRoomMemberRole",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GameRoomMemberRole"
-              }
-            ]
-          },
-          "nickname": {
-            "type": "string"
-          }
-        },
-        "required": ["accountId", "role", "nickname"]
-      },
-      "GameRoomSocketEventDto": {
-        "type": "object",
-        "properties": {
-          "gameRoomId": {
-            "type": "string"
-          },
-          "status": {
-            "title": "GameRoomStatus",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GameRoomStatus"
-              }
-            ]
-          },
-          "visibility": {
-            "title": "GameRoomVisibility",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GameRoomVisibility"
-              }
-            ]
-          },
-          "title": {
-            "type": "string"
-          },
-          "maxPlayers": {
-            "type": "number"
-          },
-          "currentMembersCount": {
-            "type": "number"
-          },
-          "members": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GameRoomMemberSocketEventDto"
-            }
-          }
-        },
-        "required": [
-          "gameRoomId",
-          "status",
-          "visibility",
-          "title",
-          "maxPlayers",
-          "currentMembersCount",
-          "members"
-        ]
-      },
-      "LobbyGameRoomCreatedSocketEvent": {
-        "type": "object",
-        "properties": {
-          "action": {
-            "title": "GameRoomCreatedSocketEventAction",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GameRoomCreatedSocketEventAction"
-              }
-            ]
-          },
-          "eventName": {
-            "type": "string",
-            "example": "lobby.game_room.created"
-          },
-          "timestamp": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "body": {
-            "$ref": "#/components/schemas/GameRoomSocketEventDto"
-          },
-          "meta": {
-            "type": "object"
-          }
-        },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
-      },
-      "GameRoomChangedSocketEventAction": {
-        "type": "string",
-        "enum": ["member_joined", "member_left", "member_role_changed"]
-      },
-      "GameRoomChangedSocketEvent": {
-        "type": "object",
-        "properties": {
-          "action": {
-            "title": "GameRoomChangedSocketEventAction",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/GameRoomChangedSocketEventAction"
-              }
-            ]
-          },
-          "eventName": {
-            "type": "string",
-            "example": "game_room.game_room.changed"
-          },
-          "timestamp": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "body": {
-            "$ref": "#/components/schemas/GameRoomSocketEventDto"
-          },
-          "meta": {
-            "type": "object"
-          }
-        },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
       }
     }
   },
   "defaultContentType": "application/json",
   "channels": {
-    "lobby.account.changed": {
+    "lobby.game_room.created": {
       "publish": {
         "tags": [
           {
             "name": "lobby"
           }
         ],
-        "description": "유저가 서비스에 접속",
+        "description": "게임방이 생성됨",
         "message": {
           "payload": {
-            "$ref": "#/components/schemas/LobbyAccountChangedSocketEvent"
+            "$ref": "#/components/schemas/LobbyGameRoomCreatedSocketEvent"
           },
-          "name": "AccountEnteredHandler#publishAccountChangedEvent"
+          "name": "SocketEventPublisher#_lobbyGameRoomCreatedSocketEvent"
         }
       }
     },
-    "lobby.active_account.changed": {
+    "lobby.game_room.changed": {
       "publish": {
         "tags": [
           {
             "name": "lobby"
           }
         ],
-        "description": "유저가 서비스에 접속",
+        "description": "게임방의 상태 변경",
         "message": {
           "payload": {
-            "$ref": "#/components/schemas/LobbyActiveAccountChangedSocketEvent"
+            "$ref": "#/components/schemas/LobbyGameRoomChangedSocketEvent"
           },
-          "name": "AccountEnteredHandler#publishActiveAccountChangedEvent"
+          "name": "SocketEventPublisher#_lobbyGameRoomChangedSocketEvent"
         }
       }
     },
@@ -328,23 +372,7 @@
           "payload": {
             "$ref": "#/components/schemas/LobbyGameRoomDeletedSocketEvent"
           },
-          "name": "GameRoomClosedHandler#publish"
-        }
-      }
-    },
-    "lobby.game_room.created": {
-      "publish": {
-        "tags": [
-          {
-            "name": "lobby"
-          }
-        ],
-        "description": "게임방이 생성됨",
-        "message": {
-          "payload": {
-            "$ref": "#/components/schemas/LobbyGameRoomCreatedSocketEvent"
-          },
-          "name": "GameRoomCreatedHandler#publish"
+          "name": "SocketEventPublisher#_lobbyGameRoomDeletedSocketEvent"
         }
       }
     },
@@ -355,12 +383,44 @@
             "name": "game_room"
           }
         ],
-        "description": "유저가 게임방에 접속",
+        "description": "게임방의 상태 변경",
         "message": {
           "payload": {
             "$ref": "#/components/schemas/GameRoomChangedSocketEvent"
           },
-          "name": "GameRoomMemberJoinedHandler#publish"
+          "name": "SocketEventPublisher#_gameRoomChangedSocketEvent"
+        }
+      }
+    },
+    "lobby.account.changed": {
+      "publish": {
+        "tags": [
+          {
+            "name": "lobby"
+          }
+        ],
+        "description": "유저가 서비스에 접속",
+        "message": {
+          "payload": {
+            "$ref": "#/components/schemas/LobbyAccountChangedSocketEvent"
+          },
+          "name": "SocketEventPublisher#_lobbyAccountChangedSocketEvent"
+        }
+      }
+    },
+    "lobby.active_account.changed": {
+      "publish": {
+        "tags": [
+          {
+            "name": "lobby"
+          }
+        ],
+        "description": "유저가 서비스에 접속",
+        "message": {
+          "payload": {
+            "$ref": "#/components/schemas/LobbyActiveAccountChangedSocketEvent"
+          },
+          "name": "SocketEventPublisher#_lobbyActiveAccountChangedSocketEvent"
         }
       }
     }
