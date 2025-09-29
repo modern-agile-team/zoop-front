@@ -1,17 +1,18 @@
 import { Users, Play } from 'lucide-react';
 
-import type { GameRoomDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
+import type {
+  AccountDto,
+  GameRoomDto,
+} from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
 
 import ParticipantCard from '../ParticipantCard';
 import Room from '../Room';
 import { LobbyScrollSection } from '../Section';
 
-import type { Participant } from '../../types';
-
 interface MobileLayoutProps {
   waitingRooms: GameRoomDto[];
   playingRooms: GameRoomDto[];
-  participants: Participant[];
+  participants: AccountDto[];
 }
 
 export default function MobileLayout({
