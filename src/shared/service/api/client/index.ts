@@ -32,6 +32,7 @@ export const orvalInstance = async <T>({
   url,
   method,
   headers,
+  params,
   data,
 }: {
   url: string;
@@ -48,6 +49,7 @@ export const orvalInstance = async <T>({
     const response = await connectApi(rawUrl.join('/'), {
       method,
       json: data,
+      searchParams: params ? serializeParams(params) : undefined,
       hooks: {
         beforeRequest: [
           (request) => {
@@ -71,3 +73,16 @@ export const orvalInstance = async <T>({
     }
   }
 };
+
+/**
+ * undefined, null 값을 제거하고 문자열로 변환하는 함수
+ */
+function serializeParams(
+  params: Record<string, string | number | boolean | unknown>
+) {
+  return Object.fromEntries(
+    Object.entries(params)
+      .filter(([, v]) => v != null)
+      .map(([k, v]) => [k, String(v)])
+  );
+}
