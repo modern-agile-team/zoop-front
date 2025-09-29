@@ -12,19 +12,34 @@
     "schemas": {
       "GameRoomCreatedSocketEventAction": {
         "type": "string",
-        "enum": ["created"]
+        "enum": [
+          "created"
+        ]
       },
       "GameRoomStatus": {
         "type": "string",
-        "enum": ["waiting", "starting", "inProgress", "finished", "paused"]
+        "enum": [
+          "waiting",
+          "starting",
+          "inProgress",
+          "finished",
+          "paused"
+        ]
       },
       "GameRoomVisibility": {
         "type": "string",
-        "enum": ["public", "private", "hidden"]
+        "enum": [
+          "public",
+          "private",
+          "hidden"
+        ]
       },
       "GameRoomMemberRole": {
         "type": "string",
-        "enum": ["host", "player"]
+        "enum": [
+          "host",
+          "player"
+        ]
       },
       "GameRoomMemberSocketEventDto": {
         "type": "object",
@@ -47,7 +62,12 @@
             "type": "string"
           }
         },
-        "required": ["id", "accountId", "role", "nickname"]
+        "required": [
+          "id",
+          "accountId",
+          "role",
+          "nickname"
+        ]
       },
       "GameRoomSocketEventDto": {
         "type": "object",
@@ -131,7 +151,13 @@
             "type": "object"
           }
         },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
+        "required": [
+          "action",
+          "eventName",
+          "timestamp",
+          "body",
+          "meta"
+        ]
       },
       "GameRoomChangedSocketEventAction": {
         "type": "string",
@@ -168,11 +194,19 @@
             "type": "object"
           }
         },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
+        "required": [
+          "action",
+          "eventName",
+          "timestamp",
+          "body",
+          "meta"
+        ]
       },
       "GameRoomDeletedSocketEventAction": {
         "type": "string",
-        "enum": ["closed"]
+        "enum": [
+          "closed"
+        ]
       },
       "GameRoomIdentifierSocketEventDto": {
         "type": "object",
@@ -181,7 +215,9 @@
             "type": "string"
           }
         },
-        "required": ["gameRoomId"]
+        "required": [
+          "gameRoomId"
+        ]
       },
       "LobbyGameRoomDeletedSocketEvent": {
         "type": "object",
@@ -209,7 +245,13 @@
             "type": "object"
           }
         },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
+        "required": [
+          "action",
+          "eventName",
+          "timestamp",
+          "body",
+          "meta"
+        ]
       },
       "GameRoomChangedSocketEvent": {
         "type": "object",
@@ -237,11 +279,19 @@
             "type": "object"
           }
         },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
+        "required": [
+          "action",
+          "eventName",
+          "timestamp",
+          "body",
+          "meta"
+        ]
       },
       "AccountChangedSocketEventAction": {
         "type": "string",
-        "enum": ["entered"]
+        "enum": [
+          "entered"
+        ]
       },
       "AccountSocketEventDto": {
         "type": "object",
@@ -253,7 +303,10 @@
             "type": "string"
           }
         },
-        "required": ["accountId", "nickname"]
+        "required": [
+          "accountId",
+          "nickname"
+        ]
       },
       "LobbyAccountChangedSocketEvent": {
         "type": "object",
@@ -281,11 +334,19 @@
             "type": "object"
           }
         },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
+        "required": [
+          "action",
+          "eventName",
+          "timestamp",
+          "body",
+          "meta"
+        ]
       },
       "ActiveAccountChangedSocketEventAction": {
         "type": "string",
-        "enum": ["incr"]
+        "enum": [
+          "incr"
+        ]
       },
       "ActiveAccountSocketEventDto": {
         "type": "object",
@@ -294,7 +355,9 @@
             "type": "number"
           }
         },
-        "required": ["currentActiveAccountsCount"]
+        "required": [
+          "currentActiveAccountsCount"
+        ]
       },
       "LobbyActiveAccountChangedSocketEvent": {
         "type": "object",
@@ -322,7 +385,13 @@
             "type": "object"
           }
         },
-        "required": ["action", "eventName", "timestamp", "body", "meta"]
+        "required": [
+          "action",
+          "eventName",
+          "timestamp",
+          "body",
+          "meta"
+        ]
       }
     }
   },
