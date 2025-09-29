@@ -108,6 +108,40 @@ export interface QuizDto {
 export interface QuizCollectionDto {
   data: QuizDto[];
 }
+/**
+ * error code
+ */
+export type GetAccountControllerGetMe400Code =
+  (typeof GetAccountControllerGetMe400Code)[keyof typeof GetAccountControllerGetMe400Code];
+ 
+export const GetAccountControllerGetMe400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type GetAccountControllerGetMe400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetAccountControllerGetMe400Code;
+};
+/**
+ * error code
+ */
+export type GetAccountControllerGetMe404Code =
+  (typeof GetAccountControllerGetMe404Code)[keyof typeof GetAccountControllerGetMe404Code];
+ 
+export const GetAccountControllerGetMe404Code = {
+  ACCOUNTNOT_FOUND: 'ACCOUNT.NOT_FOUND',
+} as const;
+export type GetAccountControllerGetMe404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetAccountControllerGetMe404Code;
+};
 export type ListAccountsControllerListAccountsParams = {
   isActive: ListAccountsControllerListAccountsIsActive;
 };
