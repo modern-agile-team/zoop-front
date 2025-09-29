@@ -2,6 +2,7 @@ import { mutationOptions, queryOptions } from '@tanstack/react-query';
 
 import {
   createGameRoomControllerCreateGameRoom,
+  getGameRoomControllerGetGameRoom,
   joinGameRoomControllerJoinGameRoom,
   listGameRoomsControllerListGameRooms,
 } from '@/lib/orval/_generated/quizzesGameIoBackend';
@@ -25,4 +26,9 @@ export const gameRoomQuery = {
   joinRoom: mutationOptions({
     mutationFn: (roomId: string) => joinGameRoomControllerJoinGameRoom(roomId),
   }),
+  getDetail: (gameRoomId: string) =>
+    queryOptions({
+      queryKey: ['game-room', gameRoomId] as const,
+      queryFn: () => getGameRoomControllerGetGameRoom(gameRoomId),
+    }),
 };
