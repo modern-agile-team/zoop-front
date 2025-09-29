@@ -7,6 +7,7 @@
  */
 import type {
   AccountCollectionDto,
+  AccountDto,
   AuthTokenDto,
   CreateGameRoomDto,
   GameRoomCollectionDto,
@@ -21,6 +22,13 @@ import type {
 } from './quizzesGameIoBackend.schemas';
 
 import { orvalInstance } from '../../../shared/service/api/client/index';
+
+/**
+ * @summary 내 계정 조회
+ */
+export const getAccountControllerGetMe = () => {
+  return orvalInstance<AccountDto>({ url: `/accounts/me`, method: 'GET' });
+};
 
 /**
  * @summary 계정 목록 조회
@@ -152,6 +160,9 @@ export const listQuizzesControllerListQuizzes = () => {
   });
 };
 
+export type GetAccountControllerGetMeResult = NonNullable<
+  Awaited<ReturnType<typeof getAccountControllerGetMe>>
+>;
 export type ListAccountsControllerListAccountsResult = NonNullable<
   Awaited<ReturnType<typeof listAccountsControllerListAccounts>>
 >;
