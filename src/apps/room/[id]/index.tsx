@@ -1,26 +1,34 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useParams, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
+import { gameRoomQuery } from '@/shared/service/api/query/room';
 import { toast } from '@/shared/utils/toast';
 
 import GameInfoCard from './components/GameInfoCard';
 import GameRoomHeader from './components/GameRoomHeader';
 import PlayersList from './components/PlayersList';
 import ReadyControls from './components/ReadyControls';
-import { mockGameRoom, mockCurrentUser } from './data/mockData';
+import { mockCurrentUser } from './data/mockData';
 
 export default function GameRoomDetailPage() {
   const { roomId } = useParams({ from: '/room/$roomId' });
   const navigate = useNavigate();
 
-  const room = mockGameRoom;
+  const { data: room } = useSuspenseQuery({
+    ...gameRoomQuery.getDetail(roomId),
+    staleTime: 1000 * 60 * 5,
+  });
+
   const currentUser = mockCurrentUser;
 
-  const currentPlayer = room.players.find((p) => p.id === currentUser.id);
-  const isHost = currentPlayer?.isHost || false;
+  const currentPlayer = room.members.find(
+    (player) => player.accountId === currentUser.id
+  );
+  const isHost = currentPlayer?.role === 'host' || false;
 
-  const canStartGame = room.players.length === room.maxPlayers;
+  const canStartGame = room.members.length === room.maxMembersCount;
 
   const handleStartGame = () => {
     if (!isHost || !canStartGame) return;
@@ -67,7 +75,7 @@ export default function GameRoomDetailPage() {
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
             {/* 왼쪽 영역 - 플레이어 목록 */}
             <div className="xl:col-span-2">
-              <PlayersList players={room.players} />
+              <PlayersList players={room.members} />
             </div>
 
             {/* 오른쪽 영역 - 준비 상태 컨트롤과 게임 정보 */}
@@ -76,14 +84,14 @@ export default function GameRoomDetailPage() {
                 isHost={isHost}
                 canStartGame={canStartGame}
                 onStartGame={handleStartGame}
-                currentPlayers={room.players.length}
-                maxPlayers={room.maxPlayers}
+                currentPlayers={room.members.length}
+                maxPlayers={room.maxMembersCount}
               />
 
               {/* 게임 정보 카드 */}
               <GameInfoCard
-                maxPlayers={room.maxPlayers}
-                currentPlayers={room.players.length}
+                maxPlayers={room.maxMembersCount}
+                currentPlayers={room.members.length}
                 roomId={roomId}
               />
             </div>

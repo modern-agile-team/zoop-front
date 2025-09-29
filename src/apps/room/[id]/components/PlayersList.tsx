@@ -1,15 +1,16 @@
-import type { GameRoomPlayer } from '../types';
+import type { GameRoomMemberDto } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
+
 import PlayerCard from './PlayerCard';
 
 interface PlayersListProps {
-  players: GameRoomPlayer[];
+  players: GameRoomMemberDto[];
 }
 
 export default function PlayersList({ players }: PlayersListProps) {
   // 정렬: 방장을 맨 앞으로
   const sortedPlayers = [...players].sort((a, b) => {
-    if (a.isHost && !b.isHost) return -1;
-    if (!a.isHost && b.isHost) return 1;
+    if (a.role === 'host' && b.role !== 'host') return -1;
+    if (a.role !== 'host' && b.role === 'host') return 1;
     return 0;
   });
 
