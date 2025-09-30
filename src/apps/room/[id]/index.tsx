@@ -3,15 +3,15 @@ import { useParams, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
+import { useResponsive } from '@/shared/hooks/useResponsive';
 import { accountsQuery, gameRoomQuery } from '@/shared/service/api/query';
-import { toast } from '@/shared/utils/toast';
 
-import GameInfoCard from './components/GameInfoCard';
 import GameRoomHeader from './components/GameRoomHeader';
-import PlayersList from './components/PlayersList';
-import ReadyControls from './components/ReadyControls';
+import DesktopLayout from './layouts/DesktopLayout';
+import MobileLayout from './layouts/MobileLayout';
 
 export default function GameRoomDetailPage() {
+  const { isDesktop } = useResponsive();
   const { roomId } = useParams({ from: '/room/$roomId' });
   const navigate = useNavigate();
 
@@ -30,16 +30,14 @@ export default function GameRoomDetailPage() {
   );
   const isHost = currentPlayer?.role === 'host' || false;
 
-  const canStartGame = room.members.length === room.maxMembersCount;
-
-  const handleStartGame = () => {
-    if (!isHost || !canStartGame) return;
-
-    toast.info('개발중인 기능입니다.');
-  };
-
   const handleBackToLobby = () => {
     navigate({ to: '/lobby', replace: false });
+  };
+
+  const layoutProps = {
+    isHost,
+    room,
+    roomId,
   };
 
   if (!currentPlayer) {
@@ -73,31 +71,11 @@ export default function GameRoomDetailPage() {
           {/* 방 정보 헤더 */}
           <GameRoomHeader room={room} />
 
-          {/* 모바일에서는 세로 배치, 데스크톱에서는 가로 배치 */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            {/* 왼쪽 영역 - 플레이어 목록 */}
-            <div className="xl:col-span-2">
-              <PlayersList players={room.members} />
-            </div>
-
-            {/* 오른쪽 영역 - 준비 상태 컨트롤과 게임 정보 */}
-            <div className="xl:col-span-1 space-y-4">
-              <ReadyControls
-                isHost={isHost}
-                canStartGame={canStartGame}
-                onStartGame={handleStartGame}
-                currentPlayers={room.members.length}
-                maxPlayers={room.maxMembersCount}
-              />
-
-              {/* 게임 정보 카드 */}
-              <GameInfoCard
-                maxPlayers={room.maxMembersCount}
-                currentPlayers={room.members.length}
-                roomId={roomId}
-              />
-            </div>
-          </div>
+          {isDesktop ? (
+            <DesktopLayout {...layoutProps} />
+          ) : (
+            <MobileLayout {...layoutProps} />
+          )}
         </div>
       </div>
     </div>
