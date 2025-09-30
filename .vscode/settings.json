@@ -15,9 +15,18 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "eslint.nodePath": ".yarn/sdks",
   "tailwindCSS.experimental.classRegex": [
-    ["Styles \\=([^;]*);", "'([^']*)'"],
-    ["Styles \\=([^;]*);", "\"([^\"]*)\""],
-    ["Styles \\=([^;]*);", "\\`([^\\`]*)\\`"]
+    [
+      "Styles \\=([^;]*);",
+      "'([^']*)'"
+    ],
+    [
+      "Styles \\=([^;]*);",
+      "\"([^\"]*)\""
+    ],
+    [
+      "Styles \\=([^;]*);",
+      "\\`([^\\`]*)\\`"
+    ]
   ],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
@@ -47,7 +56,6 @@
     }
   ],
   "eslint.format.enable": true,
-
   // Git 커밋 관련 설정
   "git.inputValidation": true,
   "git.inputValidationLength": 100,
@@ -59,16 +67,13 @@
   "git.suggestSmartCommit": true,
   "git.enableSmartCommit": true,
   "git.smartCommitChanges": "tracked",
-
   "scm.inputFontSize": 14,
   "scm.inputMinLineCount": 3,
   "scm.inputMaxLineCount": 6,
-
   "files.associations": {
     ".gitmessage": "git-commit",
     "COMMIT_EDITMSG": "git-commit"
   },
-
   "[git-commit]": {
     "editor.wordWrap": "wordWrapColumn",
     "editor.wordWrapColumn": 72,
