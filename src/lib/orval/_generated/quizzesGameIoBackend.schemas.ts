@@ -48,7 +48,7 @@ export interface CreateGameRoomDto {
 }
 export type GameRoomMemberDtoRole =
   (typeof GameRoomMemberDtoRole)[keyof typeof GameRoomMemberDtoRole];
- 
+
 export const GameRoomMemberDtoRole = {
   host: 'host',
   player: 'player',
@@ -65,7 +65,7 @@ export interface GameRoomMemberDto {
 }
 export type GameRoomDtoStatus =
   (typeof GameRoomDtoStatus)[keyof typeof GameRoomDtoStatus];
- 
+
 export const GameRoomDtoStatus = {
   waiting: 'waiting',
   starting: 'starting',
@@ -113,7 +113,7 @@ export interface QuizCollectionDto {
  */
 export type GetAccountControllerGetMe400Code =
   (typeof GetAccountControllerGetMe400Code)[keyof typeof GetAccountControllerGetMe400Code];
- 
+
 export const GetAccountControllerGetMe400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -130,7 +130,7 @@ export type GetAccountControllerGetMe400 = {
  */
 export type GetAccountControllerGetMe404Code =
   (typeof GetAccountControllerGetMe404Code)[keyof typeof GetAccountControllerGetMe404Code];
- 
+
 export const GetAccountControllerGetMe404Code = {
   ACCOUNTNOT_FOUND: 'ACCOUNT.NOT_FOUND',
 } as const;
@@ -147,7 +147,7 @@ export type ListAccountsControllerListAccountsParams = {
 };
 export type ListAccountsControllerListAccountsIsActive =
   (typeof ListAccountsControllerListAccountsIsActive)[keyof typeof ListAccountsControllerListAccountsIsActive];
- 
+
 export const ListAccountsControllerListAccountsIsActive = {
   true: 'true',
 } as const;
@@ -156,7 +156,7 @@ export const ListAccountsControllerListAccountsIsActive = {
  */
 export type ListAccountsControllerListAccounts400Code =
   (typeof ListAccountsControllerListAccounts400Code)[keyof typeof ListAccountsControllerListAccounts400Code];
- 
+
 export const ListAccountsControllerListAccounts400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -173,7 +173,7 @@ export type ListAccountsControllerListAccounts400 = {
  */
 export type SignUpWithUsernameControllerSignUpWithUsername400Code =
   (typeof SignUpWithUsernameControllerSignUpWithUsername400Code)[keyof typeof SignUpWithUsernameControllerSignUpWithUsername400Code];
- 
+
 export const SignUpWithUsernameControllerSignUpWithUsername400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -190,7 +190,7 @@ export type SignUpWithUsernameControllerSignUpWithUsername400 = {
  */
 export type SignUpWithUsernameControllerSignUpWithUsername409Code =
   (typeof SignUpWithUsernameControllerSignUpWithUsername409Code)[keyof typeof SignUpWithUsernameControllerSignUpWithUsername409Code];
- 
+
 export const SignUpWithUsernameControllerSignUpWithUsername409Code = {
   ACCOUNTUSERNAME_ALREADY_OCCUPIED: 'ACCOUNT.USERNAME_ALREADY_OCCUPIED',
 } as const;
@@ -207,7 +207,7 @@ export type SignUpWithUsernameControllerSignUpWithUsername409 = {
  */
 export type SignInWithUsernameControllerSignInWithUsername400Code =
   (typeof SignInWithUsernameControllerSignInWithUsername400Code)[keyof typeof SignInWithUsernameControllerSignInWithUsername400Code];
- 
+
 export const SignInWithUsernameControllerSignInWithUsername400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -224,7 +224,7 @@ export type SignInWithUsernameControllerSignInWithUsername400 = {
  */
 export type SignInWithUsernameControllerSignInWithUsername401Code =
   (typeof SignInWithUsernameControllerSignInWithUsername401Code)[keyof typeof SignInWithUsernameControllerSignInWithUsername401Code];
- 
+
 export const SignInWithUsernameControllerSignInWithUsername401Code = {
   AUTHSIGN_IN_INFO_NOT_MATCHED: 'AUTH.SIGN_IN_INFO_NOT_MATCHED',
 } as const;
@@ -241,7 +241,7 @@ export type SignInWithUsernameControllerSignInWithUsername401 = {
  */
 export type CreateGameRoomControllerCreateGameRoom400Code =
   (typeof CreateGameRoomControllerCreateGameRoom400Code)[keyof typeof CreateGameRoomControllerCreateGameRoom400Code];
- 
+
 export const CreateGameRoomControllerCreateGameRoom400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -258,7 +258,7 @@ export type CreateGameRoomControllerCreateGameRoom400 = {
  */
 export type CreateGameRoomControllerCreateGameRoom401Code =
   (typeof CreateGameRoomControllerCreateGameRoom401Code)[keyof typeof CreateGameRoomControllerCreateGameRoom401Code];
- 
+
 export const CreateGameRoomControllerCreateGameRoom401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -275,7 +275,7 @@ export type CreateGameRoomControllerCreateGameRoom401 = {
  */
 export type CreateGameRoomControllerCreateGameRoom500Code =
   (typeof CreateGameRoomControllerCreateGameRoom500Code)[keyof typeof CreateGameRoomControllerCreateGameRoom500Code];
- 
+
 export const CreateGameRoomControllerCreateGameRoom500Code = {
   ACCOUNTNOT_FOUND: 'ACCOUNT.NOT_FOUND',
 } as const;
@@ -304,7 +304,7 @@ export type ListGameRoomsControllerListGameRoomsParams = {
  */
 export type GetGameRoomControllerGetGameRoom401Code =
   (typeof GetGameRoomControllerGetGameRoom401Code)[keyof typeof GetGameRoomControllerGetGameRoom401Code];
- 
+
 export const GetGameRoomControllerGetGameRoom401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -321,7 +321,7 @@ export type GetGameRoomControllerGetGameRoom401 = {
  */
 export type GetGameRoomControllerGetGameRoom403Code =
   (typeof GetGameRoomControllerGetGameRoom403Code)[keyof typeof GetGameRoomControllerGetGameRoom403Code];
- 
+
 export const GetGameRoomControllerGetGameRoom403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -338,7 +338,7 @@ export type GetGameRoomControllerGetGameRoom403 = {
  */
 export type GetGameRoomControllerGetGameRoom404Code =
   (typeof GetGameRoomControllerGetGameRoom404Code)[keyof typeof GetGameRoomControllerGetGameRoom404Code];
- 
+
 export const GetGameRoomControllerGetGameRoom404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -355,7 +355,7 @@ export type GetGameRoomControllerGetGameRoom404 = {
  */
 export type JoinGameRoomControllerJoinGameRoom400Code =
   (typeof JoinGameRoomControllerJoinGameRoom400Code)[keyof typeof JoinGameRoomControllerJoinGameRoom400Code];
- 
+
 export const JoinGameRoomControllerJoinGameRoom400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -372,7 +372,7 @@ export type JoinGameRoomControllerJoinGameRoom400 = {
  */
 export type JoinGameRoomControllerJoinGameRoom401Code =
   (typeof JoinGameRoomControllerJoinGameRoom401Code)[keyof typeof JoinGameRoomControllerJoinGameRoom401Code];
- 
+
 export const JoinGameRoomControllerJoinGameRoom401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -389,7 +389,7 @@ export type JoinGameRoomControllerJoinGameRoom401 = {
  */
 export type JoinGameRoomControllerJoinGameRoom404Code =
   (typeof JoinGameRoomControllerJoinGameRoom404Code)[keyof typeof JoinGameRoomControllerJoinGameRoom404Code];
- 
+
 export const JoinGameRoomControllerJoinGameRoom404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -406,7 +406,7 @@ export type JoinGameRoomControllerJoinGameRoom404 = {
  */
 export type JoinGameRoomControllerJoinGameRoom409Code =
   (typeof JoinGameRoomControllerJoinGameRoom409Code)[keyof typeof JoinGameRoomControllerJoinGameRoom409Code];
- 
+
 export const JoinGameRoomControllerJoinGameRoom409Code = {
   GAME_ROOM_MEMBERALREADY_EXISTS: 'GAME_ROOM_MEMBER.ALREADY_EXISTS',
   GAME_ROOM_MEMBERCAPACITY_EXCEEDED: 'GAME_ROOM_MEMBER.CAPACITY_EXCEEDED',
@@ -424,7 +424,7 @@ export type JoinGameRoomControllerJoinGameRoom409 = {
  */
 export type JoinGameRoomControllerJoinGameRoom500Code =
   (typeof JoinGameRoomControllerJoinGameRoom500Code)[keyof typeof JoinGameRoomControllerJoinGameRoom500Code];
- 
+
 export const JoinGameRoomControllerJoinGameRoom500Code = {
   ACCOUNTNOT_FOUND: 'ACCOUNT.NOT_FOUND',
 } as const;
@@ -441,7 +441,7 @@ export type JoinGameRoomControllerJoinGameRoom500 = {
  */
 export type LeaveGameRoomControllerLeaveGameRoom400Code =
   (typeof LeaveGameRoomControllerLeaveGameRoom400Code)[keyof typeof LeaveGameRoomControllerLeaveGameRoom400Code];
- 
+
 export const LeaveGameRoomControllerLeaveGameRoom400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -458,7 +458,7 @@ export type LeaveGameRoomControllerLeaveGameRoom400 = {
  */
 export type LeaveGameRoomControllerLeaveGameRoom403Code =
   (typeof LeaveGameRoomControllerLeaveGameRoom403Code)[keyof typeof LeaveGameRoomControllerLeaveGameRoom403Code];
- 
+
 export const LeaveGameRoomControllerLeaveGameRoom403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -475,7 +475,7 @@ export type LeaveGameRoomControllerLeaveGameRoom403 = {
  */
 export type LeaveGameRoomControllerLeaveGameRoom404Code =
   (typeof LeaveGameRoomControllerLeaveGameRoom404Code)[keyof typeof LeaveGameRoomControllerLeaveGameRoom404Code];
- 
+
 export const LeaveGameRoomControllerLeaveGameRoom404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
   GAME_ROOM_MEMBERNOT_FOUND: 'GAME_ROOM_MEMBER.NOT_FOUND',
@@ -493,7 +493,7 @@ export type LeaveGameRoomControllerLeaveGameRoom404 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers400Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers400Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers400Code];
- 
+
 export const ListGameRoomMembersControllerListGameRoomMembers400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -510,7 +510,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers400 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers401Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers401Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers401Code];
- 
+
 export const ListGameRoomMembersControllerListGameRoomMembers401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -527,7 +527,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers401 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers403Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers403Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers403Code];
- 
+
 export const ListGameRoomMembersControllerListGameRoomMembers403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -544,7 +544,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers403 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers404Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers404Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers404Code];
- 
+
 export const ListGameRoomMembersControllerListGameRoomMembers404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -561,7 +561,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers404 = {
  */
 export type StartGameControllerStartGame400Code =
   (typeof StartGameControllerStartGame400Code)[keyof typeof StartGameControllerStartGame400Code];
- 
+
 export const StartGameControllerStartGame400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
   GAME_ROOMVALIDATION_ERROR: 'GAME_ROOM.VALIDATION_ERROR',
@@ -579,7 +579,7 @@ export type StartGameControllerStartGame400 = {
  */
 export type StartGameControllerStartGame403Code =
   (typeof StartGameControllerStartGame403Code)[keyof typeof StartGameControllerStartGame403Code];
- 
+
 export const StartGameControllerStartGame403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -596,7 +596,7 @@ export type StartGameControllerStartGame403 = {
  */
 export type StartGameControllerStartGame404Code =
   (typeof StartGameControllerStartGame404Code)[keyof typeof StartGameControllerStartGame404Code];
- 
+
 export const StartGameControllerStartGame404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -613,7 +613,7 @@ export type StartGameControllerStartGame404 = {
  */
 export type ListQuizzesControllerListQuizzes400Code =
   (typeof ListQuizzesControllerListQuizzes400Code)[keyof typeof ListQuizzesControllerListQuizzes400Code];
- 
+
 export const ListQuizzesControllerListQuizzes400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -630,7 +630,7 @@ export type ListQuizzesControllerListQuizzes400 = {
  */
 export type ListQuizzesControllerListQuizzes401Code =
   (typeof ListQuizzesControllerListQuizzes401Code)[keyof typeof ListQuizzesControllerListQuizzes401Code];
- 
+
 export const ListQuizzesControllerListQuizzes401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -647,7 +647,7 @@ export type ListQuizzesControllerListQuizzes401 = {
  */
 export type ListQuizzesControllerListQuizzes403Code =
   (typeof ListQuizzesControllerListQuizzes403Code)[keyof typeof ListQuizzesControllerListQuizzes403Code];
- 
+
 export const ListQuizzesControllerListQuizzes403Code = {
   COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
 } as const;
