@@ -3,14 +3,13 @@ import { useParams, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 
 import { Button } from '@/shared/components/ui/button';
-import { gameRoomQuery } from '@/shared/service/api/query/room';
+import { accountsQuery, gameRoomQuery } from '@/shared/service/api/query';
 import { toast } from '@/shared/utils/toast';
 
 import GameInfoCard from './components/GameInfoCard';
 import GameRoomHeader from './components/GameRoomHeader';
 import PlayersList from './components/PlayersList';
 import ReadyControls from './components/ReadyControls';
-import { mockCurrentUser } from './data/mockData';
 
 export default function GameRoomDetailPage() {
   const { roomId } = useParams({ from: '/room/$roomId' });
@@ -21,7 +20,10 @@ export default function GameRoomDetailPage() {
     staleTime: 1000 * 60 * 5,
   });
 
-  const currentUser = mockCurrentUser;
+  const { data: currentUser } = useSuspenseQuery({
+    ...accountsQuery.getMyInfo(),
+    staleTime: 1000 * 60 * 5,
+  });
 
   const currentPlayer = room.members.find(
     (player) => player.accountId === currentUser.id
