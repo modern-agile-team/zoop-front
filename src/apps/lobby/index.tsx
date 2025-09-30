@@ -3,8 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
 import { queryClient } from '@/lib/queryClient';
 import { useResponsive } from '@/shared/hooks/useResponsive';
-import { lobbyQuery } from '@/shared/service/api/query/lobby';
-import { gameRoomQuery } from '@/shared/service/api/query/room';
+import { gameRoomQuery, accountsQuery } from '@/shared/service/api/query';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 
 import DesktopLayout from './components/layouts/DesktopLayout';
@@ -22,7 +21,7 @@ export default function LobbyPage() {
   });
 
   const { data: participantData } = useSuspenseQuery({
-    ...lobbyQuery.getList({ isActive: 'true' }),
+    ...accountsQuery.getList({ isActive: 'true' }),
     staleTime: 1_000 * 60 * 5,
   });
 
