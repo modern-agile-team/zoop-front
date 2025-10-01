@@ -21,8 +21,8 @@ export default function ActionButtons({
   const handleLogin = async () => {
     try {
       const token = await openLoginDialog();
-      toast.info('환영합니다!');
       if (token) {
+        toast.info('환영합니다!');
         onLogin(token);
       }
     } catch {
@@ -33,8 +33,8 @@ export default function ActionButtons({
   const handleSignup = async () => {
     try {
       const token = await openSignupDialog();
-      toast.info('환영합니다!');
       if (token) {
+        toast.info('회원가입에 성공했습니다.');
         onLogin(token);
       }
     } catch {
