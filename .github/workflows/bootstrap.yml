@@ -1,0 +1,71 @@
+name: Bootstrap Remote Working Copy
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: 'Target environment (dev or prod)'
+        required: true
+        type: choice
+        default: dev
+        options: [dev, prod]
+      branch:
+        description: 'Git branch or ref to checkout'
+        required: true
+        default: main
+
+jobs:
+  bootstrap:
+    runs-on: self-hosted
+    environment: ${{ inputs.env }}
+    steps:
+      - name: Checkout (for metadata only)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup SSH agent (server access)
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Bootstrap on remote host
+        shell: bash
+        env:
+          TARGET_USER: ${{ secrets.TARGET_USER }}
+          TARGET_HOST: ${{ secrets.TARGET_HOST }}
+          TARGET_PATH: ${{ secrets.TARGET_PATH }}
+          # Public repository clone URL (no auth required)
+          REPO_CLONE_URL: https://github.com/${{ github.repository }}.git
+          BRANCH: ${{ inputs.branch }}
+        run: |
+          set -euo pipefail
+
+          # Ensure target dir exists
+          ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" "mkdir -p '$TARGET_PATH' && mkdir -p ~/.ssh && chmod 700 ~/.ssh"
+
+          # Initialize or update working copy
+          ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" "bash -lc '
+            set -e
+            cd "$TARGET_PATH"
+            git config --global --add safe.directory "$TARGET_PATH" || true
+            if [ ! -d .git ]; then
+              echo "Initializing working copy in $TARGET_PATH"
+              git init
+              git remote add origin "$REPO_CLONE_URL"
+              git fetch --depth=1 origin "$BRANCH"
+              git checkout -f FETCH_HEAD
+            else
+              echo "Updating existing working copy"
+              git fetch --depth=1 origin "$BRANCH"
+              git reset --hard FETCH_HEAD
+            fi
+          '\''"
+
+      - name: Summary
+        run: |
+          echo "## Bootstrap completed" >> $GITHUB_STEP_SUMMARY
+          echo "- Repo: ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: ${{ inputs.branch }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Env: ${{ inputs.env }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Target: ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }}:${{ secrets.TARGET_PATH }}" >> $GITHUB_STEP_SUMMARY
