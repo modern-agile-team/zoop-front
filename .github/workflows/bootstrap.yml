@@ -29,41 +29,20 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Prepare optional repo deploy key
-        id: repo-key
-        shell: bash
-        run: |
-          # If you set REPO_DEPLOY_KEY in environment secrets, we'll forward it to the server
-          if [ -n "${{ secrets.REPO_DEPLOY_KEY }}" ]; then
-            echo "has_key=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_key=false" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Bootstrap on remote host
         shell: bash
         env:
           TARGET_USER: ${{ secrets.TARGET_USER }}
           TARGET_HOST: ${{ secrets.TARGET_HOST }}
           TARGET_PATH: ${{ secrets.TARGET_PATH }}
-          REPO_SSH_URL: git@github.com:${{ github.repository }}.git
+          # Public repository clone URL (no auth required)
+          REPO_CLONE_URL: https://github.com/${{ github.repository }}.git
           BRANCH: ${{ inputs.branch }}
-          HAS_KEY: ${{ steps.repo-key.outputs.has_key }}
-          REPO_DEPLOY_KEY: ${{ secrets.REPO_DEPLOY_KEY }}
         run: |
           set -euo pipefail
 
           # Ensure target dir exists
           ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" "mkdir -p '$TARGET_PATH' && mkdir -p ~/.ssh && chmod 700 ~/.ssh"
-
-          # If a repo deploy key is provided, install it on the remote host only for this user
-          if [ "$HAS_KEY" = "true" ]; then
-            echo "Installing temporary repo deploy key on remote host"
-            printf '%s' "$REPO_DEPLOY_KEY" | ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" "cat > ~/.ssh/id_bootstrap && chmod 600 ~/.ssh/id_bootstrap"
-            SSH_CMD='ssh -i ~/.ssh/id_bootstrap -o StrictHostKeyChecking=no'
-          else
-            SSH_CMD='ssh -o StrictHostKeyChecking=no'
-          fi
 
           # Initialize or update working copy
           ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" "bash -lc '
@@ -73,13 +52,13 @@ jobs:
             if [ ! -d .git ]; then
               echo "Initializing working copy in $TARGET_PATH"
               git init
-              git remote add origin "$REPO_SSH_URL"
-              GIT_SSH_COMMAND="$SSH_CMD" git fetch --depth=1 origin "$BRANCH"
-              GIT_SSH_COMMAND="$SSH_CMD" git checkout -f FETCH_HEAD
+              git remote add origin "$REPO_CLONE_URL"
+              git fetch --depth=1 origin "$BRANCH"
+              git checkout -f FETCH_HEAD
             else
               echo "Updating existing working copy"
-              GIT_SSH_COMMAND="$SSH_CMD" git fetch --depth=1 origin "$BRANCH"
-              GIT_SSH_COMMAND="$SSH_CMD" git reset --hard FETCH_HEAD
+              git fetch --depth=1 origin "$BRANCH"
+              git reset --hard FETCH_HEAD
             fi
           '\''"
 
@@ -90,4 +69,3 @@ jobs:
           echo "- Branch: ${{ inputs.branch }}" >> $GITHUB_STEP_SUMMARY
           echo "- Env: ${{ inputs.env }}" >> $GITHUB_STEP_SUMMARY
           echo "- Target: ${{ secrets.TARGET_USER }}@${{ secrets.TARGET_HOST }}:${{ secrets.TARGET_PATH }}" >> $GITHUB_STEP_SUMMARY
-
