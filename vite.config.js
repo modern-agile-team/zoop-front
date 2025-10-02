@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import viteReact from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
@@ -19,6 +19,8 @@ const ReactCompilerConfig = {
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  const appPort = Number(env.VITE_APP_PORT) || 3000;
   return {
     plugins: [
       TanStackRouterVite({ autoCodeSplitting: true }),
@@ -45,6 +47,12 @@ export default defineConfig(({ mode }) => {
       include: ['react', 'react-dom', '@tanstack/react-query'],
       exclude: [],
       force: true,
+    },
+    server: {
+      port: appPort,
+    },
+    preview: {
+      port: appPort,
     },
     build: {
       outDir: 'build',

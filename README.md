@@ -51,7 +51,8 @@
 # 의존성 설치
 yarn install
 
-# 개발 서버 실행 (포트: 3000)
+# 개발 서버 실행 (포트 환경변수 사용)
+# .env(.dev.local)에서 VITE_APP_PORT로 지정 (기본 3000)
 yarn dev
 # 또는
 yarn start
