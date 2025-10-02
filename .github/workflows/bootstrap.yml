@@ -36,7 +36,7 @@ jobs:
           TARGET_HOST: ${{ secrets.TARGET_HOST }}
           TARGET_PATH: ${{ secrets.TARGET_PATH }}
           # Public repository clone URL (no auth required)
-          REPO_CLONE_URL: https://github.com/${{ github.repository }}.git
+          REPO_CLONE_URL: 'https://github.com/${{ github.repository }}.git'
           BRANCH: ${{ inputs.branch }}
         run: |
           set -euo pipefail
@@ -44,23 +44,22 @@ jobs:
           # Ensure target dir exists
           ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" "mkdir -p '$TARGET_PATH' && mkdir -p ~/.ssh && chmod 700 ~/.ssh"
 
-          # Initialize or update working copy
-          ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" "bash -lc '
-            set -e
-            cd "$TARGET_PATH"
-            git config --global --add safe.directory "$TARGET_PATH" || true
-            if [ ! -d .git ]; then
-              echo "Initializing working copy in $TARGET_PATH"
-              git init
-              git remote add origin "$REPO_CLONE_URL"
-              git fetch --depth=1 origin "$BRANCH"
-              git checkout -f FETCH_HEAD
-            else
-              echo "Updating existing working copy"
-              git fetch --depth=1 origin "$BRANCH"
-              git reset --hard FETCH_HEAD
-            fi
-          '\''"
+          # Initialize or update working copy (quote-safe inline script)
+          ssh -o StrictHostKeyChecking=no "$TARGET_USER@$TARGET_HOST" \
+            "TARGET_PATH='$TARGET_PATH' REPO_CLONE_URL='$REPO_CLONE_URL' BRANCH='$BRANCH' bash -lc 'set -e
+          cd \"$TARGET_PATH\"
+          git config --global --add safe.directory \"$TARGET_PATH\" || true
+          if [ ! -d .git ]; then
+            echo \"Initializing working copy in $TARGET_PATH\"
+            git init
+            git remote add origin \"$REPO_CLONE_URL\"
+            git fetch --depth=1 origin \"$BRANCH\"
+            git checkout -f FETCH_HEAD
+          else
+            echo \"Updating existing working copy\"
+            git fetch --depth=1 origin \"$BRANCH\"
+            git reset --hard FETCH_HEAD
+          fi'"
 
       - name: Summary
         run: |
