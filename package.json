@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 3000",
+    "dev": "vite",
     "build": "vite build --mode prod && tsc",
     "build:dev": "vite build --mode dev && tsc",
     "build:prod": "vite build --mode prod && tsc",
