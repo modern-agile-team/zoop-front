@@ -130,7 +130,9 @@ jobs:
 
             APP_DIR="${{ secrets.TARGET_PATH }}"
             BUILD_DIR="${{ env.BUILD_DIR }}"
-            APP_NAME="${{ env.APP_NAME }}"
+            APP_NAME_BASE="${{ env.APP_NAME }}"
+            APP_ENV="${{ needs.determine-env.outputs.target_env }}"
+            APP_NAME="${APP_NAME_BASE}-${APP_ENV}"
             # PORT는 GitHub Environments(dev/prod)의 Variables에 설정된 값 사용
             # (Settings → Environments → dev/prod → Variables → PORT)
             PORT="${{ vars.VITE_APP_PORT }}"
