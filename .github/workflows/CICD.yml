@@ -15,7 +15,6 @@ on:
 env:
   BUILD_DIR: build # ← 프로젝트 빌드 산출물 폴더
   APP_NAME: quiz-game-io-front
-  PORT: '3000'
 
 jobs:
   determine-env:
@@ -132,7 +131,9 @@ jobs:
             APP_DIR="${{ secrets.TARGET_PATH }}"
             BUILD_DIR="${{ env.BUILD_DIR }}"
             APP_NAME="${{ env.APP_NAME }}"
-            PORT="${{ env.PORT }}"
+            # PORT는 GitHub Environments(dev/prod)의 Variables에 설정된 값 사용
+            # (Settings → Environments → dev/prod → Variables → PORT)
+            PORT="${{ vars.VITE_APP_PORT }}"
 
             # --- PATH 보정: 비로그인 ssh에서 전역 bin 경로가 비는 문제 대응
             export NVM_DIR="$HOME/.nvm"
