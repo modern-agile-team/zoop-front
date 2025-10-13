@@ -2,7 +2,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { Plus, Gamepad2, Users } from 'lucide-react';
 import { overlay } from 'overlay-kit';
-import { useState } from 'react';
 
 import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
 import { Button } from '@/shared/components/ui/button';
@@ -12,6 +11,7 @@ import {
 } from '@/shared/hooks/useResponsive';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
+import { useLobbyAccountStore } from '@/shared/stores/lobbyAccountStore';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 import { toast } from '@/shared/utils/toast';
 
@@ -76,7 +76,7 @@ export default function ResponsiveHeader() {
 function OnlineCounter() {
   const { deviceType } = useResponsive();
 
-  const [count, setCount] = useState(0);
+  const { count, setCount } = useLobbyAccountStore();
 
   const containerPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
