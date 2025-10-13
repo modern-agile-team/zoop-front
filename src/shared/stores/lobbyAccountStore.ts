@@ -9,6 +9,6 @@ type Action = {
 };
 
 export const useLobbyAccountStore = create<State & Action>()((set) => ({
-  count: 1,
+  count: 0,
   setCount: (count) => set({ count }),
 }));
