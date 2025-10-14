@@ -34,26 +34,26 @@ jobs:
 
   build-and-push:
     needs: determine
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment:
       name: ${{ needs.determine.outputs.env }}
     permissions:
       contents: read
       packages: write
     steps:
+      - name: check yarn version
+        run: yarn --version
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           check-latest: true
-      - name: Corepack 활성화 (Yarn 4)
-        run: |
-          corepack enable
-          corepack prepare yarn@4.9.1 --activate
+          cache: 'yarn'
       - uses: actions/checkout@v4
       - name: Install & Build
         shell: bash
         run: |
-          yarn --version
+          corepack enable
+          corepack prepare yarn@4.9.1 --activate
           yarn install --immutable --immutable-cache
           VITE_APP_ENV=${{ needs.determine.outputs.env }} \
           VITE_API_URL='${{ vars.VITE_API_URL }}' \
