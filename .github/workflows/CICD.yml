@@ -41,19 +41,20 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: check yarn version
-        run: yarn --version
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          check-latest: true
+          node-version: 24
+      - run: corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
           cache: 'yarn'
-      - uses: actions/checkout@v4
       - name: Install & Build
         shell: bash
         run: |
-          corepack enable
-          corepack prepare yarn@4.9.1 --activate
           yarn install --immutable --immutable-cache
           VITE_APP_ENV=${{ needs.determine.outputs.env }} \
           VITE_API_URL='${{ vars.VITE_API_URL }}' \
