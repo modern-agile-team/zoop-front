@@ -18,7 +18,7 @@ env:
 
 jobs:
   determine:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       env: ${{ steps.o.outputs.env }}
     steps:
@@ -34,24 +34,22 @@ jobs:
 
   build-and-push:
     needs: determine
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment:
       name: ${{ needs.determine.outputs.env }}
     permissions:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
           check-latest: true
+      - uses: actions/checkout@v4
       - name: Install & Build
         shell: bash
         run: |
-          corepack enable
-          corepack prepare yarn@4.9.1 --activate
-          yarn install --immutable --immutable-cache
+          yarn install --frozen-lockfile
           VITE_APP_ENV=${{ needs.determine.outputs.env }} \
           VITE_API_URL='${{ vars.VITE_API_URL }}' \
           VITE_SOCKET_URL='${{ vars.VITE_SOCKET_URL }}' \
