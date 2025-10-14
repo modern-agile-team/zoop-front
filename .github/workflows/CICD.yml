@@ -13,8 +13,8 @@ on:
         options: [dev, prod]
 
 env:
-  IMAGE: ghcr.io/modern-agile-team/quiz-game-io-front:${{ inputs.env }}
-  APP: quiz-game-io-front:${{ inputs.env }}
+  IMAGE: ghcr.io/modern-agile-team/quiz-game-io-front
+  APP: quiz-game-io-front
 
 jobs:
   determine:
