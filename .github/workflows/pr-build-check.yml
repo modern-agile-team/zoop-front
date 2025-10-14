@@ -31,8 +31,6 @@ jobs:
       - name: Corepack 활성화
         run: corepack enable
 
-      - run: yarn cache clean --all
-
       - name: 의존성 설치
         run: yarn install --immutable --immutable-cache
 
