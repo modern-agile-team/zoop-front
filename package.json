@@ -74,7 +74,6 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "eslint-plugin-unused-imports": "^4.1.4",
-    "git-cz": "^4.9.0",
     "glob": "^11.0.3",
     "globals": "^16.3.0",
     "husky": "^9.1.7",

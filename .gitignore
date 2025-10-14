@@ -24,3 +24,12 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
+
+# Yarn Zero-Install
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
