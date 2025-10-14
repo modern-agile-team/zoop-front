@@ -18,7 +18,7 @@ env:
 
 jobs:
   determine:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       env: ${{ steps.o.outputs.env }}
     steps:
@@ -34,7 +34,7 @@ jobs:
 
   build-and-push:
     needs: determine
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment:
       name: ${{ needs.determine.outputs.env }}
     permissions:
@@ -67,9 +67,7 @@ jobs:
           push: true
           build-args: |
             APP_PORT=${{ vars.VITE_APP_PORT }}
-          tags: |
-            ${{ env.IMAGE }}:latest-${{ needs.determine.outputs.env }}
-            ${{ env.IMAGE }}:${{ needs.determine.outputs.env }}-${{ github.sha }}
+          tags: ${{ env.IMAGE }}-${{ needs.determine.outputs.env }}
 
   deploy:
     needs: [determine, build-and-push]
