@@ -45,11 +45,16 @@ jobs:
         with:
           node-version: 'lts/*'
           check-latest: true
+      - name: Corepack 활성화 (Yarn 4)
+        run: |
+          corepack enable
+          corepack prepare yarn@4.9.1 --activate
       - uses: actions/checkout@v4
       - name: Install & Build
         shell: bash
         run: |
-          yarn install --frozen-lockfile
+          yarn --version
+          yarn install --immutable --immutable-cache
           VITE_APP_ENV=${{ needs.determine.outputs.env }} \
           VITE_API_URL='${{ vars.VITE_API_URL }}' \
           VITE_SOCKET_URL='${{ vars.VITE_SOCKET_URL }}' \
@@ -67,7 +72,9 @@ jobs:
           push: true
           build-args: |
             APP_PORT=${{ vars.VITE_APP_PORT }}
-          tags: ${{ env.IMAGE }}-${{ needs.determine.outputs.env }}
+          tags: |
+            ${{ env.IMAGE }}:latest-${{ needs.determine.outputs.env }}
+            ${{ env.IMAGE }}:${{ needs.determine.outputs.env }}-${{ github.sha }}
 
   deploy:
     needs: [determine, build-and-push]
