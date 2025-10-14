@@ -1,32 +1,3 @@
-#!/usr/bin/env node
-
-const {existsSync} = require(`fs`);
-const {createRequire, register} = require(`module`);
-const {resolve} = require(`path`);
-const {pathToFileURL} = require(`url`);
-
-const relPnpApiPath = "../../../../.pnp.cjs";
-
-const absPnpApiPath = resolve(__dirname, relPnpApiPath);
-const absUserWrapperPath = resolve(__dirname, `./sdk.user.cjs`);
-const absRequire = createRequire(absPnpApiPath);
-
-const absPnpLoaderPath = resolve(absPnpApiPath, `../.pnp.loader.mjs`);
-const isPnpLoaderEnabled = existsSync(absPnpLoaderPath);
-
-if (existsSync(absPnpApiPath)) {
-  if (!process.versions.pnp) {
-    // Setup the environment to be able to require typescript/lib/tsc.js
-    require(absPnpApiPath).setup();
-    if (isPnpLoaderEnabled && register) {
-      register(pathToFileURL(absPnpLoaderPath));
-    }
-  }
-}
-
-const wrapWithUserWrapper = existsSync(absUserWrapperPath)
-  ? exports => absRequire(absUserWrapperPath)(exports)
-  : exports => exports;
-
-// Defer to the real typescript/lib/tsc.js your application uses
-module.exports = wrapWithUserWrapper(absRequire(`typescript/lib/tsc.js`));
+version https://git-lfs.github.com/spec/v1
+oid sha256:3fe4efbe9b74f3c7e7c6cae75e41e1920c53e17ea17d75ad45f683e45f9f8ea0
+size 1090

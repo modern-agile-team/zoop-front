@@ -1,32 +1,3 @@
-#!/usr/bin/env node
-
-const {existsSync} = require(`fs`);
-const {createRequire, register} = require(`module`);
-const {resolve} = require(`path`);
-const {pathToFileURL} = require(`url`);
-
-const relPnpApiPath = "../../../../.pnp.cjs";
-
-const absPnpApiPath = resolve(__dirname, relPnpApiPath);
-const absUserWrapperPath = resolve(__dirname, `./sdk.user.cjs`);
-const absRequire = createRequire(absPnpApiPath);
-
-const absPnpLoaderPath = resolve(absPnpApiPath, `../.pnp.loader.mjs`);
-const isPnpLoaderEnabled = existsSync(absPnpLoaderPath);
-
-if (existsSync(absPnpApiPath)) {
-  if (!process.versions.pnp) {
-    // Setup the environment to be able to require prettier/bin/prettier.cjs
-    require(absPnpApiPath).setup();
-    if (isPnpLoaderEnabled && register) {
-      register(pathToFileURL(absPnpLoaderPath));
-    }
-  }
-}
-
-const wrapWithUserWrapper = existsSync(absUserWrapperPath)
-  ? exports => absRequire(absUserWrapperPath)(exports)
-  : exports => exports;
-
-// Defer to the real prettier/bin/prettier.cjs your application uses
-module.exports = wrapWithUserWrapper(absRequire(`prettier/bin/prettier.cjs`));
+version https://git-lfs.github.com/spec/v1
+oid sha256:07cdbd19be7843d5d35976760999be77d5bdcaf9f228a0881925be38471eb500
+size 1102

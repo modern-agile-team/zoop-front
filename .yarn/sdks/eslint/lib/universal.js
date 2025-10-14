@@ -1,32 +1,3 @@
-#!/usr/bin/env node
-
-const {existsSync} = require(`fs`);
-const {createRequire, register} = require(`module`);
-const {resolve} = require(`path`);
-const {pathToFileURL} = require(`url`);
-
-const relPnpApiPath = "../../../../.pnp.cjs";
-
-const absPnpApiPath = resolve(__dirname, relPnpApiPath);
-const absUserWrapperPath = resolve(__dirname, `./sdk.user.cjs`);
-const absRequire = createRequire(absPnpApiPath);
-
-const absPnpLoaderPath = resolve(absPnpApiPath, `../.pnp.loader.mjs`);
-const isPnpLoaderEnabled = existsSync(absPnpLoaderPath);
-
-if (existsSync(absPnpApiPath)) {
-  if (!process.versions.pnp) {
-    // Setup the environment to be able to require eslint/universal
-    require(absPnpApiPath).setup();
-    if (isPnpLoaderEnabled && register) {
-      register(pathToFileURL(absPnpLoaderPath));
-    }
-  }
-}
-
-const wrapWithUserWrapper = existsSync(absUserWrapperPath)
-  ? exports => absRequire(absUserWrapperPath)(exports)
-  : exports => exports;
-
-// Defer to the real eslint/universal your application uses
-module.exports = wrapWithUserWrapper(absRequire(`eslint/universal`));
+version https://git-lfs.github.com/spec/v1
+oid sha256:3535b4e52d5f4aa6447c263d1178edd90097741a668e92fe3677af20f89f5bff
+size 1075
