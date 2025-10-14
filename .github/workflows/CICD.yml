@@ -45,13 +45,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          cache: yarn
+          check-latest: true
       - name: Install & Build
         shell: bash
         run: |
           corepack enable
-          yarn install --frozen-lockfile
-          APP_ENV=${{ needs.determine.outputs.env }} \
+          corepack prepare yarn@4.9.1 --activate
+          yarn install --immutable --immutable-cache
+          VITE_APP_ENV=${{ needs.determine.outputs.env }} \
           VITE_API_URL='${{ vars.VITE_API_URL }}' \
           VITE_SOCKET_URL='${{ vars.VITE_SOCKET_URL }}' \
           yarn build:${{ needs.determine.outputs.env }}
