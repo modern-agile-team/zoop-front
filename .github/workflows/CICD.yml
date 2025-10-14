@@ -34,7 +34,7 @@ jobs:
 
   build-and-push:
     needs: determine
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     environment:
       name: ${{ needs.determine.outputs.env }}
     permissions:
