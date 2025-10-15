@@ -15,9 +15,18 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "eslint.nodePath": ".yarn/sdks",
   "tailwindCSS.experimental.classRegex": [
-    ["Styles \\=([^;]*);", "'([^']*)'"],
-    ["Styles \\=([^;]*);", "\"([^\"]*)\""],
-    ["Styles \\=([^;]*);", "\\`([^\\`]*)\\`"]
+    [
+      "Styles \\=([^;]*);",
+      "'([^']*)'"
+    ],
+    [
+      "Styles \\=([^;]*);",
+      "\"([^\"]*)\""
+    ],
+    [
+      "Styles \\=([^;]*);",
+      "\\`([^\\`]*)\\`"
+    ]
   ],
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
