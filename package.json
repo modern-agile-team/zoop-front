@@ -64,8 +64,6 @@
     "babel-plugin-react-compiler": "^19.1.0-rc.2",
     "chalk": "^5.5.0",
     "change-case": "^5.4.4",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.28.0",
     "eslint-import-resolver-typescript": "^4.4.2",
     "eslint-plugin-import": "^2.32.0",
@@ -88,66 +86,6 @@
     "vite": "^6.1.0",
     "vitest": "^3.0.5",
     "web-vitals": "^4.2.4"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog",
-      "maxHeaderWidth": 100,
-      "maxLineWidth": 100,
-      "defaultType": "feat",
-      "defaultScope": "",
-      "defaultSubject": "",
-      "defaultBody": "",
-      "defaultIssues": "",
-      "disableScopeLowerCase": true,
-      "disableSubjectLowerCase": true,
-      "types": {
-        "feat": {
-          "description": "새로운 기능 추가",
-          "title": "Features"
-        },
-        "fix": {
-          "description": "버그 수정",
-          "title": "Bug Fixes"
-        },
-        "docs": {
-          "description": "문서 변경",
-          "title": "Documentation"
-        },
-        "style": {
-          "description": "코드 포맷팅, 세미콜론 누락 등",
-          "title": "Styles"
-        },
-        "refactor": {
-          "description": "코드 리팩토링",
-          "title": "Code Refactoring"
-        },
-        "test": {
-          "description": "테스트 코드",
-          "title": "Tests"
-        },
-        "chore": {
-          "description": "기타 변경사항 (빌드, 패키지 매니저 등)",
-          "title": "Chores"
-        },
-        "perf": {
-          "description": "성능 개선",
-          "title": "Performance Improvements"
-        },
-        "ci": {
-          "description": "CI 설정 변경",
-          "title": "Continuous Integrations"
-        },
-        "build": {
-          "description": "빌드 시스템 변경",
-          "title": "Builds"
-        },
-        "revert": {
-          "description": "이전 커밋 되돌리기",
-          "title": "Reverts"
-        }
-      }
-    }
   },
   "packageManager": "yarn@4.10.3"
 }
