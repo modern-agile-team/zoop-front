@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { Plus, Gamepad2, Users } from 'lucide-react';
 import { overlay } from 'overlay-kit';
@@ -11,7 +11,6 @@ import {
 } from '@/shared/hooks/useResponsive';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
-import { useLobbyAccountStore } from '@/shared/stores/lobbyAccountStore';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 import { toast } from '@/shared/utils/toast';
 
@@ -76,7 +75,14 @@ export default function ResponsiveHeader() {
 function OnlineCounter() {
   const { deviceType } = useResponsive();
 
-  const { count, setCount } = useLobbyAccountStore();
+  const queryClient = useQueryClient();
+  const onlineUsersQueryKey = ['lobby', 'onlineUsers'];
+  const { data: count } = useQuery<number>({
+    queryKey: onlineUsersQueryKey,
+    queryFn: () => 0,
+    initialData: 0,
+    staleTime: Infinity,
+  });
 
   const containerPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
@@ -111,7 +117,10 @@ function OnlineCounter() {
   useSocketListener(
     ServerToClientEventNames.LOBBY_ACTIVE_ACCOUNT_CHANGED,
     ({ body }) => {
-      setCount(body.currentActiveAccountsCount);
+      queryClient.setQueryData(
+        onlineUsersQueryKey,
+        body.currentActiveAccountsCount
+      );
     }
   );
 
