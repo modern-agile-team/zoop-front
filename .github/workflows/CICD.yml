@@ -57,7 +57,7 @@ jobs:
       - name: Install & Build
         shell: bash
         run: |
-          yarn install --immutable --immutable-cache
+          yarn install
           VITE_APP_ENV=${{ needs.determine.outputs.env }} \
           VITE_API_URL='${{ vars.VITE_API_URL }}' \
           VITE_SOCKET_URL='${{ vars.VITE_SOCKET_URL }}' \
