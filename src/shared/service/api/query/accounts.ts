@@ -18,4 +18,11 @@ export const accountsQuery = {
       queryKey: ['accounts', 'me'] as const,
       queryFn: () => getAccountControllerGetMe(),
     }),
+  getOnlineMemberCount: () =>
+    queryOptions({
+      queryKey: ['accounts', 'counts'] as const,
+      queryFn: () => 0,
+      initialData: 0,
+      staleTime: Infinity,
+    }),
 };
