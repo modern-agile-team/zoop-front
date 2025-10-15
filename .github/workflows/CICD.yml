@@ -52,6 +52,8 @@ jobs:
         with:
           node-version: 24
           cache: 'yarn'
+      - name: clean yarn cache
+        run: yarn cache clean
       - name: Install & Build
         shell: bash
         run: |
