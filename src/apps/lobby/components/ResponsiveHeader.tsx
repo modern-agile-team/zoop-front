@@ -10,6 +10,7 @@ import {
   useResponsiveClasses,
 } from '@/shared/hooks/useResponsive';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
+import { accountsOnlineQuery } from '@/shared/service/query/account';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 import { toast } from '@/shared/utils/toast';
@@ -76,13 +77,8 @@ function OnlineCounter() {
   const { deviceType } = useResponsive();
 
   const queryClient = useQueryClient();
-  const onlineUsersQueryKey = ['lobby', 'onlineUsers'];
-  const { data: count } = useQuery<number>({
-    queryKey: onlineUsersQueryKey,
-    queryFn: () => 0,
-    initialData: 0,
-    staleTime: Infinity,
-  });
+  const onlineUsersQueryKey = ['accounts', 'onlineUsers'];
+  const { data: count } = useQuery(accountsOnlineQuery.getOnlineMemberCount());
 
   const containerPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
