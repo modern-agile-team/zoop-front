@@ -6051,16 +6051,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"git-cz@npm:^4.9.0":
-  version: 4.9.0
-  resolution: "git-cz@npm:4.9.0"
-  bin:
-    git-cz: bin/git-cz.js
-    gitcz: bin/git-cz.js
-  checksum: 10c0/c925f9fb2367e16d0f2df1beef1efd38e6823b978690e0c097fec49ca2704774e0e095272354d73060311a71591708367024767d928cdd7c9f08d228acc516dc
-  languageName: node
-  linkType: hard
-
 "git-raw-commits@npm:^4.0.0":
   version: 4.0.0
   resolution: "git-raw-commits@npm:4.0.0"
@@ -8590,7 +8580,6 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.20"
     eslint-plugin-unused-imports: "npm:^4.1.4"
-    git-cz: "npm:^4.9.0"
     glob: "npm:^11.0.3"
     globals: "npm:^16.3.0"
     husky: "npm:^9.1.7"

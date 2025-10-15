@@ -69,7 +69,6 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-hooks", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:5.2.0"],\
           ["eslint-plugin-react-refresh", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:0.4.20"],\
           ["eslint-plugin-unused-imports", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:4.1.4"],\
-          ["git-cz", "npm:4.9.0"],\
           ["glob", "npm:11.0.3"],\
           ["globals", "npm:16.3.0"],\
           ["husky", "npm:9.1.7"],\
@@ -7843,15 +7842,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["git-cz", [\
-      ["npm:4.9.0", {\
-        "packageLocation": "./.yarn/unplugged/git-cz-npm-4.9.0-8d9f9f3b3b/node_modules/git-cz/",\
-        "packageDependencies": [\
-          ["git-cz", "npm:4.9.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["git-raw-commits", [\
       ["npm:4.0.0", {\
         "packageLocation": "./.yarn/cache/git-raw-commits-npm-4.0.0-60e7e666d1-ab51335d9e.zip/node_modules/git-raw-commits/",\
@@ -10716,7 +10706,6 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-hooks", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:5.2.0"],\
           ["eslint-plugin-react-refresh", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:0.4.20"],\
           ["eslint-plugin-unused-imports", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:4.1.4"],\
-          ["git-cz", "npm:4.9.0"],\
           ["glob", "npm:11.0.3"],\
           ["globals", "npm:16.3.0"],\
           ["husky", "npm:9.1.7"],\
