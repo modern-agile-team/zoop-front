@@ -48,7 +48,7 @@ export interface CreateGameRoomDto {
 }
 export type GameRoomMemberDtoRole =
   (typeof GameRoomMemberDtoRole)[keyof typeof GameRoomMemberDtoRole];
-
+ 
 export const GameRoomMemberDtoRole = {
   host: 'host',
   player: 'player',
@@ -65,7 +65,7 @@ export interface GameRoomMemberDto {
 }
 export type GameRoomDtoStatus =
   (typeof GameRoomDtoStatus)[keyof typeof GameRoomDtoStatus];
-
+ 
 export const GameRoomDtoStatus = {
   waiting: 'waiting',
   starting: 'starting',
@@ -92,28 +92,105 @@ export interface GameRoomMemberCollectionDto {
 export interface GameRoomCollectionDto {
   data: GameRoomDto[];
 }
+export interface CreateImageDto {
+  /** image file */
+  file: Blob;
+  /** image category */
+  category: string;
+}
+export interface ImageDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  category: string;
+  originalFileName: string;
+  imageUrl: string;
+  extension: string;
+  contentType: string;
+  contentLength: number;
+  width: number;
+  height: number;
+}
+export interface ImageCollectionDto {
+  currentPage: number;
+  perPage: number;
+  totalCount: number;
+  totalPages: number;
+  data: ImageDto[];
+}
+export interface CreateNicknameSourceDto {
+  /**
+   * @minLength 1
+   * @maxLength 10
+   */
+  name: string;
+}
+export interface NicknameSourceDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  sequence: number;
+  fullname: string;
+}
+export interface NicknameSourceCollectionDto {
+  currentPage: number;
+  perPage: number;
+  totalCount: number;
+  totalPages: number;
+  data: NicknameSourceDto[];
+}
+export interface UpdateNicknameSourceDto {
+  /**
+   * @minLength 1
+   * @maxLength 10
+   */
+  name?: string;
+}
+export interface CreateQuizzesDto {
+  type: string;
+  answer: string;
+  /** @nullable */
+  question: string | null;
+  /** @nullable */
+  imageUrl: string | null;
+}
 export interface QuizDto {
   id: string;
   createdAt: string;
   updatedAt: string;
   /** 퀴즈 유형 */
   type: string;
-  /** 퀴즈 질문 */
-  question?: string;
+  /**
+   * 퀴즈 질문
+   * @nullable
+   */
+  question: string | null;
   /** 퀴즈 정답 */
   answer: string;
-  /** 퀴즈 이미지 URL */
-  imageUrl?: string;
+  /**
+   * 퀴즈 이미지 URL
+   * @nullable
+   */
+  imageUrl: string | null;
 }
 export interface QuizCollectionDto {
   data: QuizDto[];
+}
+export interface UpdateQuizDto {
+  type?: string;
+  answer?: string;
+  /** @nullable */
+  question?: string | null;
+  /** @nullable */
+  imageUrl?: string | null;
 }
 /**
  * error code
  */
 export type GetAccountControllerGetMe400Code =
   (typeof GetAccountControllerGetMe400Code)[keyof typeof GetAccountControllerGetMe400Code];
-
+ 
 export const GetAccountControllerGetMe400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -130,7 +207,7 @@ export type GetAccountControllerGetMe400 = {
  */
 export type GetAccountControllerGetMe404Code =
   (typeof GetAccountControllerGetMe404Code)[keyof typeof GetAccountControllerGetMe404Code];
-
+ 
 export const GetAccountControllerGetMe404Code = {
   ACCOUNTNOT_FOUND: 'ACCOUNT.NOT_FOUND',
 } as const;
@@ -147,7 +224,7 @@ export type ListAccountsControllerListAccountsParams = {
 };
 export type ListAccountsControllerListAccountsIsActive =
   (typeof ListAccountsControllerListAccountsIsActive)[keyof typeof ListAccountsControllerListAccountsIsActive];
-
+ 
 export const ListAccountsControllerListAccountsIsActive = {
   true: 'true',
 } as const;
@@ -156,7 +233,7 @@ export const ListAccountsControllerListAccountsIsActive = {
  */
 export type ListAccountsControllerListAccounts400Code =
   (typeof ListAccountsControllerListAccounts400Code)[keyof typeof ListAccountsControllerListAccounts400Code];
-
+ 
 export const ListAccountsControllerListAccounts400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -173,7 +250,7 @@ export type ListAccountsControllerListAccounts400 = {
  */
 export type SignUpWithUsernameControllerSignUpWithUsername400Code =
   (typeof SignUpWithUsernameControllerSignUpWithUsername400Code)[keyof typeof SignUpWithUsernameControllerSignUpWithUsername400Code];
-
+ 
 export const SignUpWithUsernameControllerSignUpWithUsername400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -190,7 +267,7 @@ export type SignUpWithUsernameControllerSignUpWithUsername400 = {
  */
 export type SignUpWithUsernameControllerSignUpWithUsername409Code =
   (typeof SignUpWithUsernameControllerSignUpWithUsername409Code)[keyof typeof SignUpWithUsernameControllerSignUpWithUsername409Code];
-
+ 
 export const SignUpWithUsernameControllerSignUpWithUsername409Code = {
   ACCOUNTUSERNAME_ALREADY_OCCUPIED: 'ACCOUNT.USERNAME_ALREADY_OCCUPIED',
 } as const;
@@ -207,7 +284,7 @@ export type SignUpWithUsernameControllerSignUpWithUsername409 = {
  */
 export type SignInWithUsernameControllerSignInWithUsername400Code =
   (typeof SignInWithUsernameControllerSignInWithUsername400Code)[keyof typeof SignInWithUsernameControllerSignInWithUsername400Code];
-
+ 
 export const SignInWithUsernameControllerSignInWithUsername400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -224,7 +301,7 @@ export type SignInWithUsernameControllerSignInWithUsername400 = {
  */
 export type SignInWithUsernameControllerSignInWithUsername401Code =
   (typeof SignInWithUsernameControllerSignInWithUsername401Code)[keyof typeof SignInWithUsernameControllerSignInWithUsername401Code];
-
+ 
 export const SignInWithUsernameControllerSignInWithUsername401Code = {
   AUTHSIGN_IN_INFO_NOT_MATCHED: 'AUTH.SIGN_IN_INFO_NOT_MATCHED',
 } as const;
@@ -241,7 +318,7 @@ export type SignInWithUsernameControllerSignInWithUsername401 = {
  */
 export type CreateGameRoomControllerCreateGameRoom400Code =
   (typeof CreateGameRoomControllerCreateGameRoom400Code)[keyof typeof CreateGameRoomControllerCreateGameRoom400Code];
-
+ 
 export const CreateGameRoomControllerCreateGameRoom400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -258,7 +335,7 @@ export type CreateGameRoomControllerCreateGameRoom400 = {
  */
 export type CreateGameRoomControllerCreateGameRoom401Code =
   (typeof CreateGameRoomControllerCreateGameRoom401Code)[keyof typeof CreateGameRoomControllerCreateGameRoom401Code];
-
+ 
 export const CreateGameRoomControllerCreateGameRoom401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -275,7 +352,7 @@ export type CreateGameRoomControllerCreateGameRoom401 = {
  */
 export type CreateGameRoomControllerCreateGameRoom500Code =
   (typeof CreateGameRoomControllerCreateGameRoom500Code)[keyof typeof CreateGameRoomControllerCreateGameRoom500Code];
-
+ 
 export const CreateGameRoomControllerCreateGameRoom500Code = {
   ACCOUNTNOT_FOUND: 'ACCOUNT.NOT_FOUND',
 } as const;
@@ -304,7 +381,7 @@ export type ListGameRoomsControllerListGameRoomsParams = {
  */
 export type GetGameRoomControllerGetGameRoom401Code =
   (typeof GetGameRoomControllerGetGameRoom401Code)[keyof typeof GetGameRoomControllerGetGameRoom401Code];
-
+ 
 export const GetGameRoomControllerGetGameRoom401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -321,7 +398,7 @@ export type GetGameRoomControllerGetGameRoom401 = {
  */
 export type GetGameRoomControllerGetGameRoom403Code =
   (typeof GetGameRoomControllerGetGameRoom403Code)[keyof typeof GetGameRoomControllerGetGameRoom403Code];
-
+ 
 export const GetGameRoomControllerGetGameRoom403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -338,7 +415,7 @@ export type GetGameRoomControllerGetGameRoom403 = {
  */
 export type GetGameRoomControllerGetGameRoom404Code =
   (typeof GetGameRoomControllerGetGameRoom404Code)[keyof typeof GetGameRoomControllerGetGameRoom404Code];
-
+ 
 export const GetGameRoomControllerGetGameRoom404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -355,7 +432,7 @@ export type GetGameRoomControllerGetGameRoom404 = {
  */
 export type JoinGameRoomControllerJoinGameRoom400Code =
   (typeof JoinGameRoomControllerJoinGameRoom400Code)[keyof typeof JoinGameRoomControllerJoinGameRoom400Code];
-
+ 
 export const JoinGameRoomControllerJoinGameRoom400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -372,7 +449,7 @@ export type JoinGameRoomControllerJoinGameRoom400 = {
  */
 export type JoinGameRoomControllerJoinGameRoom401Code =
   (typeof JoinGameRoomControllerJoinGameRoom401Code)[keyof typeof JoinGameRoomControllerJoinGameRoom401Code];
-
+ 
 export const JoinGameRoomControllerJoinGameRoom401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -389,7 +466,7 @@ export type JoinGameRoomControllerJoinGameRoom401 = {
  */
 export type JoinGameRoomControllerJoinGameRoom404Code =
   (typeof JoinGameRoomControllerJoinGameRoom404Code)[keyof typeof JoinGameRoomControllerJoinGameRoom404Code];
-
+ 
 export const JoinGameRoomControllerJoinGameRoom404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -406,7 +483,7 @@ export type JoinGameRoomControllerJoinGameRoom404 = {
  */
 export type JoinGameRoomControllerJoinGameRoom409Code =
   (typeof JoinGameRoomControllerJoinGameRoom409Code)[keyof typeof JoinGameRoomControllerJoinGameRoom409Code];
-
+ 
 export const JoinGameRoomControllerJoinGameRoom409Code = {
   GAME_ROOM_MEMBERALREADY_EXISTS: 'GAME_ROOM_MEMBER.ALREADY_EXISTS',
   GAME_ROOM_MEMBERCAPACITY_EXCEEDED: 'GAME_ROOM_MEMBER.CAPACITY_EXCEEDED',
@@ -424,7 +501,7 @@ export type JoinGameRoomControllerJoinGameRoom409 = {
  */
 export type JoinGameRoomControllerJoinGameRoom500Code =
   (typeof JoinGameRoomControllerJoinGameRoom500Code)[keyof typeof JoinGameRoomControllerJoinGameRoom500Code];
-
+ 
 export const JoinGameRoomControllerJoinGameRoom500Code = {
   ACCOUNTNOT_FOUND: 'ACCOUNT.NOT_FOUND',
 } as const;
@@ -441,7 +518,7 @@ export type JoinGameRoomControllerJoinGameRoom500 = {
  */
 export type LeaveGameRoomControllerLeaveGameRoom400Code =
   (typeof LeaveGameRoomControllerLeaveGameRoom400Code)[keyof typeof LeaveGameRoomControllerLeaveGameRoom400Code];
-
+ 
 export const LeaveGameRoomControllerLeaveGameRoom400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -458,7 +535,7 @@ export type LeaveGameRoomControllerLeaveGameRoom400 = {
  */
 export type LeaveGameRoomControllerLeaveGameRoom403Code =
   (typeof LeaveGameRoomControllerLeaveGameRoom403Code)[keyof typeof LeaveGameRoomControllerLeaveGameRoom403Code];
-
+ 
 export const LeaveGameRoomControllerLeaveGameRoom403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -475,7 +552,7 @@ export type LeaveGameRoomControllerLeaveGameRoom403 = {
  */
 export type LeaveGameRoomControllerLeaveGameRoom404Code =
   (typeof LeaveGameRoomControllerLeaveGameRoom404Code)[keyof typeof LeaveGameRoomControllerLeaveGameRoom404Code];
-
+ 
 export const LeaveGameRoomControllerLeaveGameRoom404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
   GAME_ROOM_MEMBERNOT_FOUND: 'GAME_ROOM_MEMBER.NOT_FOUND',
@@ -493,7 +570,7 @@ export type LeaveGameRoomControllerLeaveGameRoom404 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers400Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers400Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers400Code];
-
+ 
 export const ListGameRoomMembersControllerListGameRoomMembers400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -510,7 +587,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers400 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers401Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers401Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers401Code];
-
+ 
 export const ListGameRoomMembersControllerListGameRoomMembers401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -527,7 +604,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers401 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers403Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers403Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers403Code];
-
+ 
 export const ListGameRoomMembersControllerListGameRoomMembers403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -544,7 +621,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers403 = {
  */
 export type ListGameRoomMembersControllerListGameRoomMembers404Code =
   (typeof ListGameRoomMembersControllerListGameRoomMembers404Code)[keyof typeof ListGameRoomMembersControllerListGameRoomMembers404Code];
-
+ 
 export const ListGameRoomMembersControllerListGameRoomMembers404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -561,7 +638,7 @@ export type ListGameRoomMembersControllerListGameRoomMembers404 = {
  */
 export type StartGameControllerStartGame400Code =
   (typeof StartGameControllerStartGame400Code)[keyof typeof StartGameControllerStartGame400Code];
-
+ 
 export const StartGameControllerStartGame400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
   GAME_ROOMVALIDATION_ERROR: 'GAME_ROOM.VALIDATION_ERROR',
@@ -579,7 +656,7 @@ export type StartGameControllerStartGame400 = {
  */
 export type StartGameControllerStartGame403Code =
   (typeof StartGameControllerStartGame403Code)[keyof typeof StartGameControllerStartGame403Code];
-
+ 
 export const StartGameControllerStartGame403Code = {
   GAME_ROOMACCESS_DENIED: 'GAME_ROOM.ACCESS_DENIED',
 } as const;
@@ -596,7 +673,7 @@ export type StartGameControllerStartGame403 = {
  */
 export type StartGameControllerStartGame404Code =
   (typeof StartGameControllerStartGame404Code)[keyof typeof StartGameControllerStartGame404Code];
-
+ 
 export const StartGameControllerStartGame404Code = {
   GAME_ROOMNOT_FOUND: 'GAME_ROOM.NOT_FOUND',
 } as const;
@@ -611,9 +688,596 @@ export type StartGameControllerStartGame404 = {
 /**
  * error code
  */
+export type CreateImageControllerCreateImageAdmin400Code =
+  (typeof CreateImageControllerCreateImageAdmin400Code)[keyof typeof CreateImageControllerCreateImageAdmin400Code];
+ 
+export const CreateImageControllerCreateImageAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type CreateImageControllerCreateImageAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateImageControllerCreateImageAdmin400Code;
+};
+/**
+ * error code
+ */
+export type CreateImageControllerCreateImageAdmin401Code =
+  (typeof CreateImageControllerCreateImageAdmin401Code)[keyof typeof CreateImageControllerCreateImageAdmin401Code];
+ 
+export const CreateImageControllerCreateImageAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type CreateImageControllerCreateImageAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateImageControllerCreateImageAdmin401Code;
+};
+/**
+ * error code
+ */
+export type CreateImageControllerCreateImageAdmin403Code =
+  (typeof CreateImageControllerCreateImageAdmin403Code)[keyof typeof CreateImageControllerCreateImageAdmin403Code];
+ 
+export const CreateImageControllerCreateImageAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type CreateImageControllerCreateImageAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateImageControllerCreateImageAdmin403Code;
+};
+export type ListImagesControllerListImagesAdminParams = {
+  /**
+   * 카테고리 필터링
+   */
+  category?: string;
+  /**
+   * @minimum 1
+   */
+  page?: number;
+  /**
+   * @minimum 5
+   * @maximum 1000
+   */
+  perPage?: number;
+};
+/**
+ * error code
+ */
+export type ListImagesControllerListImagesAdmin400Code =
+  (typeof ListImagesControllerListImagesAdmin400Code)[keyof typeof ListImagesControllerListImagesAdmin400Code];
+ 
+export const ListImagesControllerListImagesAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type ListImagesControllerListImagesAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListImagesControllerListImagesAdmin400Code;
+};
+/**
+ * error code
+ */
+export type ListImagesControllerListImagesAdmin401Code =
+  (typeof ListImagesControllerListImagesAdmin401Code)[keyof typeof ListImagesControllerListImagesAdmin401Code];
+ 
+export const ListImagesControllerListImagesAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type ListImagesControllerListImagesAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListImagesControllerListImagesAdmin401Code;
+};
+/**
+ * error code
+ */
+export type ListImagesControllerListImagesAdmin403Code =
+  (typeof ListImagesControllerListImagesAdmin403Code)[keyof typeof ListImagesControllerListImagesAdmin403Code];
+ 
+export const ListImagesControllerListImagesAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type ListImagesControllerListImagesAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListImagesControllerListImagesAdmin403Code;
+};
+/**
+ * error code
+ */
+export type DeleteImageControllerDeleteImage400Code =
+  (typeof DeleteImageControllerDeleteImage400Code)[keyof typeof DeleteImageControllerDeleteImage400Code];
+ 
+export const DeleteImageControllerDeleteImage400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type DeleteImageControllerDeleteImage400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteImageControllerDeleteImage400Code;
+};
+/**
+ * error code
+ */
+export type DeleteImageControllerDeleteImage401Code =
+  (typeof DeleteImageControllerDeleteImage401Code)[keyof typeof DeleteImageControllerDeleteImage401Code];
+ 
+export const DeleteImageControllerDeleteImage401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type DeleteImageControllerDeleteImage401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteImageControllerDeleteImage401Code;
+};
+/**
+ * error code
+ */
+export type DeleteImageControllerDeleteImage403Code =
+  (typeof DeleteImageControllerDeleteImage403Code)[keyof typeof DeleteImageControllerDeleteImage403Code];
+ 
+export const DeleteImageControllerDeleteImage403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type DeleteImageControllerDeleteImage403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteImageControllerDeleteImage403Code;
+};
+/**
+ * error code
+ */
+export type DeleteImageControllerDeleteImage404Code =
+  (typeof DeleteImageControllerDeleteImage404Code)[keyof typeof DeleteImageControllerDeleteImage404Code];
+ 
+export const DeleteImageControllerDeleteImage404Code = {
+  IMAGENOT_FOUND: 'IMAGE.NOT_FOUND',
+} as const;
+export type DeleteImageControllerDeleteImage404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteImageControllerDeleteImage404Code;
+};
+/**
+ * error code
+ */
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin400Code =
+  (typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin400Code)[keyof typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin400Code];
+ 
+export const CreateNicknameSourceControllerCreateNicknameSourceAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateNicknameSourceControllerCreateNicknameSourceAdmin400Code;
+};
+/**
+ * error code
+ */
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin401Code =
+  (typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin401Code)[keyof typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin401Code];
+ 
+export const CreateNicknameSourceControllerCreateNicknameSourceAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateNicknameSourceControllerCreateNicknameSourceAdmin401Code;
+};
+/**
+ * error code
+ */
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin403Code =
+  (typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin403Code)[keyof typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin403Code];
+ 
+export const CreateNicknameSourceControllerCreateNicknameSourceAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateNicknameSourceControllerCreateNicknameSourceAdmin403Code;
+};
+/**
+ * error code
+ */
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin409Code =
+  (typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin409Code)[keyof typeof CreateNicknameSourceControllerCreateNicknameSourceAdmin409Code];
+ 
+export const CreateNicknameSourceControllerCreateNicknameSourceAdmin409Code = {
+  NICKNAME_SOURCEALREADY_EXISTS: 'NICKNAME_SOURCE.ALREADY_EXISTS',
+} as const;
+export type CreateNicknameSourceControllerCreateNicknameSourceAdmin409 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateNicknameSourceControllerCreateNicknameSourceAdmin409Code;
+};
+export type ListNicknameSourcesControllerListNicknameSourcesParams = {
+  /**
+   * @minimum 1
+   */
+  page?: number;
+  /**
+   * @minimum 5
+   * @maximum 1000
+   */
+  perPage?: number;
+};
+/**
+ * error code
+ */
+export type ListNicknameSourcesControllerListNicknameSources400Code =
+  (typeof ListNicknameSourcesControllerListNicknameSources400Code)[keyof typeof ListNicknameSourcesControllerListNicknameSources400Code];
+ 
+export const ListNicknameSourcesControllerListNicknameSources400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type ListNicknameSourcesControllerListNicknameSources400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListNicknameSourcesControllerListNicknameSources400Code;
+};
+/**
+ * error code
+ */
+export type ListNicknameSourcesControllerListNicknameSources401Code =
+  (typeof ListNicknameSourcesControllerListNicknameSources401Code)[keyof typeof ListNicknameSourcesControllerListNicknameSources401Code];
+ 
+export const ListNicknameSourcesControllerListNicknameSources401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type ListNicknameSourcesControllerListNicknameSources401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListNicknameSourcesControllerListNicknameSources401Code;
+};
+/**
+ * error code
+ */
+export type ListNicknameSourcesControllerListNicknameSources403Code =
+  (typeof ListNicknameSourcesControllerListNicknameSources403Code)[keyof typeof ListNicknameSourcesControllerListNicknameSources403Code];
+ 
+export const ListNicknameSourcesControllerListNicknameSources403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type ListNicknameSourcesControllerListNicknameSources403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListNicknameSourcesControllerListNicknameSources403Code;
+};
+/**
+ * error code
+ */
+export type DeleteNicknameSourceControllerDeleteNicknameSource400Code =
+  (typeof DeleteNicknameSourceControllerDeleteNicknameSource400Code)[keyof typeof DeleteNicknameSourceControllerDeleteNicknameSource400Code];
+ 
+export const DeleteNicknameSourceControllerDeleteNicknameSource400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type DeleteNicknameSourceControllerDeleteNicknameSource400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteNicknameSourceControllerDeleteNicknameSource400Code;
+};
+/**
+ * error code
+ */
+export type DeleteNicknameSourceControllerDeleteNicknameSource401Code =
+  (typeof DeleteNicknameSourceControllerDeleteNicknameSource401Code)[keyof typeof DeleteNicknameSourceControllerDeleteNicknameSource401Code];
+ 
+export const DeleteNicknameSourceControllerDeleteNicknameSource401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type DeleteNicknameSourceControllerDeleteNicknameSource401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteNicknameSourceControllerDeleteNicknameSource401Code;
+};
+/**
+ * error code
+ */
+export type DeleteNicknameSourceControllerDeleteNicknameSource403Code =
+  (typeof DeleteNicknameSourceControllerDeleteNicknameSource403Code)[keyof typeof DeleteNicknameSourceControllerDeleteNicknameSource403Code];
+ 
+export const DeleteNicknameSourceControllerDeleteNicknameSource403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type DeleteNicknameSourceControllerDeleteNicknameSource403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteNicknameSourceControllerDeleteNicknameSource403Code;
+};
+/**
+ * error code
+ */
+export type DeleteNicknameSourceControllerDeleteNicknameSource404Code =
+  (typeof DeleteNicknameSourceControllerDeleteNicknameSource404Code)[keyof typeof DeleteNicknameSourceControllerDeleteNicknameSource404Code];
+ 
+export const DeleteNicknameSourceControllerDeleteNicknameSource404Code = {
+  NICKNAME_SOURCENOT_FOUND: 'NICKNAME_SOURCE.NOT_FOUND',
+} as const;
+export type DeleteNicknameSourceControllerDeleteNicknameSource404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteNicknameSourceControllerDeleteNicknameSource404Code;
+};
+/**
+ * error code
+ */
+export type GetNicknameSourceControllerGetNicknameSourceAdmin400Code =
+  (typeof GetNicknameSourceControllerGetNicknameSourceAdmin400Code)[keyof typeof GetNicknameSourceControllerGetNicknameSourceAdmin400Code];
+ 
+export const GetNicknameSourceControllerGetNicknameSourceAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type GetNicknameSourceControllerGetNicknameSourceAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetNicknameSourceControllerGetNicknameSourceAdmin400Code;
+};
+/**
+ * error code
+ */
+export type GetNicknameSourceControllerGetNicknameSourceAdmin401Code =
+  (typeof GetNicknameSourceControllerGetNicknameSourceAdmin401Code)[keyof typeof GetNicknameSourceControllerGetNicknameSourceAdmin401Code];
+ 
+export const GetNicknameSourceControllerGetNicknameSourceAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type GetNicknameSourceControllerGetNicknameSourceAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetNicknameSourceControllerGetNicknameSourceAdmin401Code;
+};
+/**
+ * error code
+ */
+export type GetNicknameSourceControllerGetNicknameSourceAdmin403Code =
+  (typeof GetNicknameSourceControllerGetNicknameSourceAdmin403Code)[keyof typeof GetNicknameSourceControllerGetNicknameSourceAdmin403Code];
+ 
+export const GetNicknameSourceControllerGetNicknameSourceAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type GetNicknameSourceControllerGetNicknameSourceAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetNicknameSourceControllerGetNicknameSourceAdmin403Code;
+};
+/**
+ * error code
+ */
+export type GetNicknameSourceControllerGetNicknameSourceAdmin404Code =
+  (typeof GetNicknameSourceControllerGetNicknameSourceAdmin404Code)[keyof typeof GetNicknameSourceControllerGetNicknameSourceAdmin404Code];
+ 
+export const GetNicknameSourceControllerGetNicknameSourceAdmin404Code = {
+  NICKNAME_SOURCENOT_FOUND: 'NICKNAME_SOURCE.NOT_FOUND',
+} as const;
+export type GetNicknameSourceControllerGetNicknameSourceAdmin404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetNicknameSourceControllerGetNicknameSourceAdmin404Code;
+};
+/**
+ * error code
+ */
+export type UpdateNicknameSourceControllerUpdateNicknameSource400Code =
+  (typeof UpdateNicknameSourceControllerUpdateNicknameSource400Code)[keyof typeof UpdateNicknameSourceControllerUpdateNicknameSource400Code];
+ 
+export const UpdateNicknameSourceControllerUpdateNicknameSource400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type UpdateNicknameSourceControllerUpdateNicknameSource400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateNicknameSourceControllerUpdateNicknameSource400Code;
+};
+/**
+ * error code
+ */
+export type UpdateNicknameSourceControllerUpdateNicknameSource401Code =
+  (typeof UpdateNicknameSourceControllerUpdateNicknameSource401Code)[keyof typeof UpdateNicknameSourceControllerUpdateNicknameSource401Code];
+ 
+export const UpdateNicknameSourceControllerUpdateNicknameSource401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type UpdateNicknameSourceControllerUpdateNicknameSource401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateNicknameSourceControllerUpdateNicknameSource401Code;
+};
+/**
+ * error code
+ */
+export type UpdateNicknameSourceControllerUpdateNicknameSource403Code =
+  (typeof UpdateNicknameSourceControllerUpdateNicknameSource403Code)[keyof typeof UpdateNicknameSourceControllerUpdateNicknameSource403Code];
+ 
+export const UpdateNicknameSourceControllerUpdateNicknameSource403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type UpdateNicknameSourceControllerUpdateNicknameSource403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateNicknameSourceControllerUpdateNicknameSource403Code;
+};
+/**
+ * error code
+ */
+export type UpdateNicknameSourceControllerUpdateNicknameSource404Code =
+  (typeof UpdateNicknameSourceControllerUpdateNicknameSource404Code)[keyof typeof UpdateNicknameSourceControllerUpdateNicknameSource404Code];
+ 
+export const UpdateNicknameSourceControllerUpdateNicknameSource404Code = {
+  NICKNAME_SOURCENOT_FOUND: 'NICKNAME_SOURCE.NOT_FOUND',
+} as const;
+export type UpdateNicknameSourceControllerUpdateNicknameSource404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateNicknameSourceControllerUpdateNicknameSource404Code;
+};
+/**
+ * error code
+ */
+export type UpdateNicknameSourceControllerUpdateNicknameSource409Code =
+  (typeof UpdateNicknameSourceControllerUpdateNicknameSource409Code)[keyof typeof UpdateNicknameSourceControllerUpdateNicknameSource409Code];
+ 
+export const UpdateNicknameSourceControllerUpdateNicknameSource409Code = {
+  NICKNAME_SOURCEALREADY_EXISTS: 'NICKNAME_SOURCE.ALREADY_EXISTS',
+} as const;
+export type UpdateNicknameSourceControllerUpdateNicknameSource409 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateNicknameSourceControllerUpdateNicknameSource409Code;
+};
+/**
+ * error code
+ */
+export type CreateQuizzesControllerCreateQuizzesAdmin400Code =
+  (typeof CreateQuizzesControllerCreateQuizzesAdmin400Code)[keyof typeof CreateQuizzesControllerCreateQuizzesAdmin400Code];
+ 
+export const CreateQuizzesControllerCreateQuizzesAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type CreateQuizzesControllerCreateQuizzesAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateQuizzesControllerCreateQuizzesAdmin400Code;
+};
+/**
+ * error code
+ */
+export type CreateQuizzesControllerCreateQuizzesAdmin401Code =
+  (typeof CreateQuizzesControllerCreateQuizzesAdmin401Code)[keyof typeof CreateQuizzesControllerCreateQuizzesAdmin401Code];
+ 
+export const CreateQuizzesControllerCreateQuizzesAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type CreateQuizzesControllerCreateQuizzesAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateQuizzesControllerCreateQuizzesAdmin401Code;
+};
+/**
+ * error code
+ */
+export type CreateQuizzesControllerCreateQuizzesAdmin403Code =
+  (typeof CreateQuizzesControllerCreateQuizzesAdmin403Code)[keyof typeof CreateQuizzesControllerCreateQuizzesAdmin403Code];
+ 
+export const CreateQuizzesControllerCreateQuizzesAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type CreateQuizzesControllerCreateQuizzesAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateQuizzesControllerCreateQuizzesAdmin403Code;
+};
+/**
+ * error code
+ */
 export type ListQuizzesControllerListQuizzes400Code =
   (typeof ListQuizzesControllerListQuizzes400Code)[keyof typeof ListQuizzesControllerListQuizzes400Code];
-
+ 
 export const ListQuizzesControllerListQuizzes400Code = {
   COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
 } as const;
@@ -630,7 +1294,7 @@ export type ListQuizzesControllerListQuizzes400 = {
  */
 export type ListQuizzesControllerListQuizzes401Code =
   (typeof ListQuizzesControllerListQuizzes401Code)[keyof typeof ListQuizzesControllerListQuizzes401Code];
-
+ 
 export const ListQuizzesControllerListQuizzes401Code = {
   COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
 } as const;
@@ -647,7 +1311,7 @@ export type ListQuizzesControllerListQuizzes401 = {
  */
 export type ListQuizzesControllerListQuizzes403Code =
   (typeof ListQuizzesControllerListQuizzes403Code)[keyof typeof ListQuizzesControllerListQuizzes403Code];
-
+ 
 export const ListQuizzesControllerListQuizzes403Code = {
   COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
 } as const;
@@ -658,4 +1322,192 @@ export type ListQuizzesControllerListQuizzes403 = {
   message?: string;
   /** error code */
   code?: ListQuizzesControllerListQuizzes403Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizControllerDeleteQuizAdmin400Code =
+  (typeof DeleteQuizControllerDeleteQuizAdmin400Code)[keyof typeof DeleteQuizControllerDeleteQuizAdmin400Code];
+ 
+export const DeleteQuizControllerDeleteQuizAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type DeleteQuizControllerDeleteQuizAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizControllerDeleteQuizAdmin400Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizControllerDeleteQuizAdmin401Code =
+  (typeof DeleteQuizControllerDeleteQuizAdmin401Code)[keyof typeof DeleteQuizControllerDeleteQuizAdmin401Code];
+ 
+export const DeleteQuizControllerDeleteQuizAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type DeleteQuizControllerDeleteQuizAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizControllerDeleteQuizAdmin401Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizControllerDeleteQuizAdmin403Code =
+  (typeof DeleteQuizControllerDeleteQuizAdmin403Code)[keyof typeof DeleteQuizControllerDeleteQuizAdmin403Code];
+ 
+export const DeleteQuizControllerDeleteQuizAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type DeleteQuizControllerDeleteQuizAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizControllerDeleteQuizAdmin403Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizControllerDeleteQuizAdmin404Code =
+  (typeof DeleteQuizControllerDeleteQuizAdmin404Code)[keyof typeof DeleteQuizControllerDeleteQuizAdmin404Code];
+ 
+export const DeleteQuizControllerDeleteQuizAdmin404Code = {
+  QUIZNOT_FOUND: 'QUIZ.NOT_FOUND',
+} as const;
+export type DeleteQuizControllerDeleteQuizAdmin404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizControllerDeleteQuizAdmin404Code;
+};
+/**
+ * error code
+ */
+export type GetQuizControllerGetQuizzesAdmin400Code =
+  (typeof GetQuizControllerGetQuizzesAdmin400Code)[keyof typeof GetQuizControllerGetQuizzesAdmin400Code];
+ 
+export const GetQuizControllerGetQuizzesAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type GetQuizControllerGetQuizzesAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetQuizControllerGetQuizzesAdmin400Code;
+};
+/**
+ * error code
+ */
+export type GetQuizControllerGetQuizzesAdmin401Code =
+  (typeof GetQuizControllerGetQuizzesAdmin401Code)[keyof typeof GetQuizControllerGetQuizzesAdmin401Code];
+ 
+export const GetQuizControllerGetQuizzesAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type GetQuizControllerGetQuizzesAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetQuizControllerGetQuizzesAdmin401Code;
+};
+/**
+ * error code
+ */
+export type GetQuizControllerGetQuizzesAdmin403Code =
+  (typeof GetQuizControllerGetQuizzesAdmin403Code)[keyof typeof GetQuizControllerGetQuizzesAdmin403Code];
+ 
+export const GetQuizControllerGetQuizzesAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type GetQuizControllerGetQuizzesAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetQuizControllerGetQuizzesAdmin403Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizControllerUpdateQuizAdmin400Code =
+  (typeof UpdateQuizControllerUpdateQuizAdmin400Code)[keyof typeof UpdateQuizControllerUpdateQuizAdmin400Code];
+ 
+export const UpdateQuizControllerUpdateQuizAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+  QUIZIMAGE_NOT_FOUND: 'QUIZ.IMAGE_NOT_FOUND',
+} as const;
+export type UpdateQuizControllerUpdateQuizAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizControllerUpdateQuizAdmin400Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizControllerUpdateQuizAdmin401Code =
+  (typeof UpdateQuizControllerUpdateQuizAdmin401Code)[keyof typeof UpdateQuizControllerUpdateQuizAdmin401Code];
+ 
+export const UpdateQuizControllerUpdateQuizAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type UpdateQuizControllerUpdateQuizAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizControllerUpdateQuizAdmin401Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizControllerUpdateQuizAdmin403Code =
+  (typeof UpdateQuizControllerUpdateQuizAdmin403Code)[keyof typeof UpdateQuizControllerUpdateQuizAdmin403Code];
+ 
+export const UpdateQuizControllerUpdateQuizAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type UpdateQuizControllerUpdateQuizAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizControllerUpdateQuizAdmin403Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizControllerUpdateQuizAdmin404Code =
+  (typeof UpdateQuizControllerUpdateQuizAdmin404Code)[keyof typeof UpdateQuizControllerUpdateQuizAdmin404Code];
+ 
+export const UpdateQuizControllerUpdateQuizAdmin404Code = {
+  QUIZNOT_FOUND: 'QUIZ.NOT_FOUND',
+} as const;
+export type UpdateQuizControllerUpdateQuizAdmin404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizControllerUpdateQuizAdmin404Code;
 };
