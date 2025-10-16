@@ -10,21 +10,33 @@ const cookieJar = new CookieJar();
 
 export const connectApi = ky.create({
   prefixUrl: API_URL,
+  credentials: 'include',
   headers: {
     'Accept-Language': 'ko-KR',
   },
   retry: { limit: 0 },
   hooks: {
     beforeRequest: [
-      (request) => {
+      async (request) => {
+        const url = request.url;
+        const cookies = await cookieJar.getCookies(url);
+        const cookieString = cookies.join('; ');
+        request.headers.set('cookie', cookieString);
+
         const token = STORAGE.getAuthToken();
         request.headers.set('Authorization', `Bearer ${token}`);
       },
     ],
     afterResponse: [
-      async (_, _1, response) => {
+      async (request, _1, response) => {
         const json = await response.clone().json();
-
+        const url = request.url;
+        const cookies = response.headers.getSetCookie();
+        if (cookies) {
+          for (const cookie of cookies) {
+            await cookieJar.setCookie(cookie, url);
+          }
+        }
         return json;
       },
     ],
@@ -55,27 +67,12 @@ export const orvalInstance = async <T>({
       searchParams: params ? serializeParams(params) : undefined,
       hooks: {
         beforeRequest: [
-          async (request) => {
-            const url = request.url;
-            const cookies = await cookieJar.getCookies(url);
-            const cookieString = cookies.join('; ');
-            request.headers.set('cookie', cookieString);
+          (request) => {
             Object.entries(headers ?? {})
               .filter(([, value]) => value !== undefined)
               .forEach(([key, value]) =>
                 request.headers.set(key, value as string)
               );
-          },
-        ],
-        afterResponse: [
-          async (request, options, response) => {
-            const url = request.url;
-            const cookies = response.headers.getSetCookie();
-            if (cookies) {
-              for (const cookie of cookies) {
-                await cookieJar.setCookie(cookie, url);
-              }
-            }
           },
         ],
       },
