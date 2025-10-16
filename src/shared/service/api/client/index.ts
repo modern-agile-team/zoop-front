@@ -1,9 +1,12 @@
 import ky, { HTTPError } from 'ky';
+import { CookieJar } from 'tough-cookie';
 
 import { API_URL } from '@/shared/constant/env';
 import { STORAGE } from '@/shared/utils/storage';
 
 import { ApiError, type ApiErrorResponse } from './ApiError';
+
+const cookieJar = new CookieJar();
 
 export const connectApi = ky.create({
   prefixUrl: API_URL,
@@ -52,12 +55,27 @@ export const orvalInstance = async <T>({
       searchParams: params ? serializeParams(params) : undefined,
       hooks: {
         beforeRequest: [
-          (request) => {
+          async (request) => {
+            const url = request.url;
+            const cookies = await cookieJar.getCookies(url);
+            const cookieString = cookies.join('; ');
+            request.headers.set('cookie', cookieString);
             Object.entries(headers ?? {})
               .filter(([, value]) => value !== undefined)
               .forEach(([key, value]) =>
                 request.headers.set(key, value as string)
               );
+          },
+        ],
+        afterResponse: [
+          async (request, options, response) => {
+            const url = request.url;
+            const cookies = response.headers.getSetCookie();
+            if (cookies) {
+              for (const cookie of cookies) {
+                await cookieJar.setCookie(cookie, url);
+              }
+            }
           },
         ],
       },
