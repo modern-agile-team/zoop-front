@@ -9,6 +9,7 @@ import {
 } from '@/shared/components/ui/dialog';
 
 import { LoginForm } from './LoginForm';
+import OAuth from './OAuth';
 import { SignupForm } from './SignupForm';
 
 type AuthMode = 'login' | 'signup';
@@ -59,10 +60,13 @@ export function AuthDialog({
         </DialogHeader>
 
         {mode === 'login' ? (
-          <LoginForm
-            onSuccess={handleSuccess}
-            onSwitchToSignup={switchToSignup}
-          />
+          <>
+            <OAuth />
+            <LoginForm
+              onSuccess={handleSuccess}
+              onSwitchToSignup={switchToSignup}
+            />
+          </>
         ) : (
           <SignupForm
             onSuccess={handleSuccess}
