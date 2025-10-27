@@ -8,7 +8,7 @@ import HeroSection from './components/HeroSection';
 import HomeHeader from './components/HomeHeader';
 
 export default function HomePage() {
-  const { isLoggedIn = false, login, logout, myInfo } = useAuth();
+  const { isLoggedIn = false, login, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleNavigateToLobby = () => {
