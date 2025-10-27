@@ -12,8 +12,6 @@ import type {
   AuthTokenDto,
   CreateGameRoomDto,
   CreateNicknameSourceDto,
-  CreateQuizImageDto,
-  CreateQuizzesDto,
   GameRoomCollectionDto,
   GameRoomDto,
   GameRoomMemberCollectionDto,
@@ -21,19 +19,12 @@ import type {
   ListAccountsControllerListAccountsParams,
   ListGameRoomsControllerListGameRoomsParams,
   ListNicknameSourcesControllerListNicknameSourcesParams,
-  ListQuizImagesControllerListQuizImagesAdminParams,
   NicknameSourceCollectionDto,
   NicknameSourceDto,
-  QuizCollectionDto,
-  QuizDto,
-  QuizImageCollectionDto,
-  QuizImageDto,
   SignInWithGoogleControllerSignInWithGoogleParams,
   SignInWithUsernameDto,
   SignUpWithUsernameDto,
   UpdateNicknameSourceDto,
-  UpdateQuizDto,
-  UpdateQuizImageDto,
 } from './quizzesGameIoBackend.schemas';
 
 import { orvalInstance } from '../../../shared/service/api/client/index';
@@ -251,136 +242,6 @@ export const updateNicknameSourceControllerUpdateNicknameSource = (
   });
 };
 
-/**
- * @summary 퀴즈 대량 생성
- */
-export const createQuizzesControllerCreateQuizzesAdmin = (
-  createQuizzesDto: CreateQuizzesDto[]
-) => {
-  return orvalInstance<QuizDto[]>({
-    url: `/admin/quizzes`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: createQuizzesDto,
-  });
-};
-
-/**
- * @summary 퀴즈 목록 조회
- */
-export const listQuizzesControllerListQuizzes = () => {
-  return orvalInstance<QuizCollectionDto>({
-    url: `/admin/quizzes`,
-    method: 'GET',
-  });
-};
-
-/**
- * @summary 퀴즈 삭제
- */
-export const deleteQuizControllerDeleteQuizAdmin = (quizId: string) => {
-  return orvalInstance<null>({
-    url: `/admin/quizzes/${quizId}`,
-    method: 'DELETE',
-  });
-};
-
-/**
- * @summary 퀴즈 단일 조회
- */
-export const getQuizControllerGetQuizzesAdmin = (quizId: string) => {
-  return orvalInstance<QuizDto>({
-    url: `/admin/quizzes/${quizId}`,
-    method: 'GET',
-  });
-};
-
-/**
- * @summary 퀴즈 수정
- */
-export const updateQuizControllerUpdateQuizAdmin = (
-  quizId: string,
-  updateQuizDto: UpdateQuizDto
-) => {
-  return orvalInstance<QuizDto>({
-    url: `/admin/quizzes/${quizId}`,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    data: updateQuizDto,
-  });
-};
-
-/**
- * @summary 퀴즈 이미지 업로드
- */
-export const createQuizImageControllerCreateQuizImageAdmin = (
-  createQuizImageDto: CreateQuizImageDto
-) => {
-  const formData = new FormData();
-  formData.append(`file`, createQuizImageDto.file);
-  formData.append(`category`, createQuizImageDto.category);
-  if (createQuizImageDto.name !== undefined) {
-    formData.append(`name`, createQuizImageDto.name);
-  }
-
-  return orvalInstance<QuizImageDto>({
-    url: `/admin/quiz-images`,
-    method: 'POST',
-    headers: { 'Content-Type': 'multipart/form-data' },
-    data: formData,
-  });
-};
-
-/**
- * @summary 퀴즈 이미지 리스트 조회
- */
-export const listQuizImagesControllerListQuizImagesAdmin = (
-  params?: ListQuizImagesControllerListQuizImagesAdminParams
-) => {
-  return orvalInstance<QuizImageCollectionDto>({
-    url: `/admin/quiz-images`,
-    method: 'GET',
-    params,
-  });
-};
-
-/**
- * @summary 퀴즈 이미지 제거
- */
-export const deleteQuizImageControllerDeleteQuizImage = (
-  quizImageId: string
-) => {
-  return orvalInstance<null>({
-    url: `/admin/quiz-images/${quizImageId}`,
-    method: 'DELETE',
-  });
-};
-
-/**
- * @summary 퀴즈 이미지 단건 조회
- */
-export const getQuizImageControllerGetQuizImage = (quizImageId: string) => {
-  return orvalInstance<QuizDto>({
-    url: `/admin/quiz-images/${quizImageId}`,
-    method: 'GET',
-  });
-};
-
-/**
- * @summary 퀴즈 이미지 수정
- */
-export const updateQuizImageControllerUpdateQuizImage = (
-  quizImageId: string,
-  updateQuizImageDto: UpdateQuizImageDto
-) => {
-  return orvalInstance<QuizDto>({
-    url: `/admin/quiz-images/${quizImageId}`,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    data: updateQuizImageDto,
-  });
-};
-
 export type GetAccountControllerGetMeResult = NonNullable<
   Awaited<ReturnType<typeof getAccountControllerGetMe>>
 >;
@@ -452,33 +313,3 @@ export type UpdateNicknameSourceControllerUpdateNicknameSourceResult =
       ReturnType<typeof updateNicknameSourceControllerUpdateNicknameSource>
     >
   >;
-export type CreateQuizzesControllerCreateQuizzesAdminResult = NonNullable<
-  Awaited<ReturnType<typeof createQuizzesControllerCreateQuizzesAdmin>>
->;
-export type ListQuizzesControllerListQuizzesResult = NonNullable<
-  Awaited<ReturnType<typeof listQuizzesControllerListQuizzes>>
->;
-export type DeleteQuizControllerDeleteQuizAdminResult = NonNullable<
-  Awaited<ReturnType<typeof deleteQuizControllerDeleteQuizAdmin>>
->;
-export type GetQuizControllerGetQuizzesAdminResult = NonNullable<
-  Awaited<ReturnType<typeof getQuizControllerGetQuizzesAdmin>>
->;
-export type UpdateQuizControllerUpdateQuizAdminResult = NonNullable<
-  Awaited<ReturnType<typeof updateQuizControllerUpdateQuizAdmin>>
->;
-export type CreateQuizImageControllerCreateQuizImageAdminResult = NonNullable<
-  Awaited<ReturnType<typeof createQuizImageControllerCreateQuizImageAdmin>>
->;
-export type ListQuizImagesControllerListQuizImagesAdminResult = NonNullable<
-  Awaited<ReturnType<typeof listQuizImagesControllerListQuizImagesAdmin>>
->;
-export type DeleteQuizImageControllerDeleteQuizImageResult = NonNullable<
-  Awaited<ReturnType<typeof deleteQuizImageControllerDeleteQuizImage>>
->;
-export type GetQuizImageControllerGetQuizImageResult = NonNullable<
-  Awaited<ReturnType<typeof getQuizImageControllerGetQuizImage>>
->;
-export type UpdateQuizImageControllerUpdateQuizImageResult = NonNullable<
-  Awaited<ReturnType<typeof updateQuizImageControllerUpdateQuizImage>>
->;
