@@ -8,29 +8,32 @@
 import type {
   AccountCollectionDto,
   AccountDto,
+  ActiveAccountCountDto,
   AuthTokenDto,
   CreateGameRoomDto,
-  CreateImageDto,
   CreateNicknameSourceDto,
+  CreateQuizImageDto,
   CreateQuizzesDto,
   GameRoomCollectionDto,
   GameRoomDto,
   GameRoomMemberCollectionDto,
   GameRoomMemberDto,
-  ImageCollectionDto,
-  ImageDto,
   ListAccountsControllerListAccountsParams,
   ListGameRoomsControllerListGameRoomsParams,
-  ListImagesControllerListImagesAdminParams,
   ListNicknameSourcesControllerListNicknameSourcesParams,
+  ListQuizImagesControllerListQuizImagesAdminParams,
   NicknameSourceCollectionDto,
   NicknameSourceDto,
   QuizCollectionDto,
   QuizDto,
+  QuizImageCollectionDto,
+  QuizImageDto,
+  SignInWithGoogleControllerSignInWithGoogleParams,
   SignInWithUsernameDto,
   SignUpWithUsernameDto,
   UpdateNicknameSourceDto,
   UpdateQuizDto,
+  UpdateQuizImageDto,
 } from './quizzesGameIoBackend.schemas';
 
 import { orvalInstance } from '../../../shared/service/api/client/index';
@@ -40,6 +43,16 @@ import { orvalInstance } from '../../../shared/service/api/client/index';
  */
 export const getAccountControllerGetMe = () => {
   return orvalInstance<AccountDto>({ url: `/accounts/me`, method: 'GET' });
+};
+
+/**
+ * @summary 활성 유저 수 조회
+ */
+export const getActiveAccountCountControllerGetActiveAccountCount = () => {
+  return orvalInstance<ActiveAccountCountDto>({
+    url: `/accounts/active-account-count`,
+    method: 'GET',
+  });
 };
 
 /**
@@ -59,8 +72,10 @@ export const listAccountsControllerListAccounts = (
  * 게정이 있다면 회원가입, 없다면 로그인시킵니다.
  * @summary 구글 회원가입 로그인
  */
-export const signInWithGoogleControllerSignInWithGoogle = () => {
-  return orvalInstance<null>({ url: `/auth/google`, method: 'GET' });
+export const signInWithGoogleControllerSignInWithGoogle = (
+  params?: SignInWithGoogleControllerSignInWithGoogleParams
+) => {
+  return orvalInstance<null>({ url: `/auth/google`, method: 'GET', params });
 };
 
 /**
@@ -167,47 +182,6 @@ export const startGameControllerStartGame = (gameRoomId: string) => {
   return orvalInstance<GameRoomDto>({
     url: `/game-room/${gameRoomId}/start`,
     method: 'POST',
-  });
-};
-
-/**
- * @summary 이미지 업로드
- */
-export const createImageControllerCreateImageAdmin = (
-  createImageDto: CreateImageDto
-) => {
-  const formData = new FormData();
-  formData.append(`file`, createImageDto.file);
-  formData.append(`category`, createImageDto.category);
-
-  return orvalInstance<ImageDto>({
-    url: `/admin/images`,
-    method: 'POST',
-    headers: { 'Content-Type': 'multipart/form-data' },
-    data: formData,
-  });
-};
-
-/**
- * @summary 이미지 리스트 조회
- */
-export const listImagesControllerListImagesAdmin = (
-  params?: ListImagesControllerListImagesAdminParams
-) => {
-  return orvalInstance<ImageCollectionDto>({
-    url: `/admin/images`,
-    method: 'GET',
-    params,
-  });
-};
-
-/**
- * @summary 이미지 제거
- */
-export const deleteImageControllerDeleteImage = (imageId: string) => {
-  return orvalInstance<null>({
-    url: `/admin/images/${imageId}`,
-    method: 'DELETE',
   });
 };
 
@@ -336,9 +310,86 @@ export const updateQuizControllerUpdateQuizAdmin = (
   });
 };
 
+/**
+ * @summary 퀴즈 이미지 업로드
+ */
+export const createQuizImageControllerCreateQuizImageAdmin = (
+  createQuizImageDto: CreateQuizImageDto
+) => {
+  const formData = new FormData();
+  formData.append(`file`, createQuizImageDto.file);
+  formData.append(`category`, createQuizImageDto.category);
+  if (createQuizImageDto.name !== undefined) {
+    formData.append(`name`, createQuizImageDto.name);
+  }
+
+  return orvalInstance<QuizImageDto>({
+    url: `/admin/quiz-images`,
+    method: 'POST',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data: formData,
+  });
+};
+
+/**
+ * @summary 퀴즈 이미지 리스트 조회
+ */
+export const listQuizImagesControllerListQuizImagesAdmin = (
+  params?: ListQuizImagesControllerListQuizImagesAdminParams
+) => {
+  return orvalInstance<QuizImageCollectionDto>({
+    url: `/admin/quiz-images`,
+    method: 'GET',
+    params,
+  });
+};
+
+/**
+ * @summary 퀴즈 이미지 제거
+ */
+export const deleteQuizImageControllerDeleteQuizImage = (
+  quizImageId: string
+) => {
+  return orvalInstance<null>({
+    url: `/admin/quiz-images/${quizImageId}`,
+    method: 'DELETE',
+  });
+};
+
+/**
+ * @summary 퀴즈 이미지 단건 조회
+ */
+export const getQuizImageControllerGetQuizImage = (quizImageId: string) => {
+  return orvalInstance<QuizDto>({
+    url: `/admin/quiz-images/${quizImageId}`,
+    method: 'GET',
+  });
+};
+
+/**
+ * @summary 퀴즈 이미지 수정
+ */
+export const updateQuizImageControllerUpdateQuizImage = (
+  quizImageId: string,
+  updateQuizImageDto: UpdateQuizImageDto
+) => {
+  return orvalInstance<QuizDto>({
+    url: `/admin/quiz-images/${quizImageId}`,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    data: updateQuizImageDto,
+  });
+};
+
 export type GetAccountControllerGetMeResult = NonNullable<
   Awaited<ReturnType<typeof getAccountControllerGetMe>>
 >;
+export type GetActiveAccountCountControllerGetActiveAccountCountResult =
+  NonNullable<
+    Awaited<
+      ReturnType<typeof getActiveAccountCountControllerGetActiveAccountCount>
+    >
+  >;
 export type ListAccountsControllerListAccountsResult = NonNullable<
   Awaited<ReturnType<typeof listAccountsControllerListAccounts>>
 >;
@@ -372,15 +423,6 @@ export type ListGameRoomMembersControllerListGameRoomMembersResult =
   >;
 export type StartGameControllerStartGameResult = NonNullable<
   Awaited<ReturnType<typeof startGameControllerStartGame>>
->;
-export type CreateImageControllerCreateImageAdminResult = NonNullable<
-  Awaited<ReturnType<typeof createImageControllerCreateImageAdmin>>
->;
-export type ListImagesControllerListImagesAdminResult = NonNullable<
-  Awaited<ReturnType<typeof listImagesControllerListImagesAdmin>>
->;
-export type DeleteImageControllerDeleteImageResult = NonNullable<
-  Awaited<ReturnType<typeof deleteImageControllerDeleteImage>>
 >;
 export type CreateNicknameSourceControllerCreateNicknameSourceAdminResult =
   NonNullable<
@@ -424,4 +466,19 @@ export type GetQuizControllerGetQuizzesAdminResult = NonNullable<
 >;
 export type UpdateQuizControllerUpdateQuizAdminResult = NonNullable<
   Awaited<ReturnType<typeof updateQuizControllerUpdateQuizAdmin>>
+>;
+export type CreateQuizImageControllerCreateQuizImageAdminResult = NonNullable<
+  Awaited<ReturnType<typeof createQuizImageControllerCreateQuizImageAdmin>>
+>;
+export type ListQuizImagesControllerListQuizImagesAdminResult = NonNullable<
+  Awaited<ReturnType<typeof listQuizImagesControllerListQuizImagesAdmin>>
+>;
+export type DeleteQuizImageControllerDeleteQuizImageResult = NonNullable<
+  Awaited<ReturnType<typeof deleteQuizImageControllerDeleteQuizImage>>
+>;
+export type GetQuizImageControllerGetQuizImageResult = NonNullable<
+  Awaited<ReturnType<typeof getQuizImageControllerGetQuizImage>>
+>;
+export type UpdateQuizImageControllerUpdateQuizImageResult = NonNullable<
+  Awaited<ReturnType<typeof updateQuizImageControllerUpdateQuizImage>>
 >;

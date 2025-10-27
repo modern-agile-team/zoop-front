@@ -19,6 +19,9 @@ export interface AccountDto {
   leftAt: string;
   isActive: boolean;
 }
+export interface ActiveAccountCountDto {
+  count: number;
+}
 export interface AccountCollectionDto {
   data: AccountDto[];
 }
@@ -92,32 +95,6 @@ export interface GameRoomMemberCollectionDto {
 export interface GameRoomCollectionDto {
   data: GameRoomDto[];
 }
-export interface CreateImageDto {
-  /** image file */
-  file: Blob;
-  /** image category */
-  category: string;
-}
-export interface ImageDto {
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  category: string;
-  originalFileName: string;
-  imageUrl: string;
-  extension: string;
-  contentType: string;
-  contentLength: number;
-  width: number;
-  height: number;
-}
-export interface ImageCollectionDto {
-  currentPage: number;
-  perPage: number;
-  totalCount: number;
-  totalPages: number;
-  data: ImageDto[];
-}
 export interface CreateNicknameSourceDto {
   /**
    * @minLength 1
@@ -185,6 +162,40 @@ export interface UpdateQuizDto {
   /** @nullable */
   imageUrl?: string | null;
 }
+export interface CreateQuizImageDto {
+  /** quiz image file */
+  file: Blob;
+  /** quiz image category */
+  category: string;
+  /** @minLength 1 */
+  name?: string;
+}
+export interface QuizImageDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  category: string;
+  name: string;
+  originalFileName: string;
+  quizImageUrl: string;
+  extension: string;
+  contentType: string;
+  contentLength: number;
+  width: number;
+  height: number;
+}
+export interface QuizImageCollectionDto {
+  currentPage: number;
+  perPage: number;
+  totalCount: number;
+  totalPages: number;
+  data: QuizImageDto[];
+}
+export interface UpdateQuizImageDto {
+  /** @minLength 1 */
+  name?: string;
+  category?: string;
+}
 /**
  * error code
  */
@@ -244,6 +255,9 @@ export type ListAccountsControllerListAccounts400 = {
   message?: string;
   /** error code */
   code?: ListAccountsControllerListAccounts400Code;
+};
+export type SignInWithGoogleControllerSignInWithGoogleParams = {
+  redirectUrl?: string;
 };
 /**
  * error code
@@ -684,191 +698,6 @@ export type StartGameControllerStartGame404 = {
   message?: string;
   /** error code */
   code?: StartGameControllerStartGame404Code;
-};
-/**
- * error code
- */
-export type CreateImageControllerCreateImageAdmin400Code =
-  (typeof CreateImageControllerCreateImageAdmin400Code)[keyof typeof CreateImageControllerCreateImageAdmin400Code];
- 
-export const CreateImageControllerCreateImageAdmin400Code = {
-  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
-} as const;
-export type CreateImageControllerCreateImageAdmin400 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: CreateImageControllerCreateImageAdmin400Code;
-};
-/**
- * error code
- */
-export type CreateImageControllerCreateImageAdmin401Code =
-  (typeof CreateImageControllerCreateImageAdmin401Code)[keyof typeof CreateImageControllerCreateImageAdmin401Code];
- 
-export const CreateImageControllerCreateImageAdmin401Code = {
-  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
-} as const;
-export type CreateImageControllerCreateImageAdmin401 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: CreateImageControllerCreateImageAdmin401Code;
-};
-/**
- * error code
- */
-export type CreateImageControllerCreateImageAdmin403Code =
-  (typeof CreateImageControllerCreateImageAdmin403Code)[keyof typeof CreateImageControllerCreateImageAdmin403Code];
- 
-export const CreateImageControllerCreateImageAdmin403Code = {
-  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
-} as const;
-export type CreateImageControllerCreateImageAdmin403 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: CreateImageControllerCreateImageAdmin403Code;
-};
-export type ListImagesControllerListImagesAdminParams = {
-  /**
-   * 카테고리 필터링
-   */
-  category?: string;
-  /**
-   * @minimum 1
-   */
-  page?: number;
-  /**
-   * @minimum 5
-   * @maximum 1000
-   */
-  perPage?: number;
-};
-/**
- * error code
- */
-export type ListImagesControllerListImagesAdmin400Code =
-  (typeof ListImagesControllerListImagesAdmin400Code)[keyof typeof ListImagesControllerListImagesAdmin400Code];
- 
-export const ListImagesControllerListImagesAdmin400Code = {
-  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
-} as const;
-export type ListImagesControllerListImagesAdmin400 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: ListImagesControllerListImagesAdmin400Code;
-};
-/**
- * error code
- */
-export type ListImagesControllerListImagesAdmin401Code =
-  (typeof ListImagesControllerListImagesAdmin401Code)[keyof typeof ListImagesControllerListImagesAdmin401Code];
- 
-export const ListImagesControllerListImagesAdmin401Code = {
-  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
-} as const;
-export type ListImagesControllerListImagesAdmin401 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: ListImagesControllerListImagesAdmin401Code;
-};
-/**
- * error code
- */
-export type ListImagesControllerListImagesAdmin403Code =
-  (typeof ListImagesControllerListImagesAdmin403Code)[keyof typeof ListImagesControllerListImagesAdmin403Code];
- 
-export const ListImagesControllerListImagesAdmin403Code = {
-  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
-} as const;
-export type ListImagesControllerListImagesAdmin403 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: ListImagesControllerListImagesAdmin403Code;
-};
-/**
- * error code
- */
-export type DeleteImageControllerDeleteImage400Code =
-  (typeof DeleteImageControllerDeleteImage400Code)[keyof typeof DeleteImageControllerDeleteImage400Code];
- 
-export const DeleteImageControllerDeleteImage400Code = {
-  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
-} as const;
-export type DeleteImageControllerDeleteImage400 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: DeleteImageControllerDeleteImage400Code;
-};
-/**
- * error code
- */
-export type DeleteImageControllerDeleteImage401Code =
-  (typeof DeleteImageControllerDeleteImage401Code)[keyof typeof DeleteImageControllerDeleteImage401Code];
- 
-export const DeleteImageControllerDeleteImage401Code = {
-  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
-} as const;
-export type DeleteImageControllerDeleteImage401 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: DeleteImageControllerDeleteImage401Code;
-};
-/**
- * error code
- */
-export type DeleteImageControllerDeleteImage403Code =
-  (typeof DeleteImageControllerDeleteImage403Code)[keyof typeof DeleteImageControllerDeleteImage403Code];
- 
-export const DeleteImageControllerDeleteImage403Code = {
-  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
-} as const;
-export type DeleteImageControllerDeleteImage403 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: DeleteImageControllerDeleteImage403Code;
-};
-/**
- * error code
- */
-export type DeleteImageControllerDeleteImage404Code =
-  (typeof DeleteImageControllerDeleteImage404Code)[keyof typeof DeleteImageControllerDeleteImage404Code];
- 
-export const DeleteImageControllerDeleteImage404Code = {
-  IMAGENOT_FOUND: 'IMAGE.NOT_FOUND',
-} as const;
-export type DeleteImageControllerDeleteImage404 = {
-  /** http status code */
-  statusCode?: number;
-  /** error message */
-  message?: string;
-  /** error code */
-  code?: DeleteImageControllerDeleteImage404Code;
 };
 /**
  * error code
@@ -1510,4 +1339,335 @@ export type UpdateQuizControllerUpdateQuizAdmin404 = {
   message?: string;
   /** error code */
   code?: UpdateQuizControllerUpdateQuizAdmin404Code;
+};
+/**
+ * error code
+ */
+export type CreateQuizImageControllerCreateQuizImageAdmin400Code =
+  (typeof CreateQuizImageControllerCreateQuizImageAdmin400Code)[keyof typeof CreateQuizImageControllerCreateQuizImageAdmin400Code];
+ 
+export const CreateQuizImageControllerCreateQuizImageAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type CreateQuizImageControllerCreateQuizImageAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateQuizImageControllerCreateQuizImageAdmin400Code;
+};
+/**
+ * error code
+ */
+export type CreateQuizImageControllerCreateQuizImageAdmin401Code =
+  (typeof CreateQuizImageControllerCreateQuizImageAdmin401Code)[keyof typeof CreateQuizImageControllerCreateQuizImageAdmin401Code];
+ 
+export const CreateQuizImageControllerCreateQuizImageAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type CreateQuizImageControllerCreateQuizImageAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateQuizImageControllerCreateQuizImageAdmin401Code;
+};
+/**
+ * error code
+ */
+export type CreateQuizImageControllerCreateQuizImageAdmin403Code =
+  (typeof CreateQuizImageControllerCreateQuizImageAdmin403Code)[keyof typeof CreateQuizImageControllerCreateQuizImageAdmin403Code];
+ 
+export const CreateQuizImageControllerCreateQuizImageAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type CreateQuizImageControllerCreateQuizImageAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: CreateQuizImageControllerCreateQuizImageAdmin403Code;
+};
+export type ListQuizImagesControllerListQuizImagesAdminParams = {
+  /**
+   * 카테고리 필터링
+   */
+  category?: string;
+  /**
+   * @minimum 1
+   */
+  page?: number;
+  /**
+   * @minimum 5
+   * @maximum 1000
+   */
+  perPage?: number;
+  /**
+     *
+        정렬 쿼리. 다중 정렬은 콤마(,)로 구분.
+        허용되지 않은 정렬 필드 및 방향은 무시합니다.
+        형식: field:asc | field:desc
+        허용 필드: createdAt,updatedAt,name,category,
+        예: sort=-title:asc,createdAt:asc
+          
+     */
+  sort?: string;
+};
+/**
+ * error code
+ */
+export type ListQuizImagesControllerListQuizImagesAdmin400Code =
+  (typeof ListQuizImagesControllerListQuizImagesAdmin400Code)[keyof typeof ListQuizImagesControllerListQuizImagesAdmin400Code];
+ 
+export const ListQuizImagesControllerListQuizImagesAdmin400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type ListQuizImagesControllerListQuizImagesAdmin400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListQuizImagesControllerListQuizImagesAdmin400Code;
+};
+/**
+ * error code
+ */
+export type ListQuizImagesControllerListQuizImagesAdmin401Code =
+  (typeof ListQuizImagesControllerListQuizImagesAdmin401Code)[keyof typeof ListQuizImagesControllerListQuizImagesAdmin401Code];
+ 
+export const ListQuizImagesControllerListQuizImagesAdmin401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type ListQuizImagesControllerListQuizImagesAdmin401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListQuizImagesControllerListQuizImagesAdmin401Code;
+};
+/**
+ * error code
+ */
+export type ListQuizImagesControllerListQuizImagesAdmin403Code =
+  (typeof ListQuizImagesControllerListQuizImagesAdmin403Code)[keyof typeof ListQuizImagesControllerListQuizImagesAdmin403Code];
+ 
+export const ListQuizImagesControllerListQuizImagesAdmin403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type ListQuizImagesControllerListQuizImagesAdmin403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: ListQuizImagesControllerListQuizImagesAdmin403Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizImageControllerDeleteQuizImage400Code =
+  (typeof DeleteQuizImageControllerDeleteQuizImage400Code)[keyof typeof DeleteQuizImageControllerDeleteQuizImage400Code];
+ 
+export const DeleteQuizImageControllerDeleteQuizImage400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type DeleteQuizImageControllerDeleteQuizImage400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizImageControllerDeleteQuizImage400Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizImageControllerDeleteQuizImage401Code =
+  (typeof DeleteQuizImageControllerDeleteQuizImage401Code)[keyof typeof DeleteQuizImageControllerDeleteQuizImage401Code];
+ 
+export const DeleteQuizImageControllerDeleteQuizImage401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type DeleteQuizImageControllerDeleteQuizImage401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizImageControllerDeleteQuizImage401Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizImageControllerDeleteQuizImage403Code =
+  (typeof DeleteQuizImageControllerDeleteQuizImage403Code)[keyof typeof DeleteQuizImageControllerDeleteQuizImage403Code];
+ 
+export const DeleteQuizImageControllerDeleteQuizImage403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type DeleteQuizImageControllerDeleteQuizImage403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizImageControllerDeleteQuizImage403Code;
+};
+/**
+ * error code
+ */
+export type DeleteQuizImageControllerDeleteQuizImage404Code =
+  (typeof DeleteQuizImageControllerDeleteQuizImage404Code)[keyof typeof DeleteQuizImageControllerDeleteQuizImage404Code];
+ 
+export const DeleteQuizImageControllerDeleteQuizImage404Code = {
+  QUIZ_IMAGENOT_FOUND: 'QUIZ_IMAGE.NOT_FOUND',
+} as const;
+export type DeleteQuizImageControllerDeleteQuizImage404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: DeleteQuizImageControllerDeleteQuizImage404Code;
+};
+/**
+ * error code
+ */
+export type GetQuizImageControllerGetQuizImage400Code =
+  (typeof GetQuizImageControllerGetQuizImage400Code)[keyof typeof GetQuizImageControllerGetQuizImage400Code];
+ 
+export const GetQuizImageControllerGetQuizImage400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type GetQuizImageControllerGetQuizImage400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetQuizImageControllerGetQuizImage400Code;
+};
+/**
+ * error code
+ */
+export type GetQuizImageControllerGetQuizImage401Code =
+  (typeof GetQuizImageControllerGetQuizImage401Code)[keyof typeof GetQuizImageControllerGetQuizImage401Code];
+ 
+export const GetQuizImageControllerGetQuizImage401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type GetQuizImageControllerGetQuizImage401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetQuizImageControllerGetQuizImage401Code;
+};
+/**
+ * error code
+ */
+export type GetQuizImageControllerGetQuizImage403Code =
+  (typeof GetQuizImageControllerGetQuizImage403Code)[keyof typeof GetQuizImageControllerGetQuizImage403Code];
+ 
+export const GetQuizImageControllerGetQuizImage403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type GetQuizImageControllerGetQuizImage403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetQuizImageControllerGetQuizImage403Code;
+};
+/**
+ * error code
+ */
+export type GetQuizImageControllerGetQuizImage404Code =
+  (typeof GetQuizImageControllerGetQuizImage404Code)[keyof typeof GetQuizImageControllerGetQuizImage404Code];
+ 
+export const GetQuizImageControllerGetQuizImage404Code = {
+  QUIZ_IMAGENOT_FOUND: 'QUIZ_IMAGE.NOT_FOUND',
+} as const;
+export type GetQuizImageControllerGetQuizImage404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: GetQuizImageControllerGetQuizImage404Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizImageControllerUpdateQuizImage400Code =
+  (typeof UpdateQuizImageControllerUpdateQuizImage400Code)[keyof typeof UpdateQuizImageControllerUpdateQuizImage400Code];
+ 
+export const UpdateQuizImageControllerUpdateQuizImage400Code = {
+  COMMONREQUEST_VALIDATION_ERROR: 'COMMON.REQUEST_VALIDATION_ERROR',
+} as const;
+export type UpdateQuizImageControllerUpdateQuizImage400 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizImageControllerUpdateQuizImage400Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizImageControllerUpdateQuizImage401Code =
+  (typeof UpdateQuizImageControllerUpdateQuizImage401Code)[keyof typeof UpdateQuizImageControllerUpdateQuizImage401Code];
+ 
+export const UpdateQuizImageControllerUpdateQuizImage401Code = {
+  COMMONUNAUTHORIZED: 'COMMON.UNAUTHORIZED',
+} as const;
+export type UpdateQuizImageControllerUpdateQuizImage401 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizImageControllerUpdateQuizImage401Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizImageControllerUpdateQuizImage403Code =
+  (typeof UpdateQuizImageControllerUpdateQuizImage403Code)[keyof typeof UpdateQuizImageControllerUpdateQuizImage403Code];
+ 
+export const UpdateQuizImageControllerUpdateQuizImage403Code = {
+  COMMONPERMISSION_DENIED: 'COMMON.PERMISSION_DENIED',
+} as const;
+export type UpdateQuizImageControllerUpdateQuizImage403 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizImageControllerUpdateQuizImage403Code;
+};
+/**
+ * error code
+ */
+export type UpdateQuizImageControllerUpdateQuizImage404Code =
+  (typeof UpdateQuizImageControllerUpdateQuizImage404Code)[keyof typeof UpdateQuizImageControllerUpdateQuizImage404Code];
+ 
+export const UpdateQuizImageControllerUpdateQuizImage404Code = {
+  QUIZ_IMAGENOT_FOUND: 'QUIZ_IMAGE.NOT_FOUND',
+} as const;
+export type UpdateQuizImageControllerUpdateQuizImage404 = {
+  /** http status code */
+  statusCode?: number;
+  /** error message */
+  message?: string;
+  /** error code */
+  code?: UpdateQuizImageControllerUpdateQuizImage404Code;
 };
