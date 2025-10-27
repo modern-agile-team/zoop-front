@@ -5,6 +5,10 @@ export default defineConfig({
     input: {
       target: 'src/lib/orval/spec.json',
       converterOptions: true,
+      filters: {
+        mode: 'exclude',
+        tags: ['quiz', 'quiz-image'],
+      },
     },
     output: {
       target: 'src/lib/orval/_generated',
