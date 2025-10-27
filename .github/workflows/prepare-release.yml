@@ -1,0 +1,73 @@
+name: 릴리즈 PR 생성
+
+on:
+  workflow_dispatch:
+    inputs:
+      bumpLevel:
+        description: '버전 업 방식 (Semver) 선택'
+        required: true
+        default: 'patch'
+        type: choice
+        options: [major, minor, patch]
+
+permissions: write-all
+
+jobs:
+  prepare-release:
+    runs-on: ubuntu-latest
+    environment:
+      name: prod
+    permissions:
+      contents: write
+      pull-requests: write
+      packages: write
+    if: ${{ inputs.bumpLevel }}
+
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+
+      - name: Node.js 24.x 설정
+        uses: actions/setup-node@v1
+        with:
+          node-version: 24
+
+      - name: Github 토큰 설정
+        uses: fregante/setup-git-token@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 현재 버전 가져오기 (package.json 버전 사용하는 경우)
+        working-directory: './'
+        run: node -p -e '`CURRENT_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
+
+      - name: 새로운 버전 가져오기 (package.json 버전 사용하는 경우)
+        id: get-new-version
+        uses: actions-ecosystem/action-bump-semver@v1
+        with:
+          current_version: ${{ env.CURRENT_VERSION }}
+          level: ${{ inputs.bumpLevel }}
+
+      - name: 릴리즈 브랜치 생성
+        run: git checkout -b release/${{ steps.get-new-version.outputs.new_version }}
+
+      - name: npm version 명령어를 이용한 package.json 버전 업데이트 (package.json 버전 사용하는 경우)
+        working-directory: './'
+        run: npm version ${{ inputs.bumpLevel }} --no-commit-hooks
+
+      - name: 릴리즈 브랜치 Origin으로 푸시
+        run: git push origin release/${{  steps.get-new-version.outputs.new_version }}
+
+      - name: 릴리즈 PR 생성
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEAD_BRANCH: release/${{  steps.get-new-version.outputs.new_version }}
+          BASE_BRANCH: main
+          TITLE: v${{  steps.get-new-version.outputs.new_version }}
+          BODY: |
+            v${{  steps.get-new-version.outputs.new_version }}
+
+            > This PR was created by @${{ github.actor }} with manual trigger.
+        run: gh pr create --head $HEAD_BRANCH --base $BASE_BRANCH --title "$TITLE" --body "$BODY"
