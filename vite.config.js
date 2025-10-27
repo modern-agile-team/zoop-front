@@ -18,7 +18,8 @@ const ReactCompilerConfig = {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
+  const appPort = 3000;
   return {
     plugins: [
       TanStackRouterVite({ autoCodeSplitting: true }),
@@ -45,6 +46,12 @@ export default defineConfig(({ mode }) => {
       include: ['react', 'react-dom', '@tanstack/react-query'],
       exclude: [],
       force: true,
+    },
+    server: {
+      port: appPort,
+    },
+    preview: {
+      port: appPort,
     },
     build: {
       outDir: 'build',

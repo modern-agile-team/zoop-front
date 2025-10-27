@@ -1,0 +1,110 @@
+name: 버전 릴리즈
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  sync-develop:
+    environment:
+      name: prod
+    permissions:
+      contents: write
+      pull-requests: write
+      packages: write
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.VERSION }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get version
+        id: version
+        run: |
+          VERSION=$(jq -r '.version' package.json)
+          echo "Extracted version from package.json: $VERSION"
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+      - name: PR 생성 후 머지 (main(${{ steps.version.outputs.VERSION }}) -> develop)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MAIN_BRANCH: main
+          BASE_BRANCH: develop
+          TITLE: Merge '${{ steps.version.outputs.VERSION }}' into develop
+          BODY: |
+            Merge tag '${{ steps.version.outputs.VERSION }}' into develop.
+
+            > This PR was created automatically for up-to-date develop branch and will merge immediately.
+        run: |
+          # main -> develop 오픈 PR 조회, 없으면 생성
+          PR_NUMBER=$(gh pr list --head "$MAIN_BRANCH" --base "$BASE_BRANCH" --state open --json number --jq '.[0].number')
+          if [ -z "$PR_NUMBER" ]; then
+            gh pr create --head "$MAIN_BRANCH" --base "$BASE_BRANCH" --title "$TITLE" --body "$BODY"
+            PR_NUMBER=$(gh pr list --head "$MAIN_BRANCH" --base "$BASE_BRANCH" --state open --json number --jq '.[0].number')
+          fi
+          echo "Target PR: #$PR_NUMBER"
+          # GitHub가 merge 가능 상태를 계산할 때까지 대기 
+          for i in {1..30}; do
+            MERGEABLE=$(gh pr view "$PR_NUMBER" --json mergeable --jq .mergeable 2>/dev/null || echo UNKNOWN)
+            echo "mergeable=$MERGEABLE (attempt $i)"
+            if [ "$MERGEABLE" != "UNKNOWN" ]; then
+              break
+            fi
+            sleep 5
+          done
+
+          # 일시 오류 대비: 자동 머지(--auto) 설정을 여러 번 재시도
+          for i in {1..5}; do
+            if gh pr merge "$PR_NUMBER" --merge --auto; then
+              echo "Auto-merge enabled for PR #$PR_NUMBER"
+              exit 0
+            fi
+            echo "Enable auto-merge failed (attempt $i). Retrying..."
+            sleep 10
+          done
+          echo "Failed to enable auto-merge after retries"
+          exit 1
+      - name: release 브랜치 제거
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          if [ -z "$VERSION" ]; then
+            echo "Version not found from previous job outputs" >&2
+            exit 1
+          fi
+          RELEASE_BRANCH="release/$VERSION"
+          echo "Deleting remote branch '$RELEASE_BRANCH' if it exists"
+          if git ls-remote --heads origin "$RELEASE_BRANCH" | grep -q "$RELEASE_BRANCH"; then
+            git push origin --delete "$RELEASE_BRANCH"
+            echo "Deleted remote branch '$RELEASE_BRANCH'"
+          else
+            echo "Remote branch '$RELEASE_BRANCH' does not exist. No action taken."
+          fi
+
+  release-notes:
+    needs: [sync-develop]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: 릴리즈 노트 작성
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.sync-develop.outputs.version }}
+        run: |
+          if [ -z "$VERSION" ]; then
+            echo "Version not found from previous job outputs" >&2
+            exit 1
+          fi
+          TAG="$VERSION"
+          echo "Creating or ensuring release for tag '$TAG'"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release '$TAG' already exists. Skipping creation."
+          else
+            gh release create "$TAG" --generate-notes --title "$TAG"
+          fi

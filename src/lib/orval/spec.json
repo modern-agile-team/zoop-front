@@ -1,6 +1,195 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/accounts/me": {
+      "get": {
+        "operationId": "GetAccountController_getMe",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "ACCOUNT.NOT_FOUND",
+                      "enum": ["ACCOUNT.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "내 계정 조회",
+        "tags": ["account"]
+      }
+    },
+    "/accounts/active-account-count": {
+      "get": {
+        "operationId": "GetActiveAccountCountController_getActiveAccountCount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActiveAccountCountDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "활성 유저 수 조회",
+        "tags": ["account"]
+      }
+    },
+    "/accounts": {
+      "get": {
+        "operationId": "ListAccountsController_listAccounts",
+        "parameters": [
+          {
+            "name": "isActive",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["true"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountCollectionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "계정 목록 조회",
+        "tags": ["account"]
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "description": "게정이 있다면 회원가입, 없다면 로그인시킵니다.",
+        "operationId": "SignInWithGoogleController_signInWithGoogle",
+        "parameters": [
+          {
+            "name": "redirectUrl",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Set-Cookie": {
+                "description": "access_token=token; Path=/; HttpOnly",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "summary": "구글 회원가입 로그인",
+        "tags": ["auth"]
+      }
+    },
     "/auth/sign-up/username": {
       "post": {
         "operationId": "SignUpWithUsernameController_signUpWithUsername",
@@ -17,6 +206,14 @@
         },
         "responses": {
           "201": {
+            "headers": {
+              "Set-Cookie": {
+                "description": "access_token=token; Path=/; HttpOnly",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "description": "",
             "content": {
               "application/json": {
@@ -99,6 +296,14 @@
         },
         "responses": {
           "201": {
+            "headers": {
+              "Set-Cookie": {
+                "description": "access_token=token; Path=/; HttpOnly",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
             "description": "",
             "content": {
               "application/json": {
@@ -306,6 +511,121 @@
           }
         },
         "summary": "게임방 목록 조회",
+        "tags": ["game-room"]
+      }
+    },
+    "/game-rooms/{gameRoomId}": {
+      "get": {
+        "operationId": "GetGameRoomController_getGameRoom",
+        "parameters": [
+          {
+            "name": "gameRoomId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameRoomDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "GAME_ROOM.ACCESS_DENIED",
+                      "enum": ["GAME_ROOM.ACCESS_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "GAME_ROOM.NOT_FOUND",
+                      "enum": ["GAME_ROOM.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "게임 방 상세 조회",
         "tags": ["game-room"]
       }
     },
@@ -721,6 +1041,2100 @@
         "summary": "게임방 유저 목록 조회",
         "tags": ["game-room"]
       }
+    },
+    "/game-room/{gameRoomId}/start": {
+      "post": {
+        "operationId": "StartGameController_startGame",
+        "parameters": [
+          {
+            "name": "gameRoomId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GameRoomDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": [
+                        "COMMON.REQUEST_VALIDATION_ERROR",
+                        "GAME_ROOM.VALIDATION_ERROR"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "GAME_ROOM.ACCESS_DENIED",
+                      "enum": ["GAME_ROOM.ACCESS_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "GAME_ROOM.NOT_FOUND",
+                      "enum": ["GAME_ROOM.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "게임 시작 요청",
+        "tags": ["game-room"]
+      }
+    },
+    "/admin/nickname-sources": {
+      "post": {
+        "operationId": "CreateNicknameSourceController_createNicknameSourceAdmin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNicknameSourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NicknameSourceDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "NICKNAME_SOURCE.ALREADY_EXISTS",
+                      "enum": ["NICKNAME_SOURCE.ALREADY_EXISTS"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "닉네임 소스 생성",
+        "tags": ["nickname-source"]
+      },
+      "get": {
+        "operationId": "ListNicknameSourcesController_listNicknameSources",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "perPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 5,
+              "maximum": 1000,
+              "default": 20,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NicknameSourceCollectionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "닉네임 소스 리스트 조회",
+        "tags": ["nickname-source"]
+      }
+    },
+    "/admin/nickname-sources/{nicknameSourceId}": {
+      "delete": {
+        "operationId": "DeleteNicknameSourceController_deleteNicknameSource",
+        "parameters": [
+          {
+            "name": "nicknameSourceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "NICKNAME_SOURCE.NOT_FOUND",
+                      "enum": ["NICKNAME_SOURCE.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "닉네임 소스 삭제",
+        "tags": ["nickname-source"]
+      },
+      "get": {
+        "operationId": "GetNicknameSourceController_getNicknameSourceAdmin",
+        "parameters": [
+          {
+            "name": "nicknameSourceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NicknameSourceDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "NICKNAME_SOURCE.NOT_FOUND",
+                      "enum": ["NICKNAME_SOURCE.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "닉네임 소스 조회",
+        "tags": ["nickname-source"]
+      },
+      "patch": {
+        "operationId": "UpdateNicknameSourceController_updateNicknameSource",
+        "parameters": [
+          {
+            "name": "nicknameSourceId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNicknameSourceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NicknameSourceDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "NICKNAME_SOURCE.NOT_FOUND",
+                      "enum": ["NICKNAME_SOURCE.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "NICKNAME_SOURCE.ALREADY_EXISTS",
+                      "enum": ["NICKNAME_SOURCE.ALREADY_EXISTS"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "닉네임 소스 수정",
+        "tags": ["nickname-source"]
+      }
+    },
+    "/admin/quizzes": {
+      "put": {
+        "operationId": "CreateQuizzesController_createQuizzesAdmin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CreateQuizzesDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/QuizDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 대량 생성",
+        "tags": ["quiz"]
+      },
+      "get": {
+        "operationId": "ListQuizzesController_listQuizzes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizCollectionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 목록 조회",
+        "tags": ["quiz"]
+      }
+    },
+    "/admin/quizzes/{quizId}": {
+      "delete": {
+        "operationId": "DeleteQuizController_deleteQuizAdmin",
+        "parameters": [
+          {
+            "name": "quizId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "QUIZ.NOT_FOUND",
+                      "enum": ["QUIZ.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 삭제",
+        "tags": ["quiz"]
+      },
+      "get": {
+        "operationId": "GetQuizController_getQuizzesAdmin",
+        "parameters": [
+          {
+            "name": "quizId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 단일 조회",
+        "tags": ["quiz"]
+      },
+      "patch": {
+        "operationId": "UpdateQuizController_updateQuizAdmin",
+        "parameters": [
+          {
+            "name": "quizId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateQuizDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": [
+                        "COMMON.REQUEST_VALIDATION_ERROR",
+                        "QUIZ.IMAGE_NOT_FOUND"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "QUIZ.NOT_FOUND",
+                      "enum": ["QUIZ.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 수정",
+        "tags": ["quiz"]
+      }
+    },
+    "/admin/quiz-images": {
+      "post": {
+        "operationId": "CreateQuizImageController_createQuizImageAdmin",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQuizImageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizImageDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 이미지 업로드",
+        "tags": ["quiz-image"]
+      },
+      "get": {
+        "operationId": "ListQuizImagesController_listQuizImagesAdmin",
+        "parameters": [
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "카테고리 필터링",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "perPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 5,
+              "maximum": 1000,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "\n    정렬 쿼리. 다중 정렬은 콤마(,)로 구분.\n    허용되지 않은 정렬 필드 및 방향은 무시합니다.\n    형식: field:asc | field:desc\n    허용 필드: createdAt,updatedAt,name,category,\n    예: sort=-title:asc,createdAt:asc\n      ",
+            "allowFields": {},
+            "schema": {
+              "default": "createdAt:asc",
+              "example": "createdAt:asc",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizImageCollectionDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 이미지 리스트 조회",
+        "tags": ["quiz-image"]
+      }
+    },
+    "/admin/quiz-images/{quizImageId}": {
+      "delete": {
+        "operationId": "DeleteQuizImageController_deleteQuizImage",
+        "parameters": [
+          {
+            "name": "quizImageId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "QUIZ_IMAGE.NOT_FOUND",
+                      "enum": ["QUIZ_IMAGE.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 이미지 제거",
+        "tags": ["quiz-image"]
+      },
+      "get": {
+        "operationId": "GetQuizImageController_getQuizImage",
+        "parameters": [
+          {
+            "name": "quizImageId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "QUIZ_IMAGE.NOT_FOUND",
+                      "enum": ["QUIZ_IMAGE.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 이미지 단건 조회",
+        "tags": ["quiz-image"]
+      },
+      "patch": {
+        "operationId": "UpdateQuizImageController_updateQuizImage",
+        "parameters": [
+          {
+            "name": "quizImageId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateQuizImageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuizDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.REQUEST_VALIDATION_ERROR",
+                      "enum": ["COMMON.REQUEST_VALIDATION_ERROR"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.UNAUTHORIZED",
+                      "enum": ["COMMON.UNAUTHORIZED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "COMMON.PERMISSION_DENIED",
+                      "enum": ["COMMON.PERMISSION_DENIED"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "format": "integer",
+                      "description": "http status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "error code",
+                      "example": "QUIZ_IMAGE.NOT_FOUND",
+                      "enum": ["QUIZ_IMAGE.NOT_FOUND"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "퀴즈 이미지 수정",
+        "tags": ["quiz-image"]
+      }
     }
   },
   "info": {
@@ -744,6 +3158,79 @@
       }
     },
     "schemas": {
+      "AccountDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "description": "Account role",
+            "example": "admin"
+          },
+          "signInType": {
+            "type": "string",
+            "description": "Account sign in type",
+            "example": "username"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "enteredAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "진입 시점"
+          },
+          "leftAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "role",
+          "signInType",
+          "nickname",
+          "enteredAt",
+          "leftAt",
+          "isActive"
+        ]
+      },
+      "ActiveAccountCountDto": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "number"
+          }
+        },
+        "required": ["count"]
+      },
+      "AccountCollectionDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AccountDto"
+            }
+          }
+        },
+        "required": ["data"]
+      },
       "SignUpWithUsernameDto": {
         "type": "object",
         "properties": {
@@ -786,51 +3273,14 @@
             "example": "My Awesome Game Room",
             "maxLength": 50,
             "minLength": 1
+          },
+          "quizzesCount": {
+            "type": "number",
+            "minimum": 10,
+            "maximum": 100
           }
         },
-        "required": ["title"]
-      },
-      "GameRoomDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "hostId": {
-            "type": "string"
-          },
-          "status": {
-            "type": "string",
-            "enum": ["waiting", "ready", "inProgress", "finished", "paused"]
-          },
-          "title": {
-            "type": "string"
-          },
-          "maxMembersCount": {
-            "type": "number"
-          },
-          "currentMembersCount": {
-            "type": "number"
-          }
-        },
-        "required": [
-          "id",
-          "createdAt",
-          "updatedAt",
-          "hostId",
-          "status",
-          "title",
-          "maxMembersCount",
-          "currentMembersCount"
-        ]
+        "required": ["title", "quizzesCount"]
       },
       "GameRoomMemberDto": {
         "type": "object",
@@ -871,6 +3321,63 @@
           "nickname"
         ]
       },
+      "GameRoomDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "hostId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["waiting", "starting", "inProgress", "finished", "paused"]
+          },
+          "title": {
+            "type": "string"
+          },
+          "maxMembersCount": {
+            "type": "number"
+          },
+          "currentMembersCount": {
+            "type": "number"
+          },
+          "quizTimeLimitInSeconds": {
+            "type": "number"
+          },
+          "quizzesCount": {
+            "type": "number"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GameRoomMemberDto"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "hostId",
+          "status",
+          "title",
+          "maxMembersCount",
+          "currentMembersCount",
+          "quizTimeLimitInSeconds",
+          "quizzesCount",
+          "members"
+        ]
+      },
       "GameRoomMemberCollectionDto": {
         "type": "object",
         "properties": {
@@ -894,6 +3401,307 @@
           }
         },
         "required": ["data"]
+      },
+      "CreateNicknameSourceDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          }
+        },
+        "required": ["name"]
+      },
+      "NicknameSourceDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "sequence": {
+            "type": "number"
+          },
+          "fullname": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "name",
+          "sequence",
+          "fullname"
+        ]
+      },
+      "NicknameSourceCollectionDto": {
+        "type": "object",
+        "properties": {
+          "currentPage": {
+            "type": "number"
+          },
+          "perPage": {
+            "type": "number"
+          },
+          "totalCount": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NicknameSourceDto"
+            }
+          }
+        },
+        "required": [
+          "currentPage",
+          "perPage",
+          "totalCount",
+          "totalPages",
+          "data"
+        ]
+      },
+      "UpdateNicknameSourceDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10
+          }
+        }
+      },
+      "CreateQuizzesDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": ["type", "answer", "question", "imageUrl"]
+      },
+      "QuizDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "description": "퀴즈 유형",
+            "example": "multipleChoice"
+          },
+          "question": {
+            "type": "string",
+            "description": "퀴즈 질문",
+            "nullable": true,
+            "example": "다음 중 옳은 것은?"
+          },
+          "answer": {
+            "type": "string",
+            "description": "퀴즈 정답",
+            "example": "정답"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "퀴즈 이미지 URL",
+            "nullable": true,
+            "example": "https://example.com/quiz.png"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "type",
+          "question",
+          "answer",
+          "imageUrl"
+        ]
+      },
+      "QuizCollectionDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuizDto"
+            }
+          }
+        },
+        "required": ["data"]
+      },
+      "UpdateQuizDto": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateQuizImageDto": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "quiz image file",
+            "format": "binary"
+          },
+          "category": {
+            "type": "string",
+            "description": "quiz image category"
+          },
+          "name": {
+            "type": "string",
+            "default": "originalFIleName의 확장자를 제외함",
+            "minLength": 1
+          }
+        },
+        "required": ["file", "category"]
+      },
+      "QuizImageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "originalFileName": {
+            "type": "string"
+          },
+          "quizImageUrl": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "contentType": {
+            "type": "string"
+          },
+          "contentLength": {
+            "type": "number"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "createdAt",
+          "updatedAt",
+          "category",
+          "name",
+          "originalFileName",
+          "quizImageUrl",
+          "extension",
+          "contentType",
+          "contentLength",
+          "width",
+          "height"
+        ]
+      },
+      "QuizImageCollectionDto": {
+        "type": "object",
+        "properties": {
+          "currentPage": {
+            "type": "number"
+          },
+          "perPage": {
+            "type": "number"
+          },
+          "totalCount": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QuizImageDto"
+            }
+          }
+        },
+        "required": [
+          "currentPage",
+          "perPage",
+          "totalCount",
+          "totalPages",
+          "data"
+        ]
+      },
+      "UpdateQuizImageDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "type": "string"
+          }
+        }
       }
     }
   }

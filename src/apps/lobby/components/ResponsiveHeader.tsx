@@ -176,9 +176,12 @@ function CreateRoomButton() {
             <CreateRoomDialog
               open={isOpen}
               onOpenChange={close}
-              onCreateRoom={async (roomInfo) => {
+              onCreateRoom={async ({ title, quizzesCount }) => {
                 try {
-                  const roomData = await createRoom(roomInfo);
+                  const roomData = await createRoom({
+                    title,
+                    quizzesCount,
+                  });
                   await router.navigate({
                     to: '/room/$roomId',
                     params: { roomId: roomData.id },

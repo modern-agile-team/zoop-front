@@ -1,11 +1,13 @@
-#!/usr/bin/env node
-
-import inquirer from 'inquirer';
-import { execSync } from 'child_process';
 import chalk from 'chalk';
+import { execSync } from 'child_process';
+import inquirer from 'inquirer';
 
 // 커밋 타입 정의
 const types = [
+  {
+    value: 'base',
+    name: 'base:     베이스 브랜치에서 작업한 경우',
+  },
   {
     value: 'feat',
     name: 'feat:     새로운 기능 추가',
@@ -56,7 +58,25 @@ async function createCommit() {
   console.log(chalk.blue('\n📝 커밋 메시지 작성 도우미\n'));
 
   try {
-    const answers = await inquirer.prompt([
+    // 변경사항 확인 (staged 변경사항만 확인)
+    const status = execSync('git diff --cached --name-only', {
+      encoding: 'utf8',
+    });
+    const hasChanges = status.trim().length > 0;
+
+    if (!hasChanges) {
+      console.log(chalk.yellow('⚠️  커밋할 staged 변경사항이 없습니다.'));
+    }
+
+    const branchName = execSync('git rev-parse --abbrev-ref HEAD', {
+      encoding: 'utf8',
+    }).trim();
+    const issueNumberMatch = branchName.match(/-(\d+)/);
+    const defaultIssueNumber = issueNumberMatch
+      ? issueNumberMatch[1]
+      : undefined;
+
+    const questions = [
       {
         type: 'list',
         name: 'type',
@@ -80,7 +100,8 @@ async function createCommit() {
       {
         type: 'input',
         name: 'issueNumber',
-        message: '이슈 번호를 입력하세요 (숫자만):',
+        message: `이슈 번호를 입력하세요 (숫자만) ${defaultIssueNumber ? `(기본값: ${defaultIssueNumber})` : ''}:`,
+        default: defaultIssueNumber,
         validate: function (value) {
           if (!value) {
             return '이슈 번호는 필수입니다.';
@@ -96,10 +117,22 @@ async function createCommit() {
         name: 'body',
         message: '상세 설명 (선택사항, Enter로 건너뛰기):',
       },
-    ]);
+    ];
+
+    // 빈 커밋 옵션 추가
+    if (!hasChanges) {
+      questions.push({
+        type: 'confirm',
+        name: 'allowEmpty',
+        message: '빈 커밋을 생성하시겠습니까?',
+        default: true,
+      });
+    }
+
+    const answers = await inquirer.prompt(questions);
 
     // 커밋 메시지 생성
-    const { type, subject, issueNumber, body } = answers;
+    const { type, subject, issueNumber, body, allowEmpty } = answers;
     let commitMessage = `${type}: ${subject} #${issueNumber}`;
 
     if (body) {
@@ -109,6 +142,9 @@ async function createCommit() {
     console.log(chalk.green('\n✨ 생성된 커밋 메시지:'));
     console.log(chalk.white('─'.repeat(50)));
     console.log(commitMessage);
+    if (!hasChanges && allowEmpty) {
+      console.log(chalk.cyan('📝 빈 커밋으로 생성됩니다.'));
+    }
     console.log(chalk.white('─'.repeat(50)));
 
     const confirm = await inquirer.prompt([
@@ -122,7 +158,14 @@ async function createCommit() {
 
     if (confirm.proceed) {
       try {
-        execSync(`git commit -m "${commitMessage.replace(/"/g, '\\"')}"`, {
+        let commitCommand = `git commit -m "${commitMessage.replace(/"/g, '\\"')}"`;
+
+        // 빈 커밋인 경우 --allow-empty 플래그 추가
+        if (!hasChanges && allowEmpty) {
+          commitCommand = `git commit --allow-empty -m "${commitMessage.replace(/"/g, '\\"')}"`;
+        }
+
+        execSync(commitCommand, {
           stdio: 'inherit',
         });
         console.log(chalk.green('\n✅ 커밋이 성공적으로 완료되었습니다!'));
@@ -141,12 +184,8 @@ async function createCommit() {
 // 현재 git 상태 확인
 function checkGitStatus() {
   try {
-    const status = execSync('git status --porcelain', { encoding: 'utf8' });
-    if (!status.trim()) {
-      console.log(chalk.yellow('⚠️  커밋할 변경사항이 없습니다.'));
-      console.log(chalk.blue('💡 먼저 파일을 추가하세요: git add <파일명>'));
-      process.exit(1);
-    }
+    // Git 저장소인지만 확인 (변경사항 확인은 createCommit에서 처리)
+    execSync('git rev-parse --git-dir', { encoding: 'utf8', stdio: 'pipe' });
   } catch (error) {
     console.error(
       chalk.red('❌ Git 저장소가 아니거나 Git이 설치되지 않았습니다.')
@@ -166,4 +205,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
 
-export { createCommit, checkGitStatus };
+export { checkGitStatus, createCommit };

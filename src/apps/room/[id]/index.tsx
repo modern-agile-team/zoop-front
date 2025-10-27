@@ -1,26 +1,41 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useParams, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 import { Button } from '@/shared/components/ui/button';
-import { toast } from '@/shared/utils/toast';
+import { useResponsiveClasses } from '@/shared/hooks/useResponsive';
+import { accountsQuery, gameRoomQuery } from '@/shared/service/api/query';
 
 import GameInfoCard from './components/GameInfoCard';
 import GameRoomHeader from './components/GameRoomHeader';
 import PlayersList from './components/PlayersList';
 import ReadyControls from './components/ReadyControls';
-import { mockGameRoom, mockCurrentUser } from './data/mockData';
 
 export default function GameRoomDetailPage() {
   const { roomId } = useParams({ from: '/room/$roomId' });
   const navigate = useNavigate();
 
-  const room = mockGameRoom;
-  const currentUser = mockCurrentUser;
+  const { data: room } = useSuspenseQuery({
+    ...gameRoomQuery.getDetail(roomId),
+    staleTime: 1000 * 60 * 5,
+  });
 
-  const currentPlayer = room.players.find((p) => p.id === currentUser.id);
-  const isHost = currentPlayer?.isHost || false;
+  const { data: currentUser } = useSuspenseQuery({
+    ...accountsQuery.getMyInfo(),
+    staleTime: 1000 * 60 * 5,
+  });
 
-  const canStartGame = room.players.length === room.maxPlayers;
+  const currentPlayer = room.members.find(
+    (player) => player.accountId === currentUser.id
+  );
+  const isHost = currentPlayer?.role === 'host' || false;
+
+  const handleBackToLobby = () => {
+    navigate({ to: '/lobby', replace: false });
+  };
+
+  const canStartGame = room.members.length === room.maxMembersCount;
 
   const handleStartGame = () => {
     if (!isHost || !canStartGame) return;
@@ -28,9 +43,11 @@ export default function GameRoomDetailPage() {
     toast.info('개발중인 기능입니다.');
   };
 
-  const handleBackToLobby = () => {
-    navigate({ to: '/lobby', replace: false });
-  };
+  const roomLayoutStyles = useResponsiveClasses({
+    mobile: 'flex flex-col ',
+    tablet: 'flex flex-col ',
+    desktop: 'grid grid-cols-3 ',
+  });
 
   if (!currentPlayer) {
     return (
@@ -64,26 +81,26 @@ export default function GameRoomDetailPage() {
           <GameRoomHeader room={room} />
 
           {/* 모바일에서는 세로 배치, 데스크톱에서는 가로 배치 */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className={`${roomLayoutStyles} gap-6`}>
             {/* 왼쪽 영역 - 플레이어 목록 */}
-            <div className="xl:col-span-2">
-              <PlayersList players={room.players} />
+            <div className="col-span-2">
+              <PlayersList players={room.members} />
             </div>
 
             {/* 오른쪽 영역 - 준비 상태 컨트롤과 게임 정보 */}
-            <div className="xl:col-span-1 space-y-4">
+            <div className="col-span-1 space-y-4">
               <ReadyControls
                 isHost={isHost}
                 canStartGame={canStartGame}
                 onStartGame={handleStartGame}
-                currentPlayers={room.players.length}
-                maxPlayers={room.maxPlayers}
+                currentPlayers={room.members.length}
+                maxPlayers={room.maxMembersCount}
               />
 
               {/* 게임 정보 카드 */}
               <GameInfoCard
-                maxPlayers={room.maxPlayers}
-                currentPlayers={room.players.length}
+                maxPlayers={room.maxMembersCount}
+                currentPlayers={room.members.length}
                 roomId={roomId}
               />
             </div>

@@ -3,13 +3,12 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
 import { queryClient } from '@/lib/queryClient';
 import { useResponsive } from '@/shared/hooks/useResponsive';
-import { gameRoomQuery } from '@/shared/service/api/query/room';
+import { gameRoomQuery, accountsQuery } from '@/shared/service/api/query';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 
 import DesktopLayout from './components/layouts/DesktopLayout';
 import MobileLayout from './components/layouts/MobileLayout';
 import ResponsiveHeader from './components/ResponsiveHeader';
-import { PARTICIPANTS } from './data/mockData';
 import { roomFilters } from './utils/gameRoomPolicy';
 import { roomFromEvent } from './utils/helpers';
 
@@ -21,14 +20,21 @@ export default function LobbyPage() {
     staleTime: 1_000 * 60 * 5,
   });
 
+  const { data: participantData } = useSuspenseQuery({
+    ...accountsQuery.getList({ isActive: 'true' }),
+    staleTime: 1_000 * 60 * 5,
+  });
+
   const allRooms = data?.data || [];
   const waitingRooms = roomFilters.waiting(allRooms);
   const playingRooms = roomFilters.inProgress(allRooms);
 
+  const participants = participantData?.data || [];
+
   const layoutProps = {
     waitingRooms,
     playingRooms,
-    participants: PARTICIPANTS,
+    participants,
   };
 
   useSocketListener(
