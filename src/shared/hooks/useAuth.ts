@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
+import { accountsQuery } from '../service/api/query';
 import { STORAGE } from '../utils/storage';
 
 const AUTH_QUERY_KEY = ['authToken'];
@@ -22,6 +23,8 @@ export default function useAuth() {
     initialData: undefined,
   });
 
+  const { data: myInfo } = useQuery(accountsQuery.getMyInfo());
+
   const login = (token: string) => {
     STORAGE.setAuthToken(token);
     queryClient.setQueryData(AUTH_QUERY_KEY, token);
@@ -32,5 +35,5 @@ export default function useAuth() {
     queryClient.setQueryData(AUTH_QUERY_KEY, null);
   };
 
-  return { isLoggedIn, login, logout };
+  return { isLoggedIn, login, logout, myInfo };
 }

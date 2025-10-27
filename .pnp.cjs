@@ -86,6 +86,7 @@ const RAW_RUNTIME_STATE =
           ["tailwind-merge", "npm:3.3.1"],\
           ["tailwindcss", "npm:4.1.11"],\
           ["tiny-invariant", "npm:1.3.3"],\
+          ["tough-cookie", "npm:6.0.0"],\
           ["tw-animate-css", "npm:1.3.6"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
           ["typescript-eslint", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:8.39.0"],\
@@ -10325,6 +10326,7 @@ const RAW_RUNTIME_STATE =
           ["tailwind-merge", "npm:3.3.1"],\
           ["tailwindcss", "npm:4.1.11"],\
           ["tiny-invariant", "npm:1.3.3"],\
+          ["tough-cookie", "npm:6.0.0"],\
           ["tw-animate-css", "npm:1.3.6"],\
           ["typescript", "patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"],\
           ["typescript-eslint", "virtual:fc175e51affa0dbfb9900fd6ccf994ce6107302847ce93a3f12e5e274de7a3c4cb8c7e64b09be6c19e83f479d8c75218362bca5b8b4bf55bb6219d342b92be1f#npm:8.39.0"],\
@@ -11646,6 +11648,14 @@ const RAW_RUNTIME_STATE =
           ["tldts-core", "npm:6.1.86"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:7.0.17", {\
+        "packageLocation": "./.yarn/cache/tldts-npm-7.0.17-50ba81ac63-0ef2a40058.zip/node_modules/tldts/",\
+        "packageDependencies": [\
+          ["tldts", "npm:7.0.17"],\
+          ["tldts-core", "npm:7.0.17"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["tldts-core", [\
@@ -11653,6 +11663,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/tldts-core-npm-6.1.86-540def5eb4-8133c29375.zip/node_modules/tldts-core/",\
         "packageDependencies": [\
           ["tldts-core", "npm:6.1.86"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.0.17", {\
+        "packageLocation": "./.yarn/cache/tldts-core-npm-7.0.17-747294912b-39dd6f5852.zip/node_modules/tldts-core/",\
+        "packageDependencies": [\
+          ["tldts-core", "npm:7.0.17"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11683,6 +11700,14 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["tldts", "npm:6.1.86"],\
           ["tough-cookie", "npm:5.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:6.0.0", {\
+        "packageLocation": "./.yarn/cache/tough-cookie-npm-6.0.0-c7d0e8e15a-7b17a461e9.zip/node_modules/tough-cookie/",\
+        "packageDependencies": [\
+          ["tldts", "npm:7.0.17"],\
+          ["tough-cookie", "npm:6.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

@@ -1,27 +1,42 @@
 import ky, { HTTPError } from 'ky';
+import { CookieJar } from 'tough-cookie';
 
 import { API_URL } from '@/shared/constant/env';
 import { STORAGE } from '@/shared/utils/storage';
 
 import { ApiError, type ApiErrorResponse } from './ApiError';
 
+const cookieJar = new CookieJar();
+
 export const connectApi = ky.create({
   prefixUrl: API_URL,
+  credentials: 'include',
   headers: {
     'Accept-Language': 'ko-KR',
   },
   retry: { limit: 0 },
   hooks: {
     beforeRequest: [
-      (request) => {
+      async (request) => {
+        const url = request.url;
+        const cookies = await cookieJar.getCookies(url);
+        const cookieString = cookies.join('; ');
+        request.headers.set('cookie', cookieString);
+
         const token = STORAGE.getAuthToken();
         request.headers.set('Authorization', `Bearer ${token}`);
       },
     ],
     afterResponse: [
-      async (_, _1, response) => {
+      async (request, _1, response) => {
         const json = await response.clone().json();
-
+        const url = request.url;
+        const cookies = response.headers.getSetCookie();
+        if (cookies) {
+          for (const cookie of cookies) {
+            await cookieJar.setCookie(cookie, url);
+          }
+        }
         return json;
       },
     ],
