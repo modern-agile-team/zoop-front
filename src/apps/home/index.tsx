@@ -11,8 +11,6 @@ export default function HomePage() {
   const { isLoggedIn = false, login, logout, myInfo } = useAuth();
   const navigate = useNavigate();
 
-  console.log(myInfo);
-
   const handleNavigateToLobby = () => {
     navigate({ to: '/lobby' });
   };
