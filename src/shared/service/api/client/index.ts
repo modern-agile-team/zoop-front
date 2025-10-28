@@ -10,7 +10,6 @@ const cookieJar = new CookieJar();
 
 export const connectApi = ky.create({
   prefixUrl: API_URL,
-  credentials: 'include',
   headers: {
     'Accept-Language': 'ko-KR',
   },

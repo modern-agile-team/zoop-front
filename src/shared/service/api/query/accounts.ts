@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import {
   getAccountControllerGetMe,
+  getActiveAccountCountControllerGetActiveAccountCount,
   listAccountsControllerListAccounts,
 } from '@/lib/orval/_generated/quizzesGameIoBackend';
 import type { ListAccountsControllerListAccountsParams } from '@/lib/orval/_generated/quizzesGameIoBackend.schemas';
@@ -21,8 +22,6 @@ export const accountsQuery = {
   getOnlineMemberCount: () =>
     queryOptions({
       queryKey: ['accounts', 'counts'] as const,
-      queryFn: () => 0,
-      initialData: 0,
-      staleTime: Infinity,
+      queryFn: getActiveAccountCountControllerGetActiveAccountCount,
     }),
 };
