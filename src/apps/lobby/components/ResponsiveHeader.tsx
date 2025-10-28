@@ -3,6 +3,7 @@ import { useRouter } from '@tanstack/react-router';
 import { Plus, Gamepad2, Users } from 'lucide-react';
 import { overlay } from 'overlay-kit';
 
+import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
 import { Button } from '@/shared/components/ui/button';
 import {
   useResponsive,
@@ -10,6 +11,7 @@ import {
 } from '@/shared/hooks/useResponsive';
 import { accountsQuery } from '@/shared/service/api/query';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
+import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
 import { toast } from '@/shared/utils/toast';
 
@@ -106,6 +108,15 @@ function OnlineCounter() {
     tablet: 'gap-1.5 sm:gap-2',
     desktop: 'gap-2',
   });
+
+  useSocketListener(
+    ServerToClientEventNames.LOBBY_ACTIVE_ACCOUNT_CHANGED,
+    ({ body }) => {
+      queryClient.setQueryData(accountsQuery.getOnlineMemberCount().queryKey, {
+        count: body.currentActiveAccountsCount,
+      });
+    }
+  );
 
   return (
     <div
