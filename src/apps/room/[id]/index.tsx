@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import { useParams, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { toast } from 'react-toastify';
@@ -26,13 +26,18 @@ export default function GameRoomDetailPage() {
     staleTime: 1000 * 60 * 5,
   });
 
+  const { mutate: exitRoom } = useMutation(gameRoomQuery.exitRoom);
+
   const currentPlayer = room.members.find(
     (player) => player.accountId === currentUser.id
   );
   const isHost = currentPlayer?.role === 'host' || false;
 
   const handleBackToLobby = () => {
-    navigate({ to: '/lobby', replace: false });
+    if (confirm('정말로 나가시겠습니까?')) {
+      exitRoom(roomId);
+      navigate({ to: '/lobby', replace: false });
+    }
   };
 
   const canStartGame = room.members.length === room.maxMembersCount;
