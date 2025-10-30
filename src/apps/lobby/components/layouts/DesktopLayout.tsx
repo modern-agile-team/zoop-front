@@ -21,11 +21,11 @@ export default function DesktopLayout({
   participants,
 }: DesktopLayoutProps) {
   return (
-    <div className="grid grid-cols-20 gap-6 h-full">
+    <div className="grid grid-cols-30 gap-6 h-full">
       {/* 참여자 리스트 */}
-      <aside className="col-span-4 h-full" aria-label="온라인 사용자 목록">
+      <aside className="col-span-8 h-full" aria-label="온라인 사용자 목록">
         <LobbyScrollSection>
-          <LobbyScrollSection.Header>
+          <LobbyScrollSection.Header refreshQuery={['accounts']}>
             <div className="flex items-center gap-2 text-nowrap">
               <Users className="w-5 h-5" aria-hidden="true" />
               온라인 유저 ({participants.length})
@@ -66,9 +66,12 @@ export default function DesktopLayout({
       </aside> */}
 
       {/* 대기방 목록 */}
-      <section className="col-span-8 h-full" aria-label="대기 중인 게임방 목록">
+      <section
+        className="col-span-11 h-full"
+        aria-label="대기 중인 게임방 목록"
+      >
         <LobbyScrollSection>
-          <LobbyScrollSection.Header>
+          <LobbyScrollSection.Header refreshQuery={['game-rooms']}>
             <div className="flex items-center gap-2">
               <Users className="w-5 h-5" aria-hidden="true" />
               대기방 목록 ({waitingRooms.length})
@@ -87,9 +90,12 @@ export default function DesktopLayout({
       </section>
 
       {/* 진행중인 방 목록 */}
-      <section className="col-span-8 h-full" aria-label="진행 중인 게임방 목록">
+      <section
+        className="col-span-11 h-full"
+        aria-label="진행 중인 게임방 목록"
+      >
         <LobbyScrollSection>
-          <LobbyScrollSection.Header>
+          <LobbyScrollSection.Header refreshQuery={['']}>
             <div className="flex items-center gap-2">
               <Play className="w-5 h-5" aria-hidden="true" />
               진행중인 게임 ({playingRooms.length})
