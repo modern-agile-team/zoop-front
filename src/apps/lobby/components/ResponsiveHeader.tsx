@@ -1,8 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { Plus, Gamepad2, Users } from 'lucide-react';
 import { overlay } from 'overlay-kit';
-import { useState } from 'react';
 
 import { ServerToClientEventNames } from '@/lib/asyncApi/_generated/types';
 import { Button } from '@/shared/components/ui/button';
@@ -10,6 +9,7 @@ import {
   useResponsive,
   useResponsiveClasses,
 } from '@/shared/hooks/useResponsive';
+import { accountsQuery } from '@/shared/service/api/query';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
 import { useSocketListener } from '@/shared/service/socket/hooks/useSocketListener';
 import { RESPONSIVE_TEXT_SIZE } from '@/shared/utils/responsive';
@@ -76,7 +76,8 @@ export default function ResponsiveHeader() {
 function OnlineCounter() {
   const { deviceType } = useResponsive();
 
-  const [count, setCount] = useState(0);
+  const queryClient = useQueryClient();
+  const { data } = useQuery(accountsQuery.getOnlineMemberCount());
 
   const containerPaddingStyles = useResponsiveClasses({
     mobile: 'px-2 py-1',
@@ -111,7 +112,9 @@ function OnlineCounter() {
   useSocketListener(
     ServerToClientEventNames.LOBBY_ACTIVE_ACCOUNT_CHANGED,
     ({ body }) => {
-      setCount(body.currentActiveAccountsCount);
+      queryClient.setQueryData(accountsQuery.getOnlineMemberCount().queryKey, {
+        count: body.currentActiveAccountsCount,
+      });
     }
   );
 
@@ -119,7 +122,7 @@ function OnlineCounter() {
     <div
       className={`flex items-center ${gapSizeStyles} ${containerPaddingStyles} bg-green-50 border border-green-200 rounded-full`}
       role="status"
-      aria-label={`현재 온라인 사용자: ${count}명`}
+      aria-label={`현재 온라인 사용자: ${data?.count}명`}
     >
       <Users
         className={`${iconSizeStyles} text-green-600`}
@@ -131,7 +134,7 @@ function OnlineCounter() {
       <span
         className={`inline-flex items-center justify-center ${badgeSizeStyles} bg-green-100 text-green-700 text-xs font-semibold rounded-full`}
       >
-        {count}
+        {data?.count}
       </span>
     </div>
   );
