@@ -1,5 +1,10 @@
+import clsx from 'clsx';
+import { RefreshCw } from 'lucide-react';
+import React, { useState } from 'react';
 import type { PropsWithChildren } from 'react';
-import React from 'react';
+
+import { queryClient } from '@/lib/queryClient';
+import { Button } from '@/shared/components/ui/button';
 
 export function LobbyScrollSection({
   children,
@@ -28,12 +33,38 @@ export function LobbyScrollSection({
   );
 }
 
-const Header = ({ children }: PropsWithChildren) => {
+const Header = ({
+  children,
+  refreshQuery,
+}: PropsWithChildren<{ refreshQuery?: string[] }>) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const handleReset = async () => {
+    setIsRefreshing(true);
+    try {
+      await queryClient.invalidateQueries({ queryKey: refreshQuery });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const refreshClasses = clsx('cursor-pointer', {
+    'animate-spin': isRefreshing,
+  });
+
   return (
-    <header className="flex items-center justify-center px-3 sm:px-4 lg:px-6 py-3 sm:py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+    <header className="relative flex items-center justify-center px-3 sm:px-4 lg:px-6 py-3 sm:py-4 border-b border-gray-200 bg-gray-50 rounded-t-lg">
       <h2 className="text-base sm:text-lg font-semibold text-gray-800">
         {children}
       </h2>
+      <Button
+        className="absolute right-5 text-black bg-white hover:bg-gray-100"
+        onClick={handleReset}
+        aria-label="대기방 목록 새로고침"
+        disabled={isRefreshing}
+      >
+        <RefreshCw className={refreshClasses} />
+      </Button>
     </header>
   );
 };
