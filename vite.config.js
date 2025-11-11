@@ -22,8 +22,6 @@ const ReactCompilerConfig = {
 export default defineConfig(() => {
   const appPort = 3000;
 
-  // Load VITE_* from .env files for config-time usage
-
   return {
     plugins: [
       TanStackRouterVite({ autoCodeSplitting: true }),
