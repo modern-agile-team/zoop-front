@@ -19,7 +19,7 @@
     "codegen:socket": "node scripts/codegen-asyncapi.js",
     "codegen:all": "yarn codegen && yarn codegen:socket && yarn check",
     "codegen:auto": "bash ./scripts/codegen/automationCodegen.sh",
-    "cert": "bash ./scripts/ssl/generate-local-cert.sh"
+    "cert": "mkcert -install && rm -rf .ssl && mkdir .ssl && mkcert -key-file ./.ssl/private.key -cert-file ./.ssl/public.key 'local.zoop.co.kr'"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

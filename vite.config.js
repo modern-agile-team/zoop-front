@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import viteReact from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import fs from 'node:fs';
 
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import { resolve } from 'node:path';
-import { readFileSync, existsSync } from 'node:fs';
 
 const ReactCompilerConfig = {
   logger: {
@@ -19,22 +19,11 @@ const ReactCompilerConfig = {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(() => {
   const appPort = 3000;
-  const root = resolve('.');
-  const defaultKey = resolve(root, '.ssl/localhost.key');
-  const defaultCert = resolve(root, '.ssl/localhost.crt');
-  const keyPath = process.env.VITE_SSL_KEY_PATH || defaultKey;
-  const certPath = process.env.VITE_SSL_CERT_PATH || defaultCert;
 
-  const isServe = command === 'serve';
-  let httpsOption = isServe ? true : false;
-  if (isServe && existsSync(keyPath) && existsSync(certPath)) {
-    httpsOption = {
-      key: readFileSync(keyPath),
-      cert: readFileSync(certPath),
-    };
-  }
+  // Load VITE_* from .env files for config-time usage
+
   return {
     plugins: [
       TanStackRouterVite({ autoCodeSplitting: true }),
@@ -64,7 +53,11 @@ export default defineConfig(({ command }) => {
     },
     server: {
       port: appPort,
-      https: httpsOption,
+      host: true,
+      https: {
+        key: fs.readFileSync('./.ssl/private.key'),
+        cert: fs.readFileSync('./.ssl/public.key'),
+      },
     },
     preview: {
       port: appPort,
