@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import viteReact from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { readFileSync, existsSync } from 'node:fs';
 
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import { resolve } from 'node:path';
@@ -18,8 +19,29 @@ const ReactCompilerConfig = {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({ command }) => {
   const appPort = 3000;
+  const isServe = command === 'serve';
+
+  let httpsOption = false;
+  if (isServe) {
+    const candidates = [
+      { key: './.ssl/private.key', cert: './.ssl/public.key' },
+      { key: './.ssl/private.pem', cert: './.ssl/public.pem' },
+    ];
+    const pair = candidates.find(
+      ({ key, cert }) => existsSync(key) && existsSync(cert)
+    );
+    if (pair) {
+      httpsOption = {
+        key: readFileSync(pair.key),
+        cert: readFileSync(pair.cert),
+      };
+    } else {
+      httpsOption = true;
+    }
+  }
+
   return {
     plugins: [
       TanStackRouterVite({ autoCodeSplitting: true }),
@@ -47,9 +69,13 @@ export default defineConfig(() => {
       exclude: [],
       force: true,
     },
-    server: {
-      port: appPort,
-    },
+    server: isServe
+      ? {
+          port: appPort,
+          host: true,
+          https: httpsOption,
+        }
+      : undefined,
     preview: {
       port: appPort,
     },

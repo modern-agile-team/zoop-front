@@ -94,6 +94,24 @@ yarn test
 yarn type-check
 ```
 
+## 🔐 로컬 HTTPS (mkcert 권장)
+
+개발 서버(`yarn dev`)는 기본적으로 HTTPS로 실행됩니다. `.ssl/localhost.key|.crt`가 있으면 이를 사용하고, 없으면 Vite의 자체 서명 인증서가 사용됩니다. `yarn cert` 스크립트는 mkcert가 설치되어 있으면 신뢰 가능한 인증서를 생성하고, 없으면 OpenSSL로 자체 서명 인증서를 생성합니다.
+
+```bash
+yarn cert
+```
+
+로컬호스트 변경을 위해, `/etc/hosts`에 다음 줄을 추가해준다. (sudo 권한으로 수정)
+
+```
+sudo vi /etc/hosts
+
+127.0.0.1 local.zoop.co.kr
+```
+
+참고: 인증서는 Git에 커밋되지 않도록 `.ssl/` 폴더를 `.gitignore`에 추가했습니다.
+
 ## 🎨 코드 품질
 
 ```bash

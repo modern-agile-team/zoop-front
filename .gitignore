@@ -4,6 +4,8 @@ dist
 dist-ssr
 *.local
 build
+.ssl/
+.certs/
 
 # IDEs and editors
 .idea/
