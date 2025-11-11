@@ -18,7 +18,8 @@
     "codegen:sync": "yarn node ./scripts/codegen/syncCodeGenSpec.mjs",
     "codegen:socket": "node scripts/codegen-asyncapi.js",
     "codegen:all": "yarn codegen && yarn codegen:socket && yarn check",
-    "codegen:auto": "bash ./scripts/codegen/automationCodegen.sh"
+    "codegen:auto": "bash ./scripts/codegen/automationCodegen.sh",
+    "cert": "bash ./scripts/ssl/generate-local-cert.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

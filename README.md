@@ -94,6 +94,26 @@ yarn test
 yarn type-check
 ```
 
+## 🔐 로컬 HTTPS (OpenSSL)
+
+개발 서버(`yarn dev`)는 기본적으로 HTTPS로 실행됩니다. 로컬 인증서가 있으면 이를 사용하고, 없으면 자체 서명 인증서가 사용됩니다.
+
+```bash
+# 1) 로컬 인증서 생성 (.ssl/localhost.key, .ssl/localhost.crt)
+yarn cert
+
+# 2) 개발 서버 실행 (HTTPS로 동작)
+yarn dev
+
+# (선택) 경로를 직접 지정하고 싶다면 환경변수 사용
+# VITE_SSL_KEY_PATH, VITE_SSL_CERT_PATH
+VITE_SSL_KEY_PATH=.ssl/localhost.key \
+VITE_SSL_CERT_PATH=.ssl/localhost.crt \
+yarn dev
+```
+
+참고: 인증서는 Git에 커밋되지 않도록 `.ssl/` 폴더를 `.gitignore`에 추가했습니다.
+
 ## 🎨 코드 품질
 
 ```bash
