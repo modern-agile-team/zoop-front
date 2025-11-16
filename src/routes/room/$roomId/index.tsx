@@ -4,7 +4,7 @@ import GameRoomDetailPage from '@/apps/room/[id]';
 import { parseApiError } from '@/shared/service/api/client/ApiError';
 import { gameRoomQuery } from '@/shared/service/api/query/room';
 
-export const Route = createFileRoute('/room/$roomId')({
+export const Route = createFileRoute('/room/$roomId/')({
   component: GameRoomDetailPage,
   beforeLoad: async (ctx) => {
     try {
