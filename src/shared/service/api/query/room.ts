@@ -4,6 +4,7 @@ import {
   createGameRoomControllerCreateGameRoom,
   getGameRoomControllerGetGameRoom,
   joinGameRoomControllerJoinGameRoom,
+  leaveGameRoomControllerLeaveGameRoom,
   listGameRoomsControllerListGameRooms,
 } from '@/lib/orval/_generated/quizzesGameIoBackend';
 import type {
@@ -18,6 +19,11 @@ export const gameRoomQuery = {
       queryFn: ({ queryKey }) =>
         listGameRoomsControllerListGameRooms(queryKey[1].options),
     }),
+  getDetail: (gameRoomId: string) =>
+    queryOptions({
+      queryKey: ['game-room', gameRoomId] as const,
+      queryFn: () => getGameRoomControllerGetGameRoom(gameRoomId),
+    }),
   createRoom: mutationOptions({
     mutationFn: ({ title, quizzesCount }: CreateGameRoomDto) => {
       return createGameRoomControllerCreateGameRoom({ title, quizzesCount });
@@ -26,9 +32,9 @@ export const gameRoomQuery = {
   joinRoom: mutationOptions({
     mutationFn: (roomId: string) => joinGameRoomControllerJoinGameRoom(roomId),
   }),
-  getDetail: (gameRoomId: string) =>
-    queryOptions({
-      queryKey: ['game-room', gameRoomId] as const,
-      queryFn: () => getGameRoomControllerGetGameRoom(gameRoomId),
-    }),
+  exitRoom: mutationOptions({
+    mutationFn: (roomId: string) =>
+      leaveGameRoomControllerLeaveGameRoom(roomId),
+    mutationKey: ['game-rooms', 'delete'],
+  }),
 };

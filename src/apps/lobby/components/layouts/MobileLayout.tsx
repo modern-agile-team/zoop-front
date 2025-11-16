@@ -30,7 +30,7 @@ export default function MobileLayout({
           aria-label="대기 중인 게임방 목록"
         >
           <LobbyScrollSection>
-            <LobbyScrollSection.Header>
+            <LobbyScrollSection.Header refreshQuery={['game-rooms']}>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
                 <span className="text-sm sm:text-base">
@@ -56,7 +56,7 @@ export default function MobileLayout({
           aria-label="진행 중인 게임방 목록"
         >
           <LobbyScrollSection>
-            <LobbyScrollSection.Header>
+            <LobbyScrollSection.Header refreshQuery={['']}>
               <div className="flex items-center gap-2">
                 <Play className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
                 <span className="text-sm sm:text-base">
@@ -85,7 +85,7 @@ export default function MobileLayout({
           aria-label="온라인 사용자 목록"
         >
           <LobbyScrollSection>
-            <LobbyScrollSection.Header>
+            <LobbyScrollSection.Header refreshQuery={['accounts']}>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
                 <span className="text-sm sm:text-base">
