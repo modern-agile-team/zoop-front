@@ -1,7 +1,6 @@
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
 import { useParams, useNavigate } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
-import { toast } from 'react-toastify';
 
 import { Button } from '@/shared/components/ui/button';
 import { useResponsiveClasses } from '@/shared/hooks/useResponsive';
@@ -13,7 +12,7 @@ import PlayersList from './components/PlayersList';
 import ReadyControls from './components/ReadyControls';
 
 export default function GameRoomDetailPage() {
-  const { roomId } = useParams({ from: '/room/$roomId' });
+  const { roomId } = useParams({ from: '/room/$roomId/' });
   const navigate = useNavigate();
 
   const { data: room } = useSuspenseQuery({
@@ -40,12 +39,11 @@ export default function GameRoomDetailPage() {
     }
   };
 
-  const canStartGame = room.members.length === room.maxMembersCount;
-
   const handleStartGame = () => {
-    if (!isHost || !canStartGame) return;
-
-    toast.info('개발중인 기능입니다.');
+    if (!isHost) {
+      return;
+    }
+    navigate({ to: '/room/$roomId/in-play', params: { roomId } });
   };
 
   const roomLayoutStyles = useResponsiveClasses({
@@ -96,7 +94,7 @@ export default function GameRoomDetailPage() {
             <div className="col-span-1 space-y-4">
               <ReadyControls
                 isHost={isHost}
-                canStartGame={canStartGame}
+                canStartGame
                 onStartGame={handleStartGame}
                 currentPlayers={room.members.length}
                 maxPlayers={room.maxMembersCount}
