@@ -72,7 +72,7 @@ export default defineConfig(({ command }) => {
     server: isServe
       ? {
           port: appPort,
-          host: true,
+          host: 'local.zoop.co.kr',
           https: httpsOption,
         }
       : undefined,
@@ -89,9 +89,6 @@ export default defineConfig(({ command }) => {
           entryFileNames: 'static/[name]-[hash].js',
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('@remember-web')) {
-                return 'vendor-remember-web';
-              }
               return 'vendors';
             }
           },
